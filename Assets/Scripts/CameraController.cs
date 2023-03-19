@@ -1,25 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform cameraTarget;
-
+    public GameObject CinemachineCameraTarget;
+    private GameInput _input;
+    [SerializeField] private Transform cameraFollowTarget;
     public float rotationSpeed = 1f;
+	private PlayerInputActions playerInputActions;
+    private bool rotateLeft, rotateRight;
 
+	void Awake()
+	{
+        _input = GameInput.Instance;
+		playerInputActions = new();
+        playerInputActions.Camera.Enable();
 
-    void Update()
+		playerInputActions.Camera.RotateRight.performed += _ => rotateRight = !rotateRight;
+		playerInputActions.Camera.RotateLeft.performed += _ => rotateLeft = !rotateLeft;
+
+        CinemachineCameraTarget.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = cameraFollowTarget;
+	}
+
+    void OnDestroy()
     {
-        // TODO: Change transform rotation
-        if (Input.GetKey(KeyCode.Q))
+        playerInputActions.Dispose();
+    }
+    
+    void LateUpdate()
+    {
+        if (rotateLeft)
         {
-            cameraTarget.RotateAround(cameraTarget.position, Vector3.up, rotationSpeed);
+            CinemachineCameraTarget.transform.RotateAround(cameraFollowTarget.position, Vector3.up, rotationSpeed);
         }
-        if (Input.GetKey(KeyCode.E))
+        if (rotateRight)
         {
-            cameraTarget.RotateAround(cameraTarget.position, Vector3.down, rotationSpeed);
-        }
-       
+            CinemachineCameraTarget.transform.RotateAround(cameraFollowTarget.position, Vector3.down, rotationSpeed);
+        }       
     }
 }
