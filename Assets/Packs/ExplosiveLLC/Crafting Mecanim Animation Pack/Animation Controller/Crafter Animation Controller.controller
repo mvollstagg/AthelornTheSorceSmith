@@ -7442,7 +7442,19 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
+  - first: {fileID: 110766874}
+    second: []
+  - first: {fileID: 110796910}
+    second: []
   - first: {fileID: 110704910}
+    second: []
+  - first: {fileID: 110751944}
+    second: []
+  - first: {fileID: 110774706}
+    second: []
+  - first: {fileID: 110751926}
+    second: []
+  - first: {fileID: 110789566}
     second: []
   - first: {fileID: 110706322}
     second: []
@@ -7456,23 +7468,11 @@ AnimatorStateMachine:
     second: []
   - first: {fileID: 110742670}
     second: []
-  - first: {fileID: 110751926}
-    second: []
-  - first: {fileID: 110751944}
-    second: []
   - first: {fileID: 110764318}
     second: []
   - first: {fileID: 110764692}
     second: []
-  - first: {fileID: 110766874}
-    second: []
-  - first: {fileID: 110774706}
-    second: []
   - first: {fileID: 110786186}
-    second: []
-  - first: {fileID: 110789566}
-    second: []
-  - first: {fileID: 110796910}
     second: []
   - first: {fileID: 110797406}
     second: []

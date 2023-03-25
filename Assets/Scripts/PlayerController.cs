@@ -96,6 +96,26 @@ public class PlayerController : Singleton<PlayerController>
         Move();
     }
 
+    // TODO: Write a code which make player look at where mouse position
+    private void LookAtMouse()
+    {
+        // Get the position of the mouse in world coordinates
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = 10f; // Set a depth of 10 units
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        // Calculate the direction to rotate the player towards the mouse position
+        Vector3 direction = mousePosition - transform.position;
+        direction.Normalize();
+
+        // Calculate the angle between the player's forward vector and the direction to rotate
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+
+        // Rotate the player's body towards the mouse position
+        Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+    }
+
     private void GroundedCheck()
     {
         // set sphere position, with offset

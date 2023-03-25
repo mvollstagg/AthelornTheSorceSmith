@@ -5272,7 +5272,7 @@ MonoBehaviour:
   sprint: 0
   analogMovement: 0
   cursorLocked: 0
-  cursorInputForLook: 0
+  cursorInputForLook: 1
 --- !u!114 &1607502141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5450,6 +5450,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CinemachineCameraTarget: {fileID: 2070925442893970854}
+  TopClamp: 45
+  BottomClamp: 45
+  CameraAngleOverride: 45
+  LockCameraPosition: 0
+  _playerInput: {fileID: 1607502141}
   cameraFollowTarget: {fileID: 8338988565228470529}
   rotationSpeed: 0.5
 --- !u!1 &1643369259
@@ -7718,6 +7723,8 @@ GameObject:
   - component: {fileID: 4416926082512009303}
   - component: {fileID: 4416926082512009302}
   - component: {fileID: 1634455411}
+  - component: {fileID: 4416926082512009310}
+  - component: {fileID: 4416926082512009311}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -7725,6 +7732,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4416926082512009310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926082512009309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591922a8caf1cf7469ec884055a118ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1149760839}
+--- !u!114 &4416926082512009311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416926082512009309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9828d1c703817499044a61a5af1637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSpeed: 10
+  rayLength: 5
 --- !u!4 &8338988565228470529
 Transform:
   m_ObjectHideFlags: 0

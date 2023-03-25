@@ -345,6 +345,74 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Interaction"",
+            ""id"": ""b4e11b3c-7a32-4446-acda-4936ecab8572"",
+            ""actions"": [
+                {
+                    ""name"": ""GetItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""47e45ad1-9929-413b-a45c-ff6cb7282af6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChopStart"",
+                    ""type"": ""Button"",
+                    ""id"": ""29e4ac0e-b9fa-4a01-a6bd-805ec360817a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stop"",
+                    ""type"": ""Button"",
+                    ""id"": ""a072564d-aa5d-45bb-b603-e5335f3e6d85"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""47deae76-97fa-4a60-be5c-73e1b5dd42d0"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GetItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41fba82a-1dc8-40ca-aaca-981542726ea9"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChopStart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fff0fd8a-6be2-4bc9-a753-4c6f28753abc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -359,6 +427,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_RotateLeft = m_Camera.FindAction("RotateLeft", throwIfNotFound: true);
         m_Camera_RotateRight = m_Camera.FindAction("RotateRight", throwIfNotFound: true);
+        // Interaction
+        m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
+        m_Interaction_GetItem = m_Interaction.FindAction("GetItem", throwIfNotFound: true);
+        m_Interaction_ChopStart = m_Interaction.FindAction("ChopStart", throwIfNotFound: true);
+        m_Interaction_Stop = m_Interaction.FindAction("Stop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -540,6 +613,68 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public CameraActions @Camera => new CameraActions(this);
+
+    // Interaction
+    private readonly InputActionMap m_Interaction;
+    private List<IInteractionActions> m_InteractionActionsCallbackInterfaces = new List<IInteractionActions>();
+    private readonly InputAction m_Interaction_GetItem;
+    private readonly InputAction m_Interaction_ChopStart;
+    private readonly InputAction m_Interaction_Stop;
+    public struct InteractionActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public InteractionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @GetItem => m_Wrapper.m_Interaction_GetItem;
+        public InputAction @ChopStart => m_Wrapper.m_Interaction_ChopStart;
+        public InputAction @Stop => m_Wrapper.m_Interaction_Stop;
+        public InputActionMap Get() { return m_Wrapper.m_Interaction; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InteractionActions set) { return set.Get(); }
+        public void AddCallbacks(IInteractionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InteractionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InteractionActionsCallbackInterfaces.Add(instance);
+            @GetItem.started += instance.OnGetItem;
+            @GetItem.performed += instance.OnGetItem;
+            @GetItem.canceled += instance.OnGetItem;
+            @ChopStart.started += instance.OnChopStart;
+            @ChopStart.performed += instance.OnChopStart;
+            @ChopStart.canceled += instance.OnChopStart;
+            @Stop.started += instance.OnStop;
+            @Stop.performed += instance.OnStop;
+            @Stop.canceled += instance.OnStop;
+        }
+
+        private void UnregisterCallbacks(IInteractionActions instance)
+        {
+            @GetItem.started -= instance.OnGetItem;
+            @GetItem.performed -= instance.OnGetItem;
+            @GetItem.canceled -= instance.OnGetItem;
+            @ChopStart.started -= instance.OnChopStart;
+            @ChopStart.performed -= instance.OnChopStart;
+            @ChopStart.canceled -= instance.OnChopStart;
+            @Stop.started -= instance.OnStop;
+            @Stop.performed -= instance.OnStop;
+            @Stop.canceled -= instance.OnStop;
+        }
+
+        public void RemoveCallbacks(IInteractionActions instance)
+        {
+            if (m_Wrapper.m_InteractionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInteractionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InteractionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InteractionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InteractionActions @Interaction => new InteractionActions(this);
     public interface IPlayerActions
     {
         void OnSprint(InputAction.CallbackContext context);
@@ -551,5 +686,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnRotateLeft(InputAction.CallbackContext context);
         void OnRotateRight(InputAction.CallbackContext context);
+    }
+    public interface IInteractionActions
+    {
+        void OnGetItem(InputAction.CallbackContext context);
+        void OnChopStart(InputAction.CallbackContext context);
+        void OnStop(InputAction.CallbackContext context);
     }
 }
