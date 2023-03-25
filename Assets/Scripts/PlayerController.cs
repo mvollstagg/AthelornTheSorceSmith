@@ -15,14 +15,16 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("Sprint speed of the character in m/s")]
     public float SprintSpeed = 5.335f;
 
+    [Tooltip("Sprint speed of the character in m/s")]
+    public float TurnSpeed = 5f;
+
+
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
     public float RotationSmoothTime = 0.12f;
 
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
-
-    
 
     [Space(10)]
     [Tooltip("The height the player can jump")]
@@ -67,14 +69,14 @@ public class PlayerController : Singleton<PlayerController>
 
     private CharacterController _controller;
     private GameInput _input;
-    private GameObject _mainCamera;
+    private Camera _mainCamera;
 
     private void Awake()
     {
         // get a reference to our main camera
         if (_mainCamera == null)
         {
-            _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            _mainCamera = Camera.main;
         }
     }
 
@@ -94,26 +96,31 @@ public class PlayerController : Singleton<PlayerController>
         JumpAndGravity();
         GroundedCheck();
         Move();
+        RotatePlayer();
     }
 
     // TODO: Write a code which make player look at where mouse position
-    private void LookAtMouse()
+    private void RotatePlayer()
     {
-        // Get the position of the mouse in world coordinates
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = 10f; // Set a depth of 10 units
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        float _rayLength = 5f;
 
-        // Calculate the direction to rotate the player towards the mouse position
-        Vector3 direction = mousePosition - transform.position;
-        direction.Normalize();
+        // Raycast from the camera to the point on the ground where the mouse is pointing
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit) && _input.move == Vector2.zero && !CameraController.Instance.cursorLocked)
+        {
+            // Calculate the angle between the character and the point on the ground
+            Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+            Vector3 direction = targetPosition - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            float angle = rotation.eulerAngles.y;
 
-        // Calculate the angle between the player's forward vector and the direction to rotate
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+            // Rotate the character towards the point on the ground, only rotating around the y-axis
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), TurnSpeed * Time.deltaTime);
 
-        // Rotate the player's body towards the mouse position
-        Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+            // Debug draw line to show the direction the character is facing
+            Debug.DrawRay(transform.position + new Vector3(0.1f, 0f, 0f), transform.forward * _rayLength, Color.green);
+        }
     }
 
     private void GroundedCheck()
