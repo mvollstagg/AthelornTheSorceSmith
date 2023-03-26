@@ -115,8 +115,6 @@ public class PlayerController : Singleton<PlayerController>
     // TODO: Write a code which make player look at where mouse position
     private void RotatePlayer()
     {
-        float _rayLength = 5f;
-
         // Raycast from the camera to the point on the ground where the mouse is pointing
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -130,9 +128,6 @@ public class PlayerController : Singleton<PlayerController>
 
             // Rotate the character towards the point on the ground, only rotating around the y-axis
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), TurnSpeed * Time.deltaTime);
-
-            // Debug draw line to show the direction the character is facing
-            Debug.DrawRay(transform.position + new Vector3(0.1f, 0f, 0f), transform.forward * _rayLength, Color.green);
         }
     }
 
@@ -265,6 +260,8 @@ public class PlayerController : Singleton<PlayerController>
     
     private void OnDrawGizmosSelected()
     {
+        float _rayLength = 5f;
+
         Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
         Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
@@ -275,5 +272,8 @@ public class PlayerController : Singleton<PlayerController>
         Gizmos.DrawSphere(
             new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
             GroundedRadius);
+
+        // Debug draw line to show the direction the character is facing
+        Debug.DrawRay(transform.position + new Vector3(0.1f, 0f, 0f), transform.forward * _rayLength, Color.green);
     }
 }

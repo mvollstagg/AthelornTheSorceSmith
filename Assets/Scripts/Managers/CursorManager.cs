@@ -7,11 +7,12 @@ using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
+    public Canvas TargetCanvas;
+    protected Vector2 _newPosition;
+    protected Vector2 _mousePosition;
     [SerializeField] Transform _cursors;
     [SerializeField] List<CursorSO> _cursorSOList;
     Transform _currentCursor;
-
-    
 
     void Start()
     {
@@ -35,6 +36,15 @@ public class CursorManager : MonoBehaviour
             _cursors.gameObject.SetActive(true);
         else
             _cursors.gameObject.SetActive(false);
-        _cursors.position = Input.mousePosition;
-    }    
+        // _cursors.position = Input.mousePosition;
+    }
+    
+    
+    
+    protected virtual void LateUpdate()
+    {
+        _mousePosition = Input.mousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(TargetCanvas.transform as RectTransform, _mousePosition, TargetCanvas.worldCamera, out _newPosition);
+        _cursors.position = TargetCanvas.transform.TransformPoint(_newPosition);
+    }
 }
