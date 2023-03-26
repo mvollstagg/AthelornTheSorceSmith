@@ -1,13 +1,17 @@
-﻿using Scripts.Core.Singletons;
+﻿using System;
+using JohnTheBlacksmith.Assets.Scripts.Core;
+using Scripts.Core.Singletons;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
+using static CursorManager;
 #endif
 
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : Singleton<PlayerController>
 {
+    #region Public Variables
     [Header("Player")]
     [Tooltip("Move speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
@@ -53,6 +57,15 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
 
+    [Header("Free Fall")]
+    public bool FreeFall;
+
+    #endregion
+
+    #region Close Public Variables
+    #endregion
+
+    #region Private Variables
     // player
     private float _speed;
     public float _animationBlend;
@@ -60,7 +73,6 @@ public class PlayerController : Singleton<PlayerController>
     private float _rotationVelocity;
     private float _verticalVelocity;
     private float _terminalVelocity = 53.0f;
-    public bool FreeFall;
     public float _inputMagnitude;
 
     // timeout deltatime
@@ -70,6 +82,7 @@ public class PlayerController : Singleton<PlayerController>
     private CharacterController _controller;
     private GameInput _input;
     private Camera _mainCamera;
+    #endregion
 
     private void Awake()
     {
@@ -249,9 +262,7 @@ public class PlayerController : Singleton<PlayerController>
             _verticalVelocity += Gravity * Time.deltaTime;
         }
     }
-
     
-
     private void OnDrawGizmosSelected()
     {
         Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);

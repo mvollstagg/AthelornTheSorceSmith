@@ -92,12 +92,12 @@ public class TestController : MonoBehaviour
             Debug.Log("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
         }
 
-        // // clamp our rotations so our values are limited 360 degrees
+        // clamp our rotations so our values are limited 360 degrees
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
         Debug.LogWarning("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
 
-        // // Cinemachine will follow this target
+        // Cinemachine will follow this target
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
     }
 

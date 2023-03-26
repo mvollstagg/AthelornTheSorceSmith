@@ -75,12 +75,10 @@ public class CameraController : Singleton<CameraController>
 
             _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
             _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-            Debug.Log("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
         }
 
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-        Debug.LogWarning("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
 
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
     }
