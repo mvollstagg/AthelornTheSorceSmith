@@ -33,6 +33,7 @@ public class CameraController : Singleton<CameraController>
 
     void Awake()
     {
+        _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
         _input = GameInput.Instance;
         CinemachineCameraTarget.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = cameraFollowTarget;
 		_playerInputActions = new();
