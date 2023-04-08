@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using JohnTheBlacksmith.Assets.Scripts.Core;
+using Scripts.Core;
 using UnityEngine;
 
 [CreateAssetMenu()]

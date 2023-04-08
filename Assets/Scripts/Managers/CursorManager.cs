@@ -1,15 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JohnTheBlacksmith.Assets.Scripts.Core;
+using Scripts.Core;
+using Scripts.Core;
 using UnityEngine;
 
-public class CursorManager : MonoBehaviour
+public class CursorManager : Singleton<CursorManager>
 {
     public Canvas TargetCanvas;
-    protected Vector2 _newPosition;
-    protected Vector2 _mousePosition;
+    public Vector2 _newPosition;
+    public Vector2 _mousePosition;
     [SerializeField] Transform _cursors;
     [SerializeField] List<CursorSO> _cursorSOList;
     Transform _currentCursor;
@@ -32,7 +32,7 @@ public class CursorManager : MonoBehaviour
 
     void Update()
     {
-        if(!CameraController.Instance.cursorLocked)
+        if(!CharacterRotateCamera.Instance.cursorLocked && Character.Instance.IsCurrentDeviceMouse)
             _cursors.gameObject.SetActive(true);
         else
             _cursors.gameObject.SetActive(false);

@@ -1,12 +1,13 @@
 using System;
-using Scripts.Core.Singletons;
+using Scripts.Core;
+using Scripts.Entities.Enum;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
 
-public class GameInput : Singleton<GameInput>
+public class InputManager : Singleton<InputManager>
 {
 	[Header("Character Input Values")]
 	public Vector2 move;
@@ -21,9 +22,15 @@ public class GameInput : Singleton<GameInput>
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
 
+	public InputTypeEnum inputType;
+	private PlayerInput _playerInput;
 	
+	void Start()
+	{
+		_playerInput = GetComponent<PlayerInput>();
+		inputType = _playerInput.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+	}
 
-#if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)
 	{
 		MoveInput(value.Get<Vector2>());
@@ -46,7 +53,11 @@ public class GameInput : Singleton<GameInput>
 	{
 		SprintInput(value.isPressed);
 	}
-#endif
+
+	public void OnControlsChanged(PlayerInput input)
+	{
+		inputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+	}
 
 
 	public void MoveInput(Vector2 newMoveDirection)
@@ -67,11 +78,6 @@ public class GameInput : Singleton<GameInput>
 	public void SprintInput(bool newSprintState)
 	{
 		sprint = newSprintState;
-	}
-
-	private void OnApplicationFocus(bool hasFocus)
-	{
-		SetCursorState(cursorLocked);
 	}
 
 	private void SetCursorState(bool newState)

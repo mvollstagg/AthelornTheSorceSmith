@@ -1,4 +1,4 @@
-namespace JohnTheBlacksmith.Assets.Scripts.Core
+namespace Scripts.Core
 {
     public enum CursorType
     {

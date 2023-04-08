@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TestController : MonoBehaviour
+public class CharacterRotateCamera : Singleton<CharacterRotateCamera>
 {
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -21,45 +22,30 @@ public class TestController : MonoBehaviour
     public bool cursorLocked = true;
 
     [SerializeField] private Transform cameraFollowTarget;
-    private GameInput _input;
+    private InputManager _inputManager;
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
-    private const float _threshold = 0.01f;
-    [SerializeField] private PlayerInput _playerInput;
-    private PlayerInputActions _playerInputActions;
+    private const float _threshold = 0.1f;
     private bool _rotate = false;
     private bool _cursedPositionSet;
     private Vector3 _cursorPosition;
 
-
-    private bool IsCurrentDeviceMouse
-    {
-        get
-        {
-#if ENABLE_INPUT_SYSTEM
-            return _playerInput.currentControlScheme == "KeyboardMouse";
-#else
-            return false;
-#endif
-        }
-    }
-
     void Awake()
     {
-        _input = GameInput.Instance;
+        _inputManager = InputManager.Instance;
         CinemachineCameraTarget.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = cameraFollowTarget;
-		_playerInputActions = new();
-        _playerInputActions.Camera.Enable();
 
-		_playerInputActions.Camera.Rotate.performed += OnPlayerInputActions_RotatePerformed;
-        _playerInputActions.Camera.Rotate.canceled += OnPlayerInputActions_RotateCanceled;
+        Character.Instance.InputActions = new CharacterAssets();
+        Character.Instance.InputActions.Camera.Enable();
+		Character.Instance.InputActions.Camera.Rotate.performed += OnPlayerInputActions_RotatePerformed;
+        Character.Instance.InputActions.Camera.Rotate.canceled += OnPlayerInputActions_RotateCanceled;
     }
 
     private void OnPlayerInputActions_RotatePerformed(InputAction.CallbackContext context)
     {
         _cursorPosition = Mouse.current.position.ReadValue();
-        SetCursorStateLocked(true);
         _rotate = true;
+        SetCursorStateLocked(true);
     }
 
     private void OnPlayerInputActions_RotateCanceled(InputAction.CallbackContext context)
@@ -68,7 +54,6 @@ public class TestController : MonoBehaviour
         SetCursorStateLocked(false);
         Mouse.current.WarpCursorPosition(_cursorPosition);
     }
-    
 
     void LateUpdate()
     {
@@ -80,22 +65,18 @@ public class TestController : MonoBehaviour
 
     private void CameraRotation()
     {
-        
         // if there is an input and camera position is not fixed
-        if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+        if (_inputManager.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
             //Don't multiply mouse input by Time.deltaTime;
-            float deltaTimeMultiplier = 1.0f;
-
-            _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-            _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-            Debug.Log("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
+            float deltaTimeMultiplier = Character.Instance.IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            _cinemachineTargetYaw += _inputManager.look.x * deltaTimeMultiplier;
+            _cinemachineTargetPitch += _inputManager.look.y * deltaTimeMultiplier;
         }
 
         // clamp our rotations so our values are limited 360 degrees
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-        Debug.LogWarning("_cinemachineTargetYaw: " + _cinemachineTargetYaw + " _cinemachineTargetPitch: " + _cinemachineTargetPitch);
 
         // Cinemachine will follow this target
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
@@ -110,6 +91,9 @@ public class TestController : MonoBehaviour
 
     private void SetCursorStateLocked(bool newState)
     {
-        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-    }
+        if(!Character.Instance.IsCurrentDeviceMouse)
+            return;
+        cursorLocked = newState;
+        // Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+    }    
 }

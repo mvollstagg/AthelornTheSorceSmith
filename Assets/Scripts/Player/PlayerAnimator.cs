@@ -25,7 +25,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetFloat(SPEED, PlayerController.Instance._animationBlend);
         animator.SetFloat(MOTIONSPEED, PlayerController.Instance._inputMagnitude);
         animator.SetBool(GROUNDED, PlayerController.Instance.Grounded);
-        animator.SetBool(JUMP, GameInput.Instance.jump);
+        animator.SetBool(JUMP, InputManager.Instance.jump);
         animator.SetBool(FREEFALL, PlayerController.Instance.FreeFall);
     }
 

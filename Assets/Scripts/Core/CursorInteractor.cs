@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using JohnTheBlacksmith.Assets.Scripts.Core;
-using Scripts.Core.Singletons;
+using Scripts.Core;
 using UnityEngine;
 
 public class CursorInteractor : MonoBehaviour, IInteractable
@@ -13,7 +10,7 @@ public class CursorInteractor : MonoBehaviour, IInteractable
         public CursorType CursorType;
     };
 
-    new public static void ResetStaticData()
+    public static void ResetStaticData()
     {
         OnMouseEnterInteractable = null;
     }

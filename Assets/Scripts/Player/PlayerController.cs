@@ -1,11 +1,7 @@
 ﻿using System;
-using JohnTheBlacksmith.Assets.Scripts.Core;
-using Scripts.Core.Singletons;
+using Scripts.Core;
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
-using static CursorManager;
-#endif
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -61,8 +57,8 @@ public class PlayerController : Singleton<PlayerController>
     public bool FreeFall;
 
     #endregion
-
     #region Close Public Variables
+    [SerializeField] private PlayerInput _playerInput;
     #endregion
 
     #region Private Variables
@@ -80,7 +76,7 @@ public class PlayerController : Singleton<PlayerController>
     private float _fallTimeoutDelta;
 
     private CharacterController _controller;
-    private GameInput _input;
+    private InputManager _inputManager;
     private Camera _mainCamera;
     #endregion
 
@@ -96,7 +92,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-        _input = GameInput.Instance;
+        _inputManager = InputManager.Instance;
 
         // reset our timeouts on start
         _jumpTimeoutDelta = JumpTimeout;
@@ -109,7 +105,8 @@ public class PlayerController : Singleton<PlayerController>
         JumpAndGravity();
         GroundedCheck();
         Move();
-        RotatePlayer();
+        // RotatePlayer();
+
     }
 
     // TODO: Write a code which make player look at where mouse position
@@ -118,7 +115,7 @@ public class PlayerController : Singleton<PlayerController>
         // Raycast from the camera to the point on the ground where the mouse is pointing
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit) && _input.move == Vector2.zero && !CameraController.Instance.cursorLocked)
+        if (Physics.Raycast(ray, out hit) && _inputManager.move == Vector2.zero && !CameraController.Instance.cursorLocked)
         {
             // Calculate the angle between the character and the point on the ground
             Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
@@ -143,19 +140,19 @@ public class PlayerController : Singleton<PlayerController>
     private void Move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
-        float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+        float targetSpeed = _inputManager.sprint ? SprintSpeed : MoveSpeed;
 
         // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
         // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is no input, set the target speed to 0
-        if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+        if (_inputManager.move == Vector2.zero) targetSpeed = 0.0f;
 
         // a reference to the players current horizontal velocity
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
-        _inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+        _inputMagnitude = _inputManager.analogMovement ? _inputManager.move.magnitude : 1f;
 
         // accelerate or decelerate to target speed
         if (currentHorizontalSpeed < targetSpeed - speedOffset ||
@@ -178,11 +175,11 @@ public class PlayerController : Singleton<PlayerController>
         if (_animationBlend < 0.01f) _animationBlend = 0f;
 
         // normalise input direction
-        Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(_inputManager.move.x, 0.0f, _inputManager.move.y).normalized;
 
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (_input.move != Vector2.zero)
+        if (_inputManager.move != Vector2.zero)
         {
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                 _mainCamera.transform.eulerAngles.y;
@@ -218,7 +215,7 @@ public class PlayerController : Singleton<PlayerController>
             }
 
             // Jump
-            if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+            if (_inputManager.jump && _jumpTimeoutDelta <= 0.0f)
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -248,7 +245,7 @@ public class PlayerController : Singleton<PlayerController>
             }
 
             // if we are not grounded, do not jump
-            _input.jump = false;
+            _inputManager.jump = false;
         }
 
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
