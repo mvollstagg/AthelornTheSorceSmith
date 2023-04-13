@@ -22,13 +22,13 @@ public class InputManager : Singleton<InputManager>
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
 
-	public InputTypeEnum inputType;
+	public InputTypeEnum InputType;
 	private PlayerInput _playerInput;
 	
 	void Start()
 	{
 		_playerInput = GetComponent<PlayerInput>();
-		inputType = _playerInput.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+		InputType = _playerInput.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
 	}
 
 	public void OnMove(InputValue value)
@@ -56,7 +56,7 @@ public class InputManager : Singleton<InputManager>
 
 	public void OnControlsChanged(PlayerInput input)
 	{
-		inputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+		InputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
 	}
 
 
@@ -78,6 +78,19 @@ public class InputManager : Singleton<InputManager>
 	public void SprintInput(bool newSprintState)
 	{
 		sprint = newSprintState;
+	}
+
+	public void OnSwitch(InputValue value)
+	{
+		// TODO: Change current control scheme
+		if(InputType == InputTypeEnum.KeyboardMouse)
+		{
+			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
+		}
+		else if(InputType == InputTypeEnum.Gamepad)
+		{
+			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
+		}
 	}
 
 	private void SetCursorState(bool newState)

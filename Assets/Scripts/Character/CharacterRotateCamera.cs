@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Core;
+using Scripts.Entities.Enum;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,30 +30,79 @@ public class CharacterRotateCamera : Singleton<CharacterRotateCamera>
     private bool _rotate = false;
     private bool _cursedPositionSet;
     private Vector3 _cursorPosition;
+    private InputTypeEnum _inputType;
 
     void Awake()
     {
         _inputManager = InputManager.Instance;
         CinemachineCameraTarget.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = cameraFollowTarget;
-
+        _inputType = InputManager.Instance.InputType;
         Character.Instance.InputActions = new CharacterAssets();
         Character.Instance.InputActions.Camera.Enable();
-		Character.Instance.InputActions.Camera.Rotate.performed += OnPlayerInputActions_RotatePerformed;
-        Character.Instance.InputActions.Camera.Rotate.canceled += OnPlayerInputActions_RotateCanceled;
+        if(_inputType == InputTypeEnum.KeyboardMouse)
+        {
+            Character.Instance.InputActions.Camera.RotateMouse.performed += OnPlayerInputActions_RotateMousePerformed;
+            Character.Instance.InputActions.Camera.RotateMouse.canceled += OnPlayerInputActions_RotateMouseCanceled;
+        }
+        else if(_inputType == InputTypeEnum.Gamepad)
+        {
+            Character.Instance.InputActions.Camera.RotateGamepad.performed += OnPlayerInputActions_RotateGamepadPerformed;
+            Character.Instance.InputActions.Camera.RotateGamepad.canceled += OnPlayerInputActions_RotateGamepadCanceled;
+        }		
     }
 
-    private void OnPlayerInputActions_RotatePerformed(InputAction.CallbackContext context)
+    private void OnPlayerInputActions_RotateGamepadCanceled(InputAction.CallbackContext context)
+    {
+        _rotate = false;
+        Mouse.current.WarpCursorPosition(_cursorPosition);
+    }
+
+    private void OnPlayerInputActions_RotateGamepadPerformed(InputAction.CallbackContext context)
+    {
+        _rotate = true;
+        _cursorPosition = Mouse.current.position.ReadValue();
+    }
+
+    private void OnPlayerInputActions_RotateMousePerformed(InputAction.CallbackContext context)
     {
         _cursorPosition = Mouse.current.position.ReadValue();
         _rotate = true;
         SetCursorStateLocked(true);
     }
 
-    private void OnPlayerInputActions_RotateCanceled(InputAction.CallbackContext context)
+    private void OnPlayerInputActions_RotateMouseCanceled(InputAction.CallbackContext context)
     {
         _rotate = false;
         SetCursorStateLocked(false);
         Mouse.current.WarpCursorPosition(_cursorPosition);
+    }
+    
+    void Update()
+    {
+        if(_inputType != InputManager.Instance.InputType)
+        {
+            Debug.Log("Input Type Changed");
+            _inputType = InputManager.Instance.InputType;
+            if(_inputType == InputTypeEnum.KeyboardMouse)
+            {
+                Character.Instance.InputActions.Camera.RotateMouse.performed += OnPlayerInputActions_RotateMousePerformed;
+                Character.Instance.InputActions.Camera.RotateMouse.canceled += OnPlayerInputActions_RotateMouseCanceled;
+            }
+            else if(_inputType == InputTypeEnum.Gamepad)
+            {
+                Character.Instance.InputActions.Camera.RotateGamepad.performed += OnPlayerInputActions_RotateGamepadPerformed;
+                Character.Instance.InputActions.Camera.RotateGamepad.canceled += OnPlayerInputActions_RotateGamepadCanceled;
+            }
+        }
+    }
+
+    void OnDestroy()
+    {
+        Character.Instance.InputActions.Camera.Disable();
+        Character.Instance.InputActions.Camera.RotateMouse.performed -= OnPlayerInputActions_RotateMousePerformed;
+        Character.Instance.InputActions.Camera.RotateMouse.canceled -= OnPlayerInputActions_RotateMouseCanceled;
+        Character.Instance.InputActions.Camera.RotateGamepad.performed -= OnPlayerInputActions_RotateGamepadPerformed;
+        Character.Instance.InputActions.Camera.RotateGamepad.canceled -= OnPlayerInputActions_RotateGamepadCanceled;
     }
 
     void LateUpdate()

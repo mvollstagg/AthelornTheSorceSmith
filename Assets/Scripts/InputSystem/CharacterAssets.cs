@@ -62,6 +62,15 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""Button"",
+                    ""id"": ""b325fce0-5165-4ddb-bc10-abcc092f5c5d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -238,6 +247,28 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": ""InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300)"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c96b3f96-91bb-4274-8d17-a14fd91f4c3c"",
+                    ""path"": ""<Keyboard>/f12"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""986ce621-0af1-4cf2-9696-fc678c4a05bf"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -834,13 +865,22 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             ""id"": ""09bbb5ff-e51e-4fb0-8099-bcca2f1cb947"",
             ""actions"": [
                 {
-                    ""name"": ""Rotate"",
-                    ""type"": ""Value"",
+                    ""name"": ""RotateMouse"",
+                    ""type"": ""Button"",
                     ""id"": ""f19e054b-12fb-41f5-ba6b-791b4572e4e3"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateGamepad"",
+                    ""type"": ""Button"",
+                    ""id"": ""8edca912-16d5-41c4-bf15-4955dc0d4e15"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -851,68 +891,18 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Rotate"",
+                    ""action"": ""RotateMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f479058d-8a6e-45e6-85fb-a0a47edb925e"",
+                    ""id"": ""4cf6fbba-6f7f-46c9-9ef0-8bcdaa38644c"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Controls"",
-            ""id"": ""ea8579f6-dac3-48ce-ad16-3e1c5f9cec70"",
-            ""actions"": [
-                {
-                    ""name"": ""Switch"",
-                    ""type"": ""Button"",
-                    ""id"": ""f0fce95e-2220-429d-91f6-2644dc41717c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""bd9a8580-538e-45ad-bcde-bdc678074c3b"",
-                    ""path"": ""<Keyboard>/f12"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""32fef85f-377d-42d6-a674-882b5ee89957"",
-                    ""path"": ""<Gamepad>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""dd08ceea-bb8f-481d-bab3-dcf8e7f45f01"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch"",
+                    ""action"": ""RotateGamepad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -956,16 +946,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""isOR"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Xbox Controller"",
-            ""bindingGroup"": ""Xbox Controller"",
-            ""devices"": []
-        },
-        {
-            ""name"": ""PS4 Controller"",
-            ""bindingGroup"": ""PS4 Controller"",
-            ""devices"": []
         }
     ]
 }");
@@ -975,6 +955,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
         m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
+        m_Character_Switch = m_Character.FindAction("Switch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -993,10 +974,8 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Interaction_Interact = m_Interaction.FindAction("Interact", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
-        m_Camera_Rotate = m_Camera.FindAction("Rotate", throwIfNotFound: true);
-        // Controls
-        m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
-        m_Controls_Switch = m_Controls.FindAction("Switch", throwIfNotFound: true);
+        m_Camera_RotateMouse = m_Camera.FindAction("RotateMouse", throwIfNotFound: true);
+        m_Camera_RotateGamepad = m_Camera.FindAction("RotateGamepad", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1062,6 +1041,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Look;
     private readonly InputAction m_Character_Jump;
     private readonly InputAction m_Character_Sprint;
+    private readonly InputAction m_Character_Switch;
     public struct CharacterActions
     {
         private @CharacterAssets m_Wrapper;
@@ -1070,6 +1050,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Character_Look;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
         public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
+        public InputAction @Switch => m_Wrapper.m_Character_Switch;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1091,6 +1072,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -1107,6 +1091,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -1300,12 +1287,14 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     // Camera
     private readonly InputActionMap m_Camera;
     private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
-    private readonly InputAction m_Camera_Rotate;
+    private readonly InputAction m_Camera_RotateMouse;
+    private readonly InputAction m_Camera_RotateGamepad;
     public struct CameraActions
     {
         private @CharacterAssets m_Wrapper;
         public CameraActions(@CharacterAssets wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Rotate => m_Wrapper.m_Camera_Rotate;
+        public InputAction @RotateMouse => m_Wrapper.m_Camera_RotateMouse;
+        public InputAction @RotateGamepad => m_Wrapper.m_Camera_RotateGamepad;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1315,16 +1304,22 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_CameraActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_CameraActionsCallbackInterfaces.Add(instance);
-            @Rotate.started += instance.OnRotate;
-            @Rotate.performed += instance.OnRotate;
-            @Rotate.canceled += instance.OnRotate;
+            @RotateMouse.started += instance.OnRotateMouse;
+            @RotateMouse.performed += instance.OnRotateMouse;
+            @RotateMouse.canceled += instance.OnRotateMouse;
+            @RotateGamepad.started += instance.OnRotateGamepad;
+            @RotateGamepad.performed += instance.OnRotateGamepad;
+            @RotateGamepad.canceled += instance.OnRotateGamepad;
         }
 
         private void UnregisterCallbacks(ICameraActions instance)
         {
-            @Rotate.started -= instance.OnRotate;
-            @Rotate.performed -= instance.OnRotate;
-            @Rotate.canceled -= instance.OnRotate;
+            @RotateMouse.started -= instance.OnRotateMouse;
+            @RotateMouse.performed -= instance.OnRotateMouse;
+            @RotateMouse.canceled -= instance.OnRotateMouse;
+            @RotateGamepad.started -= instance.OnRotateGamepad;
+            @RotateGamepad.performed -= instance.OnRotateGamepad;
+            @RotateGamepad.canceled -= instance.OnRotateGamepad;
         }
 
         public void RemoveCallbacks(ICameraActions instance)
@@ -1342,52 +1337,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         }
     }
     public CameraActions @Camera => new CameraActions(this);
-
-    // Controls
-    private readonly InputActionMap m_Controls;
-    private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
-    private readonly InputAction m_Controls_Switch;
-    public struct ControlsActions
-    {
-        private @CharacterAssets m_Wrapper;
-        public ControlsActions(@CharacterAssets wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Switch => m_Wrapper.m_Controls_Switch;
-        public InputActionMap Get() { return m_Wrapper.m_Controls; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ControlsActions set) { return set.Get(); }
-        public void AddCallbacks(IControlsActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
-            @Switch.started += instance.OnSwitch;
-            @Switch.performed += instance.OnSwitch;
-            @Switch.canceled += instance.OnSwitch;
-        }
-
-        private void UnregisterCallbacks(IControlsActions instance)
-        {
-            @Switch.started -= instance.OnSwitch;
-            @Switch.performed -= instance.OnSwitch;
-            @Switch.canceled -= instance.OnSwitch;
-        }
-
-        public void RemoveCallbacks(IControlsActions instance)
-        {
-            if (m_Wrapper.m_ControlsActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IControlsActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ControlsActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ControlsActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public ControlsActions @Controls => new ControlsActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1406,30 +1355,13 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    private int m_XboxControllerSchemeIndex = -1;
-    public InputControlScheme XboxControllerScheme
-    {
-        get
-        {
-            if (m_XboxControllerSchemeIndex == -1) m_XboxControllerSchemeIndex = asset.FindControlSchemeIndex("Xbox Controller");
-            return asset.controlSchemes[m_XboxControllerSchemeIndex];
-        }
-    }
-    private int m_PS4ControllerSchemeIndex = -1;
-    public InputControlScheme PS4ControllerScheme
-    {
-        get
-        {
-            if (m_PS4ControllerSchemeIndex == -1) m_PS4ControllerSchemeIndex = asset.FindControlSchemeIndex("PS4 Controller");
-            return asset.controlSchemes[m_PS4ControllerSchemeIndex];
-        }
-    }
     public interface ICharacterActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1451,10 +1383,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     }
     public interface ICameraActions
     {
-        void OnRotate(InputAction.CallbackContext context);
-    }
-    public interface IControlsActions
-    {
-        void OnSwitch(InputAction.CallbackContext context);
+        void OnRotateMouse(InputAction.CallbackContext context);
+        void OnRotateGamepad(InputAction.CallbackContext context);
     }
 }

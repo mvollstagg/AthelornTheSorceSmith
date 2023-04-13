@@ -4215,7 +4215,7 @@ MonoBehaviour:
   analogMovement: 0
   cursorLocked: 0
   cursorInputForLook: 1
-  inputType: 0
+  InputType: 0
 --- !u!114 &1607502141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4326,7 +4326,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f0fce95e-2220-429d-91f6-2644dc41717c
     m_ActionName: Controls/Switch[/Keyboard/f12,/XInputControllerWindows/select,/Keyboard/f]
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KeyboardMouse
   m_DefaultActionMap: Character
   m_SplitScreenIndex: -1

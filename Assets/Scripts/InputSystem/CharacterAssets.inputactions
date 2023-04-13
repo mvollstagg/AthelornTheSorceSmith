@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Switch",
+                    "type": "Button",
+                    "id": "b325fce0-5165-4ddb-bc10-abcc092f5c5d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -216,6 +225,28 @@
                     "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300)",
                     "groups": "Gamepad",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c96b3f96-91bb-4274-8d17-a14fd91f4c3c",
+                    "path": "<Keyboard>/f12",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "986ce621-0af1-4cf2-9696-fc678c4a05bf",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Switch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -812,13 +843,22 @@
             "id": "09bbb5ff-e51e-4fb0-8099-bcca2f1cb947",
             "actions": [
                 {
-                    "name": "Rotate",
-                    "type": "Value",
+                    "name": "RotateMouse",
+                    "type": "Button",
                     "id": "f19e054b-12fb-41f5-ba6b-791b4572e4e3",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateGamepad",
+                    "type": "Button",
+                    "id": "8edca912-16d5-41c4-bf15-4955dc0d4e15",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -829,68 +869,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Rotate",
+                    "action": "RotateMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "f479058d-8a6e-45e6-85fb-a0a47edb925e",
+                    "id": "4cf6fbba-6f7f-46c9-9ef0-8bcdaa38644c",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Controls",
-            "id": "ea8579f6-dac3-48ce-ad16-3e1c5f9cec70",
-            "actions": [
-                {
-                    "name": "Switch",
-                    "type": "Button",
-                    "id": "f0fce95e-2220-429d-91f6-2644dc41717c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "bd9a8580-538e-45ad-bcde-bdc678074c3b",
-                    "path": "<Keyboard>/f12",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Switch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "32fef85f-377d-42d6-a674-882b5ee89957",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Switch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dd08ceea-bb8f-481d-bab3-dcf8e7f45f01",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Switch",
+                    "action": "RotateGamepad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -934,16 +924,6 @@
                     "isOR": false
                 }
             ]
-        },
-        {
-            "name": "Xbox Controller",
-            "bindingGroup": "Xbox Controller",
-            "devices": []
-        },
-        {
-            "name": "PS4 Controller",
-            "bindingGroup": "PS4 Controller",
-            "devices": []
         }
     ]
 }
