@@ -29,33 +29,7 @@ public class CameraController : Singleton<CameraController>
     // private CharacterInputs _characterInputs;
     private bool _rotate = false;
     private bool _cursedPositionSet;
-    private Vector3 _cursorPosition;
-
-    // void Awake()
-    // {
-    //     Debug.Log(this);
-    //     _inputManager = InputManager.Instance;
-    //     CinemachineCameraTarget.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = cameraFollowTarget;
-    //     _characterInputs.Camera.Enable();
-
-	// 	_characterInputs.Camera.Rotate.performed += OnPlayerInputActions_RotatePerformed;
-    //     _characterInputs.Camera.Rotate.canceled += OnPlayerInputActions_RotateCanceled;
-    // }
-
-    // private void OnPlayerInputActions_RotatePerformed(InputAction.CallbackContext context)
-    // {
-    //     _cursorPosition = Mouse.current.position.ReadValue();
-    //     SetCursorStateLocked(true);
-    //     _rotate = true;
-    // }
-
-    // private void OnPlayerInputActions_RotateCanceled(InputAction.CallbackContext context)
-    // {
-    //     _rotate = false;
-    //     SetCursorStateLocked(false);
-    //     Mouse.current.WarpCursorPosition(_cursorPosition);
-    // }
-    
+    private Vector3 _cursorPosition;    
 
     void LateUpdate()
     {

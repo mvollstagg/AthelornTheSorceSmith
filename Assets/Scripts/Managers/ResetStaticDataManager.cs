@@ -6,6 +6,6 @@ public class ResetStaticDataManager : MonoBehaviour
 {
     void Awake()
     {
-        CursorInteractor.ResetStaticData();
+        
     }
 }

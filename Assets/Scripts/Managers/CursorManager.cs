@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Core;
-using Scripts.Core;
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 
 public class CursorManager : Singleton<CursorManager>
@@ -19,10 +20,10 @@ public class CursorManager : Singleton<CursorManager>
         // Instantiate pointer cursor from _cursorSOs under _cursors
         _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
 
-        CursorInteractor.OnMouseEnterInteractable += CursorInteractor_OnMouseEnterInteractable;
+        EventManager.Instance.AddListener<OnMouseInteractableEventArgs>("OnMouseEnterInteractable", CursorInteractor_OnMouseEnterInteractable);
     }
 
-    private void CursorInteractor_OnMouseEnterInteractable(object sender, CursorInteractor.OnMouseEnterInteractableInteractableEventArgs e)
+    private void CursorInteractor_OnMouseEnterInteractable(object sender, OnMouseInteractableEventArgs e)
     {
         // Destroy current cursor
         if(_currentCursor != null)

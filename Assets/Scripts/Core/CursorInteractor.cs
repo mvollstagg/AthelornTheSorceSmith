@@ -1,20 +1,11 @@
 using System;
 using Scripts.Core;
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 
 public class CursorInteractor : MonoBehaviour, IInteractable
-{
-    public static event EventHandler<OnMouseEnterInteractableInteractableEventArgs> OnMouseEnterInteractable;
-    public class OnMouseEnterInteractableInteractableEventArgs : EventArgs
-    {
-        public CursorType CursorType;
-    };
-
-    public static void ResetStaticData()
-    {
-        OnMouseEnterInteractable = null;
-    }
-    
+{    
     [SerializeField] private CursorType _cursorType;
 
     private void Start()
@@ -24,11 +15,11 @@ public class CursorInteractor : MonoBehaviour, IInteractable
 
     private void OnMouseEnter()
     {
-        OnMouseEnterInteractable?.Invoke(this, new OnMouseEnterInteractableInteractableEventArgs { CursorType = _cursorType });
+        EventManager.Instance.Trigger("OnMouseEnterInteractable", this, new OnMouseInteractableEventArgs { CursorType = _cursorType });
     }
 
     private void OnMouseExit()
     {
-        OnMouseEnterInteractable?.Invoke(this, new OnMouseEnterInteractableInteractableEventArgs { CursorType = CursorType.Pointer });
+        EventManager.Instance.Trigger("OnMouseEnterInteractable", this, new OnMouseInteractableEventArgs { CursorType = CursorType.Pointer });
     }
 }

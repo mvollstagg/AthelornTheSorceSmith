@@ -1,5 +1,6 @@
 using System;
 using Scripts.Core;
+using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM

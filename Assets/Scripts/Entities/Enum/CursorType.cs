@@ -1,4 +1,4 @@
-namespace Scripts.Core
+namespace Scripts.Entities.Enum
 {
     public enum CursorType
     {
