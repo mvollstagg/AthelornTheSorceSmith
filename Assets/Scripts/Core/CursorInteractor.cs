@@ -15,11 +15,11 @@ public class CursorInteractor : MonoBehaviour, IInteractable
 
     private void OnMouseEnter()
     {
-        EventManager.Instance.Trigger("OnMouseEnterInteractable", this, new OnMouseInteractableEventArgs { CursorType = _cursorType });
+        EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = _cursorType });
     }
 
     private void OnMouseExit()
     {
-        EventManager.Instance.Trigger("OnMouseEnterInteractable", this, new OnMouseInteractableEventArgs { CursorType = CursorType.Pointer });
+        EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = CursorType.Pointer });
     }
 }
