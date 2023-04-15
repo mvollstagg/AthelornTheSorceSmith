@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8585405636030060567}
   - component: {fileID: 2055634110508459869}
   - component: {fileID: 2411942113006241263}
-  - component: {fileID: 7877207211194530347}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -36,7 +35,7 @@ Transform:
   - {fileID: 3548765916116109385}
   - {fileID: 8840315535457676183}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &4749176026383344414
 CharacterController:
@@ -91,8 +90,8 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
-  _animationBlend: 0
   FreeFall: 0
+  _animationBlend: 0
   _inputMagnitude: 0
 --- !u!114 &2055634110508459869
 MonoBehaviour:
@@ -126,25 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5630193558216136636}
---- !u!114 &7877207211194530347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331091898908734692}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9ecb074353d7064cb0d83d2666c31d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CinemachineCameraTarget: {fileID: 0}
-  TopClamp: 55
-  BottomClamp: 45
-  LockCameraPosition: 0
-  cursorLocked: 1
-  cameraFollowTarget: {fileID: 3548765916116109385}
-  _playerInput: {fileID: 0}
 --- !u!1 &797213303785273003
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,23 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using JohnTheBlacksmith.Assets.Scripts.Core;
-using Scripts.Core.Singletons;
+using Scripts.Core;
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 
 public class CursorInteractor : MonoBehaviour, IInteractable
-{
-    public static event EventHandler<OnMouseEnterInteractableInteractableEventArgs> OnMouseEnterInteractable;
-    public class OnMouseEnterInteractableInteractableEventArgs : EventArgs
-    {
-        public CursorType CursorType;
-    };
-
-    new public static void ResetStaticData()
-    {
-        OnMouseEnterInteractable = null;
-    }
-    
+{    
     [SerializeField] private CursorType _cursorType;
 
     private void Start()
@@ -27,11 +15,11 @@ public class CursorInteractor : MonoBehaviour, IInteractable
 
     private void OnMouseEnter()
     {
-        OnMouseEnterInteractable?.Invoke(this, new OnMouseEnterInteractableInteractableEventArgs { CursorType = _cursorType });
+        EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = _cursorType });
     }
 
     private void OnMouseExit()
     {
-        OnMouseEnterInteractable?.Invoke(this, new OnMouseEnterInteractableInteractableEventArgs { CursorType = CursorType.Pointer });
+        EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = CursorType.Pointer });
     }
 }

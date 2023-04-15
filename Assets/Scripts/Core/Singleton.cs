@@ -1,7 +1,7 @@
 using UnityEngine;
 // Copyrights for dear Dilmer Valecillos, His channel is https://www.youtube.com/c/DilmerV
 
-namespace Scripts.Core.Singletons
+namespace Scripts.Core
 {
     public class Singleton<T> : MonoBehaviour
         where T : Component

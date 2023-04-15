@@ -1,6 +1,6 @@
 using System;
 
-namespace JohnTheBlacksmith.Assets.Scripts.Core
+namespace Scripts.Core
 {
     public interface IInteractable
     {

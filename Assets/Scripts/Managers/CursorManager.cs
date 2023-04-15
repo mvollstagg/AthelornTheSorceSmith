@@ -1,15 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JohnTheBlacksmith.Assets.Scripts.Core;
+using Scripts.Core;
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 
-public class CursorManager : MonoBehaviour
+public class CursorManager : Singleton<CursorManager>
 {
     public Canvas TargetCanvas;
-    protected Vector2 _newPosition;
-    protected Vector2 _mousePosition;
+    public Vector2 _newPosition;
+    public Vector2 _mousePosition;
     [SerializeField] Transform _cursors;
     [SerializeField] List<CursorSO> _cursorSOList;
     Transform _currentCursor;
@@ -19,10 +20,10 @@ public class CursorManager : MonoBehaviour
         // Instantiate pointer cursor from _cursorSOs under _cursors
         _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
 
-        CursorInteractor.OnMouseEnterInteractable += CursorInteractor_OnMouseEnterInteractable;
+        EventManager.Instance.AddListener<OnMouseInteractableEventArgs>("OnMouseEnterInteractable", CursorInteractor_OnMouseEnterInteractable);
     }
 
-    private void CursorInteractor_OnMouseEnterInteractable(object sender, CursorInteractor.OnMouseEnterInteractableInteractableEventArgs e)
+    private void CursorInteractor_OnMouseEnterInteractable(object sender, OnMouseInteractableEventArgs e)
     {
         // Destroy current cursor
         if(_currentCursor != null)
@@ -32,7 +33,7 @@ public class CursorManager : MonoBehaviour
 
     void Update()
     {
-        if(!CameraController.Instance.cursorLocked)
+        if(!CharacterRotateCamera.Instance.cursorLocked && Character.Instance.IsCurrentDeviceMouse)
             _cursors.gameObject.SetActive(true);
         else
             _cursors.gameObject.SetActive(false);
