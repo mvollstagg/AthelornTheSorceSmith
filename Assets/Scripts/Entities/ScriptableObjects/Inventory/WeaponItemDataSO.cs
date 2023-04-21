@@ -14,6 +14,7 @@ public class WeaponItemDataSO : InventoryItemDataSO
     public float baseDamage;
     public float damageVariability;
     public float criticalStrikeChance;
+    public WeaponItemType weaponType;
 
     public WeaponItemDataSO() : base()
     {

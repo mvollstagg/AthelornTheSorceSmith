@@ -10,6 +10,10 @@ using UnityEngine;
 )]
 public class ComponentItemDataSO : InventoryItemDataSO
 {
+    // [Header("Component Data")]
+    // public ComponentType componentType;
+    // public CraftingComponentType craftingComponentType;
+    // public List<CraftingComponentType> neededComponents;
     public ComponentItemDataSO() : base()
     {
         type = ItemType.Component;

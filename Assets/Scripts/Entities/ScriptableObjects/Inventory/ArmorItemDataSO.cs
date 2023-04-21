@@ -13,6 +13,7 @@ public class ArmorItemDataSO : InventoryItemDataSO
     [Header("Armor Data")]
     public float baseDefence;
     public float defenceVariability;
+    public ArmorItemType armorType;
     
 
     public ArmorItemDataSO() : base()
@@ -21,9 +22,7 @@ public class ArmorItemDataSO : InventoryItemDataSO
         maxStackSize = 1;
     }
 
-    public (float, float) GetDefenceRange()
-        => (baseDefence - defenceVariability, baseDefence + defenceVariability);
+    public (float, float) GetDefenceRange() => (baseDefence - defenceVariability, baseDefence + defenceVariability);
 
-    public float GetDefence()
-        => baseDefence + Random.Range(-defenceVariability, defenceVariability);
+    public float GetDefence() => baseDefence + Random.Range(-defenceVariability, defenceVariability);
 }

@@ -5,6 +5,6 @@ namespace Scripts.Entities.Enum
         Weapon,
         Armor,
         Component,
-        Misc
+        Miscellaneous
     }
 }

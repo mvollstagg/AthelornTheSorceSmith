@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Test1",
+                    "name": "Inventory",
                     "type": "Button",
                     "id": "8d15ce5d-4dc5-41f6-a4bf-f2847e659325",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Test2",
+                    "name": "AddItem",
                     "type": "Button",
                     "id": "3e1a299f-d0df-4af8-8f29-3760534904f8",
                     "expectedControlType": "Button",
@@ -271,22 +271,33 @@
                 {
                     "name": "",
                     "id": "9f1630bc-ce5f-4ae0-afcb-d68f8695525c",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5da63884-ca55-4994-b78e-0932505c31eb",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Test1",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8363dcf2-547b-4952-a902-b4507983215b",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Test2",
+                    "groups": "KeyboardMouse",
+                    "action": "AddItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

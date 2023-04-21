@@ -25,6 +25,7 @@ public class InputManager : Singleton<InputManager>
 
 	public InputTypeEnum InputType;
 	private PlayerInput _playerInput;
+	public static bool UsingController => Gamepad.current != null;
 	
 	void Start()
 	{
@@ -53,6 +54,16 @@ public class InputManager : Singleton<InputManager>
 	public void OnSprint(InputValue value)
 	{
 		SprintInput(value.isPressed);
+	}
+
+	public void OnInventory(InputValue value)
+	{
+		InventoryManager.Instance.ToggleInventoryPanel();
+	}
+
+	public void OnAddItem(InputValue value)
+	{
+		InventoryManager.Instance.AddItem();
 	}
 
 	public void OnControlsChanged(PlayerInput input)
