@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Core;
 using Scripts.Entities.Enum;
 using UnityEngine;
 
@@ -28,5 +29,21 @@ public class WeaponItemDataSO : InventoryItemDataSO
     {
         float dmg = baseDamage + Random.Range(-damageVariability, damageVariability);
         return (Random.Range(0f, 1f) < criticalStrikeChance) ? dmg : dmg * 2;
+    }
+
+    public override string GetDetailsDisplay()
+    {
+        (float minDmg, float maxDmg) = GetDamageRange();
+        string output = base.GetDetailsDisplay();
+        output += $"Damage: {minDmg.ToString("0.0")} - {maxDmg.ToString("0.0")}\n";
+        output += $"Critical Chance: {(criticalStrikeChance * 100f).ToString("0.0")}%";
+        return output;
+    }
+
+    public override string GetTypesDisplay()
+    {
+        string output = base.GetTypesDisplay();
+        output += $"{weaponType.GetDescription()}";
+        return output;
     }
 }

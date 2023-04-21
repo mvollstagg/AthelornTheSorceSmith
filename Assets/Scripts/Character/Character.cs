@@ -14,6 +14,7 @@ public class Character : Singleton<Character>
     public CharacterController _controller;
     public PlayerInput _playerInput;
     public CharacterAssets InputActions;
+    public int inventoryMaxWeight = 300;
     #endregion
 
     #region Close Public Variables

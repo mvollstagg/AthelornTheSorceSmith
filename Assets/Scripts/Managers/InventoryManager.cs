@@ -5,6 +5,7 @@ using Scripts.Entities.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryManager : Singleton<InventoryManager>
@@ -12,12 +13,17 @@ public class InventoryManager : Singleton<InventoryManager>
     [Header("UI References")]
     [SerializeField] private GameObject _inventoryPanel;
     [SerializeField] private Transform _itemsGrid;
+    [SerializeField] private Transform _itemDetailsPanel;
+    [SerializeField] private TextMeshProUGUI _inventoryWeightText;
+    private float _inventoryTotalWeight = 0f;
     private Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
     
     public void ToggleInventoryPanel()
     {
         bool active = !_inventoryPanel.activeSelf;
         if (active) UpdateGridItems();
+        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
+        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
         _inventoryPanel.SetActive(active);
     }
 
@@ -26,14 +32,17 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private InventoryItemDataSO _testItem2;
     [SerializeField] private InventoryItemDataSO _testItem3;
     [SerializeField] private InventoryItemDataSO _testItem4;
+    [SerializeField] private InventoryItemDataSO _testItem5;
     public UnityEvent<int> itemSelected;
+    private float _totalWeight;
 
     void Start()
     {
-        AddItem(_testItem, 990);
-        AddItem(_testItem2, 999);
-        AddItem(_testItem, 999);
-        AddItem(_testItem3, 999);
+        AddItem(_testItem, 1);
+        AddItem(_testItem2, 1);
+        AddItem(_testItem3, 1);
+        AddItem(_testItem4, 1);
+        AddItem(_testItem5, 1);
 
         itemSelected = new UnityEvent<int>();
         itemSelected.AddListener(_OnItemSelected);
@@ -41,10 +50,29 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _OnItemSelected(int slotIndex)
     {
-        // show item details
-        Debug.Log($"Item selected: {slotIndex}" + 
-                  $"\nItem: {_inventory[slotIndex].Item.name}" +
-                  $"\nAmount: {_inventory[slotIndex].Amount}");
+        _UpdateItemDetails(slotIndex);
+    }
+
+    private void _UpdateItemDetails(int slotIndex)
+    {
+        if (!_inventory.ContainsKey(slotIndex))
+        {
+            _itemDetailsPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            InventoryItemDataSO item = _inventory[slotIndex].Item;
+            _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(item.rarity);
+            _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = item.itemName;
+            _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = item.description;
+            _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = item.GetDetailsDisplay();
+            _itemDetailsPanel.Find("Traits").GetComponent<TextMeshProUGUI>().text = item.GetTraitsDisplay();
+            _itemDetailsPanel.Find("Types").GetComponent<TextMeshProUGUI>().text = item.GetTypesDisplay();
+            _itemDetailsPanel.Find("Weight").GetComponent<TextMeshProUGUI>().text = item.weight.ToString();
+            _itemDetailsPanel.Find("Price").GetComponent<TextMeshProUGUI>().text = item.price.ToString();
+
+            _itemDetailsPanel.gameObject.SetActive(true);
+        }
     }
 
     public void AddItem()
@@ -57,6 +85,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public void AddItem(InventoryItemDataSO item, int amount = 1)
     {
         int remaining = amount;
+        float weightToAdd = item.weight * amount;
 
         // Try to add to existing slots
         foreach (var slot in _inventory.Values)
@@ -97,6 +126,10 @@ public class InventoryManager : Singleton<InventoryManager>
 
             remaining -= stackCount;
         }
+
+        // Update total weight of inventory
+        _totalWeight += weightToAdd;
+        _inventoryWeightText.text = $"{_totalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
     }
 
 
