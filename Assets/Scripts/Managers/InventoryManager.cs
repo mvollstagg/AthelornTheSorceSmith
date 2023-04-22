@@ -25,6 +25,7 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private InventoryItemDataSO _testItem4;
     [SerializeField] private InventoryItemDataSO _testItem5;
     [HideInInspector]public UnityEvent<int> itemSelected;
+    [SerializeField] private RectTransform _outlineGlow;
     private float _totalWeight;
 
     public void ToggleInventoryPanel()
@@ -51,6 +52,9 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _OnItemSelected(int slotIndex)
     {
+        _outlineGlow.transform.SetParent(_itemsGrid.GetChild(slotIndex));
+        _outlineGlow.anchoredPosition = Vector2.zero;
+        _outlineGlow.gameObject.SetActive(true);
         _UpdateItemDetails(slotIndex);
     }
 
