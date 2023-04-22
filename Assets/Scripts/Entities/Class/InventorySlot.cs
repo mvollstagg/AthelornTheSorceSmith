@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Scripts.Entities.Class
 {
-    class InventorySlot
+    public class InventorySlot
     {
         public InventoryItemDataSO Item;
         public int Amount;

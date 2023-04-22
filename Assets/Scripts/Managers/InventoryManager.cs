@@ -17,14 +17,14 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
     private float _inventoryTotalWeight = 0f;
     private int _maxNumberOfSlots;
-    private Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
+    [SerializeField] private Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
     // TODO: Add fake items to test 
     [SerializeField] private InventoryItemDataSO _testItem;
     [SerializeField] private InventoryItemDataSO _testItem2;
     [SerializeField] private InventoryItemDataSO _testItem3;
     [SerializeField] private InventoryItemDataSO _testItem4;
     [SerializeField] private InventoryItemDataSO _testItem5;
-    public UnityEvent<int> itemSelected;
+    [HideInInspector]public UnityEvent<int> itemSelected;
     private float _totalWeight;
 
     public void ToggleInventoryPanel()
@@ -86,7 +86,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public void AddItem(InventoryItemDataSO item, int amount = 1)
     {
         int remaining = amount;
-        float weightToAdd = item.weight * amount;
+        
 
         // Try to add to existing slots
         foreach (var slot in _inventory.Values)
@@ -133,6 +133,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         // Update total weight of inventory
+        float weightToAdd = item.weight * (amount - remaining);
         _totalWeight += weightToAdd;
         _inventoryWeightText.text = $"{_totalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
 
