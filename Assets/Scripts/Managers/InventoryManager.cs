@@ -62,15 +62,15 @@ public class InventoryManager : Singleton<InventoryManager>
         }
         else
         {
-            InventoryItemDataSO item = _inventory[slotIndex].Item;
-            _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(item.rarity);
-            _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = item.itemName;
-            _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = item.description;
-            _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = item.GetDetailsDisplay();
-            _itemDetailsPanel.Find("Traits").GetComponent<TextMeshProUGUI>().text = item.GetTraitsDisplay();
-            _itemDetailsPanel.Find("Types").GetComponent<TextMeshProUGUI>().text = item.GetTypesDisplay();
-            _itemDetailsPanel.Find("Weight").GetComponent<TextMeshProUGUI>().text = item.weight.ToString();
-            _itemDetailsPanel.Find("Price").GetComponent<TextMeshProUGUI>().text = item.price.ToString();
+            InventorySlot inventorySlot = _inventory[slotIndex];
+            _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
+            _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;
+            _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.description;
+            _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetDetailsDisplay();
+            _itemDetailsPanel.Find("Traits").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTraitsDisplay();
+            _itemDetailsPanel.Find("Types").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTypesDisplay();
+            _itemDetailsPanel.Find("Weight").GetComponent<TextMeshProUGUI>().text = (inventorySlot.Item.weight * inventorySlot.Amount).ToString();
+            _itemDetailsPanel.Find("Price").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.price.ToString();
 
             _itemDetailsPanel.gameObject.SetActive(true);
         }
