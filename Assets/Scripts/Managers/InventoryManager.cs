@@ -16,17 +16,8 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
     private float _inventoryTotalWeight = 0f;
+    private int _maxNumberOfSlots;
     private Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
-    
-    public void ToggleInventoryPanel()
-    {
-        bool active = !_inventoryPanel.activeSelf;
-        if (active) UpdateGridItems();
-        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
-        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
-        _inventoryPanel.SetActive(active);
-    }
-
     // TODO: Add fake items to test 
     [SerializeField] private InventoryItemDataSO _testItem;
     [SerializeField] private InventoryItemDataSO _testItem2;
@@ -36,8 +27,18 @@ public class InventoryManager : Singleton<InventoryManager>
     public UnityEvent<int> itemSelected;
     private float _totalWeight;
 
+    public void ToggleInventoryPanel()
+    {
+        bool active = !_inventoryPanel.activeSelf;
+        if (active) UpdateGridItems();
+        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
+        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
+        _inventoryPanel.SetActive(active);
+    }
+
     void Start()
     {
+        _maxNumberOfSlots = _itemsGrid.childCount;
         AddItem(_testItem, 1);
         AddItem(_testItem2, 1);
         AddItem(_testItem3, 1);
@@ -77,7 +78,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void AddItem()
     {
-        AddItem(_testItem4, 1);
+        AddItem(_testItem, 20);
         UpdateGridItems();
     }
 
@@ -110,9 +111,13 @@ public class InventoryManager : Singleton<InventoryManager>
             remaining -= availableToAdd;
         }
 
-        // If there are still items remaining to be added, create new slots for them
+        // If there are still items remaining to be added, create new slots for them if there is a free slot
         while (remaining > 0)
         {
+            // If there are no free slots, exit the function
+            if (_inventory.Count >= _maxNumberOfSlots)
+                break;
+
             int stackCount = Mathf.Min(item.maxStackSize, remaining);
 
             int index = GetNextSlotIndex();
@@ -130,6 +135,11 @@ public class InventoryManager : Singleton<InventoryManager>
         // Update total weight of inventory
         _totalWeight += weightToAdd;
         _inventoryWeightText.text = $"{_totalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
+
+        if (remaining > 0)
+        {
+            Debug.Log($"{remaining} {item.name} exceeded the maximum stack size.");
+        }
     }
 
 
