@@ -31,6 +31,7 @@ public class InputManager : Singleton<InputManager>
 	{
 		_playerInput = GetComponent<PlayerInput>();
 		InputType = _playerInput.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+		_playerInput.actions.FindActionMap("InGameMenu").Enable();
 	}
 
 	public void OnMove(InputValue value)
@@ -71,6 +72,37 @@ public class InputManager : Singleton<InputManager>
 		InputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
 	}
 
+	public void OnSwitch(InputValue value)
+	{
+		// TODO: Change current control scheme
+		if(InputType == InputTypeEnum.KeyboardMouse)
+		{
+			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
+		}
+		else if(InputType == InputTypeEnum.Gamepad)
+		{
+			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
+		}
+	}
+
+	public void OnDropItem(InputValue value)
+	{
+		InventoryManager.Instance.OnDropItemAction();
+	}
+
+	public void OnDropItemStack(InputValue value)
+	{
+		InventoryManager.Instance.OnDropItemStackAction();
+	}
+
+	public void OnSortInventory(InputValue value)
+	{
+		InventoryManager.Instance.OnSortInventoryAction();
+	}
+
+
+	// ####################################################################################################
+
 
 	public void MoveInput(Vector2 newMoveDirection)
 	{
@@ -90,19 +122,6 @@ public class InputManager : Singleton<InputManager>
 	public void SprintInput(bool newSprintState)
 	{
 		sprint = newSprintState;
-	}
-
-	public void OnSwitch(InputValue value)
-	{
-		// TODO: Change current control scheme
-		if(InputType == InputTypeEnum.KeyboardMouse)
-		{
-			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
-		}
-		else if(InputType == InputTypeEnum.Gamepad)
-		{
-			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
-		}
 	}
 
 	private void SetCursorState(bool newState)

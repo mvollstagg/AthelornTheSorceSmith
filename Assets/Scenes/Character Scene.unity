@@ -4575,6 +4575,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _outlineGlow: {fileID: 86652494}
+  Inventory: []
 --- !u!1 &1607868493
 GameObject:
   m_ObjectHideFlags: 0

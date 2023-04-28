@@ -958,6 +958,129 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InGameMenu"",
+            ""id"": ""28f27895-f43c-415d-8666-d8f74ffdadc3"",
+            ""actions"": [
+                {
+                    ""name"": ""DropItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""861fd0b1-5936-4151-8e38-472cd513437c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropItemStack"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe80017a-809c-4e8b-b22f-1088ebe82667"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SortInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2080299-7b69-432f-b87c-7b0a8d90cb0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4f859ea2-d06d-4cde-a910-db99338e31a4"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""805e0b31-e0a6-43ea-a546-13c6c544f556"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""a2d903a6-5c12-4ac1-85f7-294f1a792aab"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropItemStack"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""7d90007a-0cdc-4582-9639-cfa9752d3d95"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DropItemStack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""f2008924-9ebd-4690-b3c5-91f6acca036e"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DropItemStack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07641528-80c8-4602-86c5-4d226aabe5a9"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DropItemStack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb768062-08e3-4f65-95ab-52836734c6e7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SortInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d168162-a357-44e2-8621-fe7df5afe64f"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SortInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1029,6 +1152,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_RotateMouse = m_Camera.FindAction("RotateMouse", throwIfNotFound: true);
         m_Camera_RotateGamepad = m_Camera.FindAction("RotateGamepad", throwIfNotFound: true);
+        // InGameMenu
+        m_InGameMenu = asset.FindActionMap("InGameMenu", throwIfNotFound: true);
+        m_InGameMenu_DropItem = m_InGameMenu.FindAction("DropItem", throwIfNotFound: true);
+        m_InGameMenu_DropItemStack = m_InGameMenu.FindAction("DropItemStack", throwIfNotFound: true);
+        m_InGameMenu_SortInventory = m_InGameMenu.FindAction("SortInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1406,6 +1534,68 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         }
     }
     public CameraActions @Camera => new CameraActions(this);
+
+    // InGameMenu
+    private readonly InputActionMap m_InGameMenu;
+    private List<IInGameMenuActions> m_InGameMenuActionsCallbackInterfaces = new List<IInGameMenuActions>();
+    private readonly InputAction m_InGameMenu_DropItem;
+    private readonly InputAction m_InGameMenu_DropItemStack;
+    private readonly InputAction m_InGameMenu_SortInventory;
+    public struct InGameMenuActions
+    {
+        private @CharacterAssets m_Wrapper;
+        public InGameMenuActions(@CharacterAssets wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DropItem => m_Wrapper.m_InGameMenu_DropItem;
+        public InputAction @DropItemStack => m_Wrapper.m_InGameMenu_DropItemStack;
+        public InputAction @SortInventory => m_Wrapper.m_InGameMenu_SortInventory;
+        public InputActionMap Get() { return m_Wrapper.m_InGameMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InGameMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IInGameMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InGameMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InGameMenuActionsCallbackInterfaces.Add(instance);
+            @DropItem.started += instance.OnDropItem;
+            @DropItem.performed += instance.OnDropItem;
+            @DropItem.canceled += instance.OnDropItem;
+            @DropItemStack.started += instance.OnDropItemStack;
+            @DropItemStack.performed += instance.OnDropItemStack;
+            @DropItemStack.canceled += instance.OnDropItemStack;
+            @SortInventory.started += instance.OnSortInventory;
+            @SortInventory.performed += instance.OnSortInventory;
+            @SortInventory.canceled += instance.OnSortInventory;
+        }
+
+        private void UnregisterCallbacks(IInGameMenuActions instance)
+        {
+            @DropItem.started -= instance.OnDropItem;
+            @DropItem.performed -= instance.OnDropItem;
+            @DropItem.canceled -= instance.OnDropItem;
+            @DropItemStack.started -= instance.OnDropItemStack;
+            @DropItemStack.performed -= instance.OnDropItemStack;
+            @DropItemStack.canceled -= instance.OnDropItemStack;
+            @SortInventory.started -= instance.OnSortInventory;
+            @SortInventory.performed -= instance.OnSortInventory;
+            @SortInventory.canceled -= instance.OnSortInventory;
+        }
+
+        public void RemoveCallbacks(IInGameMenuActions instance)
+        {
+            if (m_Wrapper.m_InGameMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInGameMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InGameMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InGameMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InGameMenuActions @InGameMenu => new InGameMenuActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1456,5 +1646,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     {
         void OnRotateMouse(InputAction.CallbackContext context);
         void OnRotateGamepad(InputAction.CallbackContext context);
+    }
+    public interface IInGameMenuActions
+    {
+        void OnDropItem(InputAction.CallbackContext context);
+        void OnDropItemStack(InputAction.CallbackContext context);
+        void OnSortInventory(InputAction.CallbackContext context);
     }
 }

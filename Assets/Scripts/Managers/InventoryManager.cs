@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Scripts.Core;
 using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
@@ -17,7 +18,7 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
     private float _inventoryTotalWeight = 0f;
     private int _maxNumberOfSlots;
-    [SerializeField] private Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
+    [SerializeField] public Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
     // TODO: Add fake items to test 
     [SerializeField] private InventoryItemDataSO _testItem;
     [SerializeField] private InventoryItemDataSO _testItem2;
@@ -26,7 +27,6 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private InventoryItemDataSO _testItem5;
     [HideInInspector]public UnityEvent<int> itemSelected;
     [SerializeField] private RectTransform _outlineGlow;
-    private float _totalWeight;
 
     public void ToggleInventoryPanel()
     {
@@ -85,7 +85,6 @@ public class InventoryManager : Singleton<InventoryManager>
         AddItem(_testItem, 20);
         UpdateGridItems();
     }
-
         
     public void AddItem(InventoryItemDataSO item, int amount = 1)
     {
@@ -138,13 +137,82 @@ public class InventoryManager : Singleton<InventoryManager>
 
         // Update total weight of inventory
         float weightToAdd = item.weight * (amount - remaining);
-        _totalWeight += weightToAdd;
-        _inventoryWeightText.text = $"{_totalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
+        _inventoryTotalWeight += weightToAdd;
+        _inventoryWeightText.text = $"{_inventoryTotalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
 
         if (remaining > 0)
         {
             Debug.Log($"{remaining} {item.name} exceeded the maximum stack size.");
         }
+    }
+    
+    public void RemoveItem(int slotIndex, int amount = 1)
+    {
+        if (!_inventory.ContainsKey(slotIndex)) return;
+
+        InventorySlot slot = _inventory[slotIndex];
+
+        if (amount == -1)
+            amount = slot.Amount;
+
+        slot.Amount -= amount;
+
+        if (slot.Amount <= 0)
+        {
+            slot.Amount = 0;
+            UnsetGridItem(slotIndex);
+        }
+        else
+        {
+            SetGridItem(slotIndex);
+        }
+
+        _inventoryTotalWeight -= slot.Item.weight * (slot.Amount >= 0 ? amount : slot.Amount);
+
+        if (slot.Amount == 0)
+            _inventory.Remove(slotIndex);
+        
+        _inventoryWeightText.text = $"{_inventoryTotalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
+        _UpdateItemDetails(slotIndex);
+    }
+
+
+
+
+    public void OnDropItemAction()
+    {
+        int selectedSlotIndex = _outlineGlow.parent.GetSiblingIndex();
+        if (!_inventory.ContainsKey(selectedSlotIndex))
+            return;
+
+        RemoveItem(selectedSlotIndex);
+    }
+
+    public void OnDropItemStackAction()
+    {
+        int selectedSlotIndex = _outlineGlow.parent.GetSiblingIndex();
+        if (!_inventory.ContainsKey(selectedSlotIndex))
+            return;
+
+        RemoveItem(selectedSlotIndex, -1);
+    }
+
+    public void OnSortInventoryAction()
+    {
+        List<InventorySlot> sortedSlots = _inventory
+            .Values
+            .OrderBy((InventorySlot s) => -s.Item.price * s.Amount)
+            .ToList();
+
+        Dictionary<int, InventorySlot> newSlots =
+            new Dictionary<int, InventorySlot>();
+        for (int i = 0; i < sortedSlots.Count; i++)
+            newSlots.Add(i, sortedSlots[i]);
+
+        _inventory = newSlots;
+        UpdateGridItems();
+        int selectedSlotIndex = _outlineGlow.parent.GetSiblingIndex();
+        _UpdateItemDetails(selectedSlotIndex);
     }
 
 
@@ -219,17 +287,10 @@ public class InventoryManager : Singleton<InventoryManager>
         if (_inventory.Count == 0) return 0;
     
         int index = 0;
-        foreach (var pair in _inventory)
+        while (_inventory.ContainsKey(index))
         {
-            if (pair.Key == index)
-            {
-                index++;
-            }
-            else
-            {
-                break;
-            }
-        }        
+            index++;
+        }
         return index;
     }
 
