@@ -16,26 +16,29 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private Transform _itemsGrid;
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
+    [SerializeField] private RectTransform _outlineGlow;
+
+    [Header("Drag and Drop")]
+    [SerializeField] private RectTransform _grabbedItemSlot;
+    [SerializeField] private Canvas _canvas;
+    [HideInInspector]public UnityEvent<int> itemHover;
+    [HideInInspector]public UnityEvent<int> itemGrab;
+    private int _hoveredSlotIndex = -1;
+    private int _grabbedSlotIndex = -1;
     private float _inventoryTotalWeight = 0f;
     private int _maxNumberOfSlots;
     [SerializeField] public Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
-    // TODO: Add fake items to test 
+
+    [Header("Test Items")]
     [SerializeField] private InventoryItemDataSO _testItem;
     [SerializeField] private InventoryItemDataSO _testItem2;
     [SerializeField] private InventoryItemDataSO _testItem3;
     [SerializeField] private InventoryItemDataSO _testItem4;
     [SerializeField] private InventoryItemDataSO _testItem5;
-    [HideInInspector]public UnityEvent<int> itemSelected;
-    [SerializeField] private RectTransform _outlineGlow;
-
-    public void ToggleInventoryPanel()
-    {
-        bool active = !_inventoryPanel.activeSelf;
-        if (active) UpdateGridItems();
-        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
-        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
-        _inventoryPanel.SetActive(active);
-    }
+    
+    [Header("Inventory Slots")]
+    public List<int> _inventorySlots = new List<int>();
+    
 
     void Start()
     {
@@ -46,47 +49,28 @@ public class InventoryManager : Singleton<InventoryManager>
         AddItem(_testItem4, 1);
         AddItem(_testItem5, 1);
 
-        itemSelected = new UnityEvent<int>();
-        itemSelected.AddListener(_OnItemSelected);
+        itemHover = new UnityEvent<int>();
+        itemHover.AddListener(_OnItemHovered);
+        itemGrab = new UnityEvent<int>();
+        itemGrab.AddListener(_OnItemGrabbed);
     }
 
-    private void _OnItemSelected(int slotIndex)
+    public void ToggleInventoryPanel()
     {
-        _outlineGlow.transform.SetParent(_itemsGrid.GetChild(slotIndex));
-        _outlineGlow.anchoredPosition = Vector2.zero;
-        _outlineGlow.gameObject.SetActive(true);
-        _UpdateItemDetails(slotIndex);
-    }
-
-    private void _UpdateItemDetails(int slotIndex)
-    {
-        if (!_inventory.ContainsKey(slotIndex))
-        {
-            _itemDetailsPanel.gameObject.SetActive(false);
-        }
-        else
-        {
-            InventorySlot inventorySlot = _inventory[slotIndex];
-            _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
-            _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;
-            _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.description;
-            _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetDetailsDisplay();
-            _itemDetailsPanel.Find("Traits").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTraitsDisplay();
-            _itemDetailsPanel.Find("Types").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTypesDisplay();
-            _itemDetailsPanel.Find("Weight").GetComponent<TextMeshProUGUI>().text = (inventorySlot.Item.weight * inventorySlot.Amount).ToString();
-            _itemDetailsPanel.Find("Price").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.price.ToString();
-
-            _itemDetailsPanel.gameObject.SetActive(true);
-        }
+        bool active = !_inventoryPanel.activeSelf;
+        if (active) _UpdateGridItems();
+        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
+        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
+        _inventoryPanel.SetActive(active);
     }
 
     public void AddItem()
     {
         AddItem(_testItem, 20);
-        UpdateGridItems();
+        _UpdateGridItems();
     }
         
-    public void AddItem(InventoryItemDataSO item, int amount = 1)
+    public void AddItem(InventoryItemDataSO item, int amount = 1, int dropIndex = -1)
     {
         int remaining = amount;
         
@@ -123,14 +107,14 @@ public class InventoryManager : Singleton<InventoryManager>
 
             int stackCount = Mathf.Min(item.maxStackSize, remaining);
 
-            int index = GetNextSlotIndex();
+            int index = dropIndex == -1 ? _GetNextSlotIndex() : dropIndex;
             _inventory.Add(index, new InventorySlot()
             {
                 Item = item,
                 Amount = stackCount
             });
 
-            SetGridItem(index);
+            _SetGridItem(index);
 
             remaining -= stackCount;
         }
@@ -160,11 +144,11 @@ public class InventoryManager : Singleton<InventoryManager>
         if (slot.Amount <= 0)
         {
             slot.Amount = 0;
-            UnsetGridItem(slotIndex);
+            _UnsetGridItem(slotIndex);
         }
         else
         {
-            SetGridItem(slotIndex);
+            _SetGridItem(slotIndex);
         }
 
         _inventoryTotalWeight -= slot.Item.weight * (slot.Amount >= 0 ? amount : slot.Amount);
@@ -173,11 +157,7 @@ public class InventoryManager : Singleton<InventoryManager>
             _inventory.Remove(slotIndex);
         
         _inventoryWeightText.text = $"{_inventoryTotalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
-        _UpdateItemDetails(slotIndex);
     }
-
-
-
 
     public void OnDropItemAction()
     {
@@ -210,13 +190,124 @@ public class InventoryManager : Singleton<InventoryManager>
             newSlots.Add(i, sortedSlots[i]);
 
         _inventory = newSlots;
-        UpdateGridItems();
+        _UpdateGridItems();
         int selectedSlotIndex = _outlineGlow.parent.GetSiblingIndex();
-        _UpdateItemDetails(selectedSlotIndex);
     }
 
+    
+    private void _OnItemGrabbed(int slotIndex)
+    {
+        // Check if there is an item already grabbed
+        if (_grabbedSlotIndex != -1)
+        {
+            // If the grabbed item is the same as the one being grabbed, drop it
+            if (_grabbedSlotIndex == slotIndex)
+            {
+                _DropGrabbedItem(slotIndex);
+                return;
+            }
+            // If the grabbed item is different, swap them
+            else
+            {
+                if (_inventory.ContainsKey(slotIndex))
+                {
+                    _SwapItems(_grabbedSlotIndex, slotIndex);
+                }
+                else
+                {
+                    _DropGrabbedItem(slotIndex);
+                }
+            }
+        }
+        // If there is no item grabbed, grab the item
+        else
+        {
+            if (_inventory.ContainsKey(slotIndex))
+                _GrabItem(slotIndex);
+        }
+    }
 
-    private void UpdateGridItems()
+    private void _GrabItem(int slotIndex)
+    {
+        _grabbedSlotIndex = slotIndex;
+        InventorySlot inventorySlot = _inventory[slotIndex];
+        _SetGridItem(inventorySlot, _grabbedItemSlot);
+        _grabbedItemSlot.gameObject.SetActive(true);
+    }
+
+    private void _SwapItems(int grabbedSlotIndex, int slotIndex)
+    {        
+        InventorySlot grabbedItem = new()
+        {
+            Item = _inventory[_grabbedSlotIndex].Item,
+            Amount = _inventory[_grabbedSlotIndex].Amount
+        };
+
+        InventorySlot swappedItem = new()
+        {
+            Item = _inventory[slotIndex].Item,
+            Amount = _inventory[slotIndex].Amount
+        };
+
+        RemoveItem(slotIndex);
+        RemoveItem(grabbedSlotIndex);
+        AddItem(grabbedItem.Item, grabbedItem.Amount, slotIndex);
+        AddItem(swappedItem.Item, swappedItem.Amount, grabbedSlotIndex);
+
+        _grabbedSlotIndex = -1;
+        _grabbedItemSlot.gameObject.SetActive(false);
+        _UpdateGridItems();
+    }
+
+    private void _DropGrabbedItem(int slotIndex)
+    {
+        InventorySlot droppedItem = new()
+        {
+            Item = _inventory[_grabbedSlotIndex].Item,
+            Amount = _inventory[_grabbedSlotIndex].Amount
+        };
+
+        RemoveItem(_grabbedSlotIndex);
+        AddItem(droppedItem.Item, droppedItem.Amount, slotIndex);
+
+        _grabbedSlotIndex = -1;
+        _grabbedItemSlot.gameObject.SetActive(false);
+        _UpdateGridItems();
+        _UpdateItemDetails(slotIndex);
+    }
+
+    private void _OnItemHovered(int slotIndex)
+    {
+        _hoveredSlotIndex = slotIndex;
+        _outlineGlow.transform.SetParent(_itemsGrid.GetChild(slotIndex));
+        _outlineGlow.anchoredPosition = Vector2.zero;
+        _outlineGlow.gameObject.SetActive(true);
+        
+        if (!_inventory.ContainsKey(slotIndex))
+        {
+            _itemDetailsPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            _UpdateItemDetails(slotIndex);
+        }
+    }
+
+    private void _UpdateItemDetails(int slotIndex)
+    {
+        InventorySlot inventorySlot = _inventory[slotIndex];
+        _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
+        _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;
+        _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.description;
+        _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetDetailsDisplay();
+        _itemDetailsPanel.Find("Traits").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTraitsDisplay();
+        _itemDetailsPanel.Find("Types").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetTypesDisplay();
+        _itemDetailsPanel.Find("Weight").GetComponent<TextMeshProUGUI>().text = (inventorySlot.Item.weight * inventorySlot.Amount).ToString();
+        _itemDetailsPanel.Find("Price").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.price.ToString();
+        _itemDetailsPanel.gameObject.SetActive(true);
+    }
+
+    private void _UpdateGridItems()
     {
         // Keep track of the current slot index
         int currentSlotIndex = 0;
@@ -229,7 +320,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 continue;
 
             // Set the grid item for the slot
-            SetGridItem(p.Key);
+            _SetGridItem(p.Key);
 
             // Update the current slot index
             currentSlotIndex = p.Key + 1;
@@ -237,11 +328,10 @@ public class InventoryManager : Singleton<InventoryManager>
 
         // Clear any remaining grid items
         for (int i = currentSlotIndex; i < _itemsGrid.childCount; i++)
-            UnsetGridItem(i);
+            _UnsetGridItem(i);
     }
 
-
-    private void SetGridItem(int slotIndex)
+    private void _SetGridItem(int slotIndex)
     {
         InventorySlot slot = _inventory[slotIndex];
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
@@ -267,7 +357,31 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
-    private List<int> DistributeItems(int maxStackSize, int amount)
+    private void _SetGridItem(InventorySlot slot, Transform slotTransform)
+    {
+        slotTransform.Find("Icon").GetComponent<Image>().sprite = slot.Item.icon;
+        slotTransform.Find("Icon").gameObject.SetActive(true);
+        if (slot.Amount > 1)
+        {
+            slotTransform.Find("Amount").GetComponent<TextMeshProUGUI>().text = slot.Amount.ToString();
+            slotTransform.Find("Amount").gameObject.SetActive(true);
+        }
+        else
+        {
+            slotTransform.Find("Amount").gameObject.SetActive(false);
+        }
+        if (slot.Item.rarity != ItemRarity.Common)
+        {
+            slotTransform.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(slot.Item.rarity);
+            slotTransform.Find("Rarity").gameObject.SetActive(true);
+        }
+        else
+        {
+            slotTransform.Find("Rarity").gameObject.SetActive(false);
+        }
+    }
+
+    private List<int> _DistributeItems(int maxStackSize, int amount)
     {
         List<int> stackCounts = new List<int>();
 
@@ -282,7 +396,7 @@ public class InventoryManager : Singleton<InventoryManager>
         return stackCounts;
     }
 
-    private int GetNextSlotIndex()
+    private int _GetNextSlotIndex()
     {
         if (_inventory.Count == 0) return 0;
     
@@ -294,7 +408,7 @@ public class InventoryManager : Singleton<InventoryManager>
         return index;
     }
 
-    private void UnsetGridItem(int slotIndex)
+    private void _UnsetGridItem(int slotIndex)
     {
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
         slotTransform.Find("Icon").gameObject.SetActive(false);

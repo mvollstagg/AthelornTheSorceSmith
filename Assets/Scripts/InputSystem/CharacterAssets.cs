@@ -989,6 +989,15 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""25dd7394-0a94-47fd-9739-54c6d6253c80"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1079,6 +1088,17 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""action"": ""SortInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a40e833-a04c-4ef2-81fb-85ed7037c283"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ItemSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1157,6 +1177,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_InGameMenu_DropItem = m_InGameMenu.FindAction("DropItem", throwIfNotFound: true);
         m_InGameMenu_DropItemStack = m_InGameMenu.FindAction("DropItemStack", throwIfNotFound: true);
         m_InGameMenu_SortInventory = m_InGameMenu.FindAction("SortInventory", throwIfNotFound: true);
+        m_InGameMenu_ItemSelect = m_InGameMenu.FindAction("ItemSelect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1541,6 +1562,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGameMenu_DropItem;
     private readonly InputAction m_InGameMenu_DropItemStack;
     private readonly InputAction m_InGameMenu_SortInventory;
+    private readonly InputAction m_InGameMenu_ItemSelect;
     public struct InGameMenuActions
     {
         private @CharacterAssets m_Wrapper;
@@ -1548,6 +1570,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @DropItem => m_Wrapper.m_InGameMenu_DropItem;
         public InputAction @DropItemStack => m_Wrapper.m_InGameMenu_DropItemStack;
         public InputAction @SortInventory => m_Wrapper.m_InGameMenu_SortInventory;
+        public InputAction @ItemSelect => m_Wrapper.m_InGameMenu_ItemSelect;
         public InputActionMap Get() { return m_Wrapper.m_InGameMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1566,6 +1589,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @SortInventory.started += instance.OnSortInventory;
             @SortInventory.performed += instance.OnSortInventory;
             @SortInventory.canceled += instance.OnSortInventory;
+            @ItemSelect.started += instance.OnItemSelect;
+            @ItemSelect.performed += instance.OnItemSelect;
+            @ItemSelect.canceled += instance.OnItemSelect;
         }
 
         private void UnregisterCallbacks(IInGameMenuActions instance)
@@ -1579,6 +1605,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @SortInventory.started -= instance.OnSortInventory;
             @SortInventory.performed -= instance.OnSortInventory;
             @SortInventory.canceled -= instance.OnSortInventory;
+            @ItemSelect.started -= instance.OnItemSelect;
+            @ItemSelect.performed -= instance.OnItemSelect;
+            @ItemSelect.canceled -= instance.OnItemSelect;
         }
 
         public void RemoveCallbacks(IInGameMenuActions instance)
@@ -1652,5 +1681,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnDropItem(InputAction.CallbackContext context);
         void OnDropItemStack(InputAction.CallbackContext context);
         void OnSortInventory(InputAction.CallbackContext context);
+        void OnItemSelect(InputAction.CallbackContext context);
     }
 }

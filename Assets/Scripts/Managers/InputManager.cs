@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using Scripts.Core;
 using Scripts.Entities.Class;
@@ -100,6 +101,10 @@ public class InputManager : Singleton<InputManager>
 		InventoryManager.Instance.OnSortInventoryAction();
 	}
 
+	public void OnItemSelect(InputValue value)
+	{
+		// InventoryManager.Instance.itemGrab.Invoke();
+	}
 
 	// ####################################################################################################
 

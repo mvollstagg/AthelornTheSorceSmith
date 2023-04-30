@@ -27,11 +27,10 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
     {
         if(CharacterRotateCamera.Instance.cursorLocked)
         {
-            Debug.Log("Cursor Locked");
+
         }
         else
         {
-            Debug.Log("Cursor Unlocked");
             // Raycast from the camera to the point on the ground where the mouse is pointing
             Ray ray = Character.Instance._mainCamera.ScreenPointToRay(CursorManager.Instance._mousePosition);
             RaycastHit hit;
