@@ -55,6 +55,14 @@ public class InventoryManager : Singleton<InventoryManager>
         itemGrab.AddListener(_OnItemGrabbed);
     }
 
+    protected virtual void LateUpdate()
+    {
+        var _mousePosition = Input.mousePosition;
+        var _newPosition = Vector2.zero;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
+        _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
+    }
+
     public void ToggleInventoryPanel()
     {
         bool active = !_inventoryPanel.activeSelf;
@@ -232,6 +240,13 @@ public class InventoryManager : Singleton<InventoryManager>
         InventorySlot inventorySlot = _inventory[slotIndex];
         _SetGridItem(inventorySlot, _grabbedItemSlot);
         _grabbedItemSlot.gameObject.SetActive(true);
+        
+        _UpdateGridItems();
+        _itemsGrid
+        .GetChild(_grabbedSlotIndex)
+        .Find("Icon")
+        .GetComponent<Image>()
+        .color = new Color(1f, 1f, 1f, 0.25f);
     }
 
     private void _SwapItems(int grabbedSlotIndex, int slotIndex)
@@ -256,6 +271,16 @@ public class InventoryManager : Singleton<InventoryManager>
         _grabbedSlotIndex = -1;
         _grabbedItemSlot.gameObject.SetActive(false);
         _UpdateGridItems();
+        _itemsGrid
+        .GetChild(slotIndex)
+        .Find("Icon")
+        .GetComponent<Image>()
+        .color = new Color(1f, 1f, 1f, 1f);
+        _itemsGrid
+        .GetChild(grabbedSlotIndex)
+        .Find("Icon")
+        .GetComponent<Image>()
+        .color = new Color(1f, 1f, 1f, 1f);
     }
 
     private void _DropGrabbedItem(int slotIndex)
@@ -271,8 +296,14 @@ public class InventoryManager : Singleton<InventoryManager>
 
         _grabbedSlotIndex = -1;
         _grabbedItemSlot.gameObject.SetActive(false);
+        
         _UpdateGridItems();
         _UpdateItemDetails(slotIndex);
+        _itemsGrid
+        .GetChild(slotIndex)
+        .Find("Icon")
+        .GetComponent<Image>()
+        .color = new Color(1f, 1f, 1f, 1f);
     }
 
     private void _OnItemHovered(int slotIndex)
