@@ -1070,7 +1070,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cb768062-08e3-4f65-95ab-52836734c6e7"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",

@@ -18,8 +18,8 @@ public class CursorManager : Singleton<CursorManager>
     void Start()
     {
         // Instantiate pointer cursor from _cursorSOs under _cursors
-        // _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
-        // EventManager.Instance.AddListener<OnMouseInteractableEventArgs>("OnMouseEnterInteractable", CursorInteractor_OnMouseEnterInteractable);
+        _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
+        EventManager.Instance.AddListener<OnMouseInteractableEventArgs>("OnMouseEnterInteractable", CursorInteractor_OnMouseEnterInteractable);
     }
 
     private void CursorInteractor_OnMouseEnterInteractable(object sender, OnMouseInteractableEventArgs e)
@@ -43,7 +43,7 @@ public class CursorManager : Singleton<CursorManager>
     protected virtual void LateUpdate()
     {
         _mousePosition = Input.mousePosition;
-        // RectTransformUtility.ScreenPointToLocalPointInRectangle(TargetCanvas.transform as RectTransform, _mousePosition, TargetCanvas.worldCamera, out _newPosition);
-        // _cursors.position = TargetCanvas.transform.TransformPoint(_newPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(TargetCanvas.transform as RectTransform, _mousePosition, TargetCanvas.worldCamera, out _newPosition);
+        _cursors.position = TargetCanvas.transform.TransformPoint(_newPosition);
     }
 }

@@ -780,7 +780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &345162772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,7 +1222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &547992465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4603,17 +4603,17 @@ MonoBehaviour:
   _outlineGlow: {fileID: 86652494}
   _grabbedItemSlot: {fileID: 2884892151221773303}
   _canvas: {fileID: 7800225678531198644}
-  _testItem: {fileID: 11400000, guid: 505d235012515814eb2faa0abefac784, type: 2}
-  _testItem2: {fileID: 11400000, guid: 1209067f74d1da744aa2f1f4f58b4251, type: 2}
-  _testItem3: {fileID: 11400000, guid: 332af7ab83c31f84187abd1f03cb4c2b, type: 2}
-  _testItem4: {fileID: 11400000, guid: afa17311a2ff0ab46ac453404e10c717, type: 2}
-  _testItem5: {fileID: 11400000, guid: af645a127184daf4f98e631bdd32c64f, type: 2}
   itemHover:
     m_PersistentCalls:
       m_Calls: []
   itemGrab:
     m_PersistentCalls:
       m_Calls: []
+  _testItem: {fileID: 11400000, guid: 505d235012515814eb2faa0abefac784, type: 2}
+  _testItem2: {fileID: 11400000, guid: 1209067f74d1da744aa2f1f4f58b4251, type: 2}
+  _testItem3: {fileID: 11400000, guid: 332af7ab83c31f84187abd1f03cb4c2b, type: 2}
+  _testItem4: {fileID: 11400000, guid: afa17311a2ff0ab46ac453404e10c717, type: 2}
+  _testItem5: {fileID: 11400000, guid: af645a127184daf4f98e631bdd32c64f, type: 2}
   _inventorySlots: 
 --- !u!1 &1607868493
 GameObject:
