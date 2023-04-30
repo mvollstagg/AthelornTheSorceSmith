@@ -82,28 +82,32 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         int remaining = amount;        
 
-        // Try to add to existing slots
-        foreach (var slot in _inventory.Values)
+        // If there is a slot index to drop the item into, try to add it to that slot
+        if (_grabbedSlotIndex == -1)
         {
-            // If the slot can't hold more items or it doesn't match the item being added, skip it
-            if (slot.Amount == slot.Item.maxStackSize || slot.Item.code != item.code)
-                continue;
-
-            // Calculate the amount of items that can be added to the slot without exceeding its max stack size
-            int availableToAdd = slot.Item.maxStackSize - slot.Amount;
-
-            // If we can add all remaining items to this slot, do so and exit the function
-            if (remaining <= availableToAdd)
+            // Try to add to existing slots
+            foreach (var slot in _inventory.Values)
             {
-                slot.Amount += remaining;
-                remaining = 0;
-                break;
-            }
+                // If the slot can't hold more items or it doesn't match the item being added, skip it
+                if (slot.Amount == slot.Item.maxStackSize || slot.Item.code != item.code)
+                    continue;
 
-            // Otherwise, fill the slot to its max stack size and continue to the next slot
-            slot.Amount += availableToAdd;
-            remaining -= availableToAdd;
-        }
+                // Calculate the amount of items that can be added to the slot without exceeding its max stack size
+                int availableToAdd = slot.Item.maxStackSize - slot.Amount;
+
+                // If we can add all remaining items to this slot, do so and exit the function
+                if (remaining <= availableToAdd)
+                {
+                    slot.Amount += remaining;
+                    remaining = 0;
+                    break;
+                }
+
+                // Otherwise, fill the slot to its max stack size and continue to the next slot
+                slot.Amount += availableToAdd;
+                remaining -= availableToAdd;
+            }
+        }        
 
         // If there are still items remaining to be added, create new slots for them if there is a free slot
         while (remaining > 0)
@@ -241,7 +245,6 @@ public class InventoryManager : Singleton<InventoryManager>
         _SetGridItem(inventorySlot, _grabbedItemSlot);
         _grabbedItemSlot.gameObject.SetActive(true);
         
-        _UpdateGridItems();
         _itemsGrid
         .GetChild(_grabbedSlotIndex)
         .Find("Icon")
@@ -265,12 +268,24 @@ public class InventoryManager : Singleton<InventoryManager>
 
         RemoveItem(slotIndex, -1);
         RemoveItem(grabbedSlotIndex, -1);
-        AddItem(grabbedItem.Item, grabbedItem.Amount, slotIndex);
-        AddItem(swappedItem.Item, swappedItem.Amount, grabbedSlotIndex);
+        
+        if(grabbedItem.Item.code == swappedItem.Item.code && grabbedItem.Item.maxStackSize > 1)
+        {
+            Debug.Log("Same item");
+            int totalAmount = grabbedItem.Amount + swappedItem.Amount;
+            int stackCount = Mathf.Min(grabbedItem.Item.maxStackSize, totalAmount);
+            AddItem(grabbedItem.Item, stackCount, slotIndex);
+            AddItem(swappedItem.Item, totalAmount - stackCount, grabbedSlotIndex);
+        }
+        else
+        {
+            AddItem(grabbedItem.Item, grabbedItem.Amount, slotIndex);
+            AddItem(swappedItem.Item, swappedItem.Amount, grabbedSlotIndex);
+        }
 
         _grabbedSlotIndex = -1;
         _grabbedItemSlot.gameObject.SetActive(false);
-        _UpdateGridItems();
+
         _itemsGrid
         .GetChild(slotIndex)
         .Find("Icon")
@@ -297,7 +312,6 @@ public class InventoryManager : Singleton<InventoryManager>
         _grabbedSlotIndex = -1;
         _grabbedItemSlot.gameObject.SetActive(false);
         
-        _UpdateGridItems();
         _UpdateItemDetails(slotIndex);
         _itemsGrid
         .GetChild(slotIndex)
