@@ -72,8 +72,7 @@ public class InventoryManager : Singleton<InventoryManager>
         
     public void AddItem(InventoryItemDataSO item, int amount = 1, int dropIndex = -1)
     {
-        int remaining = amount;
-        
+        int remaining = amount;        
 
         // Try to add to existing slots
         foreach (var slot in _inventory.Values)
@@ -249,8 +248,8 @@ public class InventoryManager : Singleton<InventoryManager>
             Amount = _inventory[slotIndex].Amount
         };
 
-        RemoveItem(slotIndex);
-        RemoveItem(grabbedSlotIndex);
+        RemoveItem(slotIndex, -1);
+        RemoveItem(grabbedSlotIndex, -1);
         AddItem(grabbedItem.Item, grabbedItem.Amount, slotIndex);
         AddItem(swappedItem.Item, swappedItem.Amount, grabbedSlotIndex);
 
@@ -267,7 +266,7 @@ public class InventoryManager : Singleton<InventoryManager>
             Amount = _inventory[_grabbedSlotIndex].Amount
         };
 
-        RemoveItem(_grabbedSlotIndex);
+        RemoveItem(_grabbedSlotIndex, -1);
         AddItem(droppedItem.Item, droppedItem.Amount, slotIndex);
 
         _grabbedSlotIndex = -1;
