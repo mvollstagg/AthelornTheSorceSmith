@@ -32,13 +32,11 @@ public class CursorManager : Singleton<CursorManager>
 
     void Update()
     {
-        if(!CharacterRotateCamera.Instance.cursorLocked && Character.Instance.IsCurrentDeviceMouse)
+        if(!CharacterRotateCamera.Instance.cursorLocked && InputManager.Instance.IsCurrentDeviceMouse)
             _cursors.gameObject.SetActive(true);
         else
             _cursors.gameObject.SetActive(false);
-    }
-    
-    
+    }    
     
     protected virtual void LateUpdate()
     {

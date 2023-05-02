@@ -51,15 +51,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Inventory",
-                    "type": "Button",
-                    "id": "8d15ce5d-4dc5-41f6-a4bf-f2847e659325",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "AddItem",
                     "type": "Button",
                     "id": "3e1a299f-d0df-4af8-8f29-3760534904f8",
@@ -265,28 +256,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Switch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9f1630bc-ce5f-4ae0-afcb-d68f8695525c",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5da63884-ca55-4994-b78e-0932505c31eb",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1075,6 +1044,45 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ItemSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Transition",
+            "id": "85f4477a-32bc-4192-af0f-c12516311cb1",
+            "actions": [
+                {
+                    "name": "ToggleMenu",
+                    "type": "Button",
+                    "id": "b5218792-5691-40b4-8602-52888bd44db6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "559a941e-a390-423f-b8f5-15dca0633aa4",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "652480b8-1583-4734-b9d0-24efefca27a0",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

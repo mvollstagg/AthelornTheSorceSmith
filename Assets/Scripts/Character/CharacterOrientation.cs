@@ -19,7 +19,7 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
 
     void Update()
     {
-        if(Character.Instance.IsCurrentDeviceMouse)
+        if(InputManager.Instance.IsCurrentDeviceMouse)
             RotatePlayer();
     }
     

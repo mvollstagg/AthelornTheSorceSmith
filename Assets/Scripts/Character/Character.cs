@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Scripts.Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Character : Singleton<Character>
 {
@@ -12,8 +8,7 @@ public class Character : Singleton<Character>
     public Camera _mainCamera;
     [HideInInspector]
     public CharacterController _controller;
-    public PlayerInput _playerInput;
-    public CharacterAssets InputActions;
+    
     public int inventoryMaxWeight = 300;
     #endregion
 
@@ -21,14 +16,7 @@ public class Character : Singleton<Character>
     #endregion
 
     #region Private Variables
-    [HideInInspector]
-    public bool IsCurrentDeviceMouse
-    {
-        get
-        {
-            return _playerInput.currentControlScheme == "KeyboardMouse";
-        }
-    }
+    
     #endregion
     
     private void Awake()

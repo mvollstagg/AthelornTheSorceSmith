@@ -73,15 +73,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Inventory"",
-                    ""type"": ""Button"",
-                    ""id"": ""8d15ce5d-4dc5-41f6-a4bf-f2847e659325"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""AddItem"",
                     ""type"": ""Button"",
                     ""id"": ""3e1a299f-d0df-4af8-8f29-3760534904f8"",
@@ -287,28 +278,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9f1630bc-ce5f-4ae0-afcb-d68f8695525c"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5da63884-ca55-4994-b78e-0932505c31eb"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1101,6 +1070,45 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Transition"",
+            ""id"": ""85f4477a-32bc-4192-af0f-c12516311cb1"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""b5218792-5691-40b4-8602-52888bd44db6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""559a941e-a390-423f-b8f5-15dca0633aa4"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""ToggleMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""652480b8-1583-4734-b9d0-24efefca27a0"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1150,7 +1158,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
         m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
         m_Character_Switch = m_Character.FindAction("Switch", throwIfNotFound: true);
-        m_Character_Inventory = m_Character.FindAction("Inventory", throwIfNotFound: true);
         m_Character_AddItem = m_Character.FindAction("AddItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1178,6 +1185,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_InGameMenu_DropItemStack = m_InGameMenu.FindAction("DropItemStack", throwIfNotFound: true);
         m_InGameMenu_SortInventory = m_InGameMenu.FindAction("SortInventory", throwIfNotFound: true);
         m_InGameMenu_ItemSelect = m_InGameMenu.FindAction("ItemSelect", throwIfNotFound: true);
+        // Transition
+        m_Transition = asset.FindActionMap("Transition", throwIfNotFound: true);
+        m_Transition_ToggleMenu = m_Transition.FindAction("ToggleMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1244,7 +1254,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Jump;
     private readonly InputAction m_Character_Sprint;
     private readonly InputAction m_Character_Switch;
-    private readonly InputAction m_Character_Inventory;
     private readonly InputAction m_Character_AddItem;
     public struct CharacterActions
     {
@@ -1255,7 +1264,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
         public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
         public InputAction @Switch => m_Wrapper.m_Character_Switch;
-        public InputAction @Inventory => m_Wrapper.m_Character_Inventory;
         public InputAction @AddItem => m_Wrapper.m_Character_AddItem;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
@@ -1281,9 +1289,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
-            @Inventory.started += instance.OnInventory;
-            @Inventory.performed += instance.OnInventory;
-            @Inventory.canceled += instance.OnInventory;
             @AddItem.started += instance.OnAddItem;
             @AddItem.performed += instance.OnAddItem;
             @AddItem.canceled += instance.OnAddItem;
@@ -1306,9 +1311,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
-            @Inventory.started -= instance.OnInventory;
-            @Inventory.performed -= instance.OnInventory;
-            @Inventory.canceled -= instance.OnInventory;
             @AddItem.started -= instance.OnAddItem;
             @AddItem.performed -= instance.OnAddItem;
             @AddItem.canceled -= instance.OnAddItem;
@@ -1625,6 +1627,52 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         }
     }
     public InGameMenuActions @InGameMenu => new InGameMenuActions(this);
+
+    // Transition
+    private readonly InputActionMap m_Transition;
+    private List<ITransitionActions> m_TransitionActionsCallbackInterfaces = new List<ITransitionActions>();
+    private readonly InputAction m_Transition_ToggleMenu;
+    public struct TransitionActions
+    {
+        private @CharacterAssets m_Wrapper;
+        public TransitionActions(@CharacterAssets wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleMenu => m_Wrapper.m_Transition_ToggleMenu;
+        public InputActionMap Get() { return m_Wrapper.m_Transition; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TransitionActions set) { return set.Get(); }
+        public void AddCallbacks(ITransitionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TransitionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TransitionActionsCallbackInterfaces.Add(instance);
+            @ToggleMenu.started += instance.OnToggleMenu;
+            @ToggleMenu.performed += instance.OnToggleMenu;
+            @ToggleMenu.canceled += instance.OnToggleMenu;
+        }
+
+        private void UnregisterCallbacks(ITransitionActions instance)
+        {
+            @ToggleMenu.started -= instance.OnToggleMenu;
+            @ToggleMenu.performed -= instance.OnToggleMenu;
+            @ToggleMenu.canceled -= instance.OnToggleMenu;
+        }
+
+        public void RemoveCallbacks(ITransitionActions instance)
+        {
+            if (m_Wrapper.m_TransitionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITransitionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TransitionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TransitionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TransitionActions @Transition => new TransitionActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1650,7 +1698,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
-        void OnInventory(InputAction.CallbackContext context);
         void OnAddItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
@@ -1682,5 +1729,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnDropItemStack(InputAction.CallbackContext context);
         void OnSortInventory(InputAction.CallbackContext context);
         void OnItemSelect(InputAction.CallbackContext context);
+    }
+    public interface ITransitionActions
+    {
+        void OnToggleMenu(InputAction.CallbackContext context);
     }
 }

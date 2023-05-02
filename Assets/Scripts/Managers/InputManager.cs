@@ -1,9 +1,10 @@
-using System.Diagnostics;
 using System;
+using System.Collections.Generic;
 using Scripts.Core;
 using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
 using UnityEngine;
+using System.Linq;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -11,6 +12,10 @@ using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>
 {
+	[Header("Action Maps")]
+	[SerializeField] private Dictionary<string, InputActionMap> _inputActionMaps = new Dictionary<string, InputActionMap>();
+    public CharacterAssets InputActions;
+	public List<string> ActiveActionMaps = new List<string>();
 	[Header("Character Input Values")]
 	public Vector2 move;
 	public Vector2 look;
@@ -25,89 +30,72 @@ public class InputManager : Singleton<InputManager>
 	public bool cursorInputForLook = true;
 
 	public InputTypeEnum InputType;
-	private PlayerInput _playerInput;
+	public PlayerInput _playerInput;
 	public static bool UsingController => Gamepad.current != null;
+	[HideInInspector]
+    public bool IsCurrentDeviceMouse
+    {
+        get
+        {
+            return _playerInput.currentControlScheme == "KeyboardMouse";
+        }
+    }
 	
 	void Start()
 	{
 		_playerInput = GetComponent<PlayerInput>();
 		InputType = _playerInput.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
-		_playerInput.actions.FindActionMap("InGameMenu").Enable();
+
+		foreach (InputActionMap actionMap in _playerInput.actions.actionMaps)
+        {
+			// Assign all action maps to the dictionary with their names and disable them
+			_inputActionMaps[actionMap.name] = actionMap;
+			actionMap.Disable();
+        }
+
+		// Enable all action maps needed at first
+		_playerInput.actions.FindActionMap("Character").Enable();
+		_playerInput.actions.FindActionMap("Transition").Enable();
+		_playerInput.actions.FindActionMap("Camera").Enable();
+
+		#region Camera Rotate Actions
+		InputActions = new CharacterAssets();
+		InputActions.Camera.Enable();
+		
+		InputActions.Camera.RotateMouse.performed += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_MOUSE, obj, EventArgs.Empty);
+		InputActions.Camera.RotateMouse.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_MOUSE_CANCELED, obj, EventArgs.Empty);
+		InputActions.Camera.RotateGamepad.performed += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD, obj, EventArgs.Empty);
+		InputActions.Camera.RotateGamepad.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD_CANCELED, obj, EventArgs.Empty);
+
+		#endregion
 	}
 
-	public void OnMove(InputValue value)
+	void Update()
 	{
-		MoveInput(value.Get<Vector2>());
+		ActiveActionMaps = _inputActionMaps.Where(x => x.Value.enabled).Select(x => x.Key).ToList();
 	}
 
-	public void OnLook(InputValue value)
+	public void SwitchActionMap(string actionMapName)
 	{
-		if(cursorInputForLook)
+		// Disable all action maps
+		foreach (InputActionMap actionMap in _inputActionMaps.Values.Where(x => x.enabled && x.name != ActionMaps.TRANSITION))
 		{
-			LookInput(value.Get<Vector2>());
+			actionMap.Disable();
 		}
+
+		// Enable the action map with the given name
+		_inputActionMaps[actionMapName].Enable();
 	}
 
-	public void OnJump(InputValue value)
+	public void EnableActionMap(string actionMapName)
 	{
-		JumpInput(value.isPressed);
+		Instance._inputActionMaps[actionMapName].Enable();
 	}
 
-	public void OnSprint(InputValue value)
+	public void DisableActionMap(string actionMapName)
 	{
-		SprintInput(value.isPressed);
+		Instance._inputActionMaps[actionMapName].Disable();
 	}
-
-	public void OnInventory(InputValue value)
-	{
-		InventoryManager.Instance.ToggleInventoryPanel();
-	}
-
-	public void OnAddItem(InputValue value)
-	{
-		InventoryManager.Instance.AddItem();
-	}
-
-	public void OnControlsChanged(PlayerInput input)
-	{
-		InputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
-	}
-
-	public void OnSwitch(InputValue value)
-	{
-		// TODO: Change current control scheme
-		if(InputType == InputTypeEnum.KeyboardMouse)
-		{
-			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
-		}
-		else if(InputType == InputTypeEnum.Gamepad)
-		{
-			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
-		}
-	}
-
-	public void OnDropItem(InputValue value)
-	{
-		InventoryManager.Instance.OnDropItemAction();
-	}
-
-	public void OnDropItemStack(InputValue value)
-	{
-		InventoryManager.Instance.OnDropItemStackAction();
-	}
-
-	public void OnSortInventory(InputValue value)
-	{
-		InventoryManager.Instance.OnSortInventoryAction();
-	}
-
-	public void OnItemSelect(InputValue value)
-	{
-		// InventoryManager.Instance.itemGrab.Invoke();
-	}
-
-	// ####################################################################################################
-
 
 	public void MoveInput(Vector2 newMoveDirection)
 	{
@@ -133,4 +121,80 @@ public class InputManager : Singleton<InputManager>
 	{
 		Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 	}
+
+	#region Player Input Actions
+
+	public void OnMove(InputValue value)
+	{
+		MoveInput(value.Get<Vector2>());
+	}
+
+	public void OnLook(InputValue value)
+	{
+		if(cursorInputForLook)
+		{
+			LookInput(value.Get<Vector2>());
+		}
+	}
+
+	public void OnJump(InputValue value)
+	{
+		JumpInput(value.isPressed);
+	}
+
+	public void OnSprint(InputValue value)
+	{
+		SprintInput(value.isPressed);
+	}
+
+	public void OnAddItem(InputValue value)
+	{
+		InventoryManager.Instance.AddItem();
+	}
+
+	public void OnControlsChanged(PlayerInput input)
+	{
+		InputType = input.currentControlScheme == "KeyboardMouse" ? InputTypeEnum.KeyboardMouse : InputTypeEnum.Gamepad;
+	}
+
+	public void OnSwitch(InputValue value)
+	{
+		// TODO: Change current control scheme
+		if(InputType == InputTypeEnum.KeyboardMouse)
+		{
+			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
+		}
+		else if(InputType == InputTypeEnum.Gamepad)
+		{
+			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
+		}
+	}
+
+	public void OnToggleMenu(InputValue value)
+	{
+        UnityEngine.Debug.Log("Toggle Menu");
+		InGameMenuManager.Instance.ToggleInGameMenu();
+	}
+
+	public void OnDropItem(InputValue value)
+	{
+		InventoryManager.Instance.OnDropItemAction();
+	}
+
+	public void OnDropItemStack(InputValue value)
+	{
+		InventoryManager.Instance.OnDropItemStackAction();
+	}
+
+	public void OnSortInventory(InputValue value)
+	{
+		InventoryManager.Instance.OnSortInventoryAction();
+	}
+
+	public void OnItemSelect(InputValue value)
+	{
+		// InventoryManager.Instance.itemGrab.Invoke();
+	}
+
+	#endregion
 }
