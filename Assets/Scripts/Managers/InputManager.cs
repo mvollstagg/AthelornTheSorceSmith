@@ -172,7 +172,6 @@ public class InputManager : Singleton<InputManager>
 
 	public void OnToggleMenu(InputValue value)
 	{
-        UnityEngine.Debug.Log("Toggle Menu");
 		InGameMenuManager.Instance.ToggleInGameMenu();
 	}
 

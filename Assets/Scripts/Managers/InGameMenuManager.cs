@@ -47,9 +47,10 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
         }
         else
         {
-            // Enable Character input and disable rest of the input
+            // Enable Character inputs and disable UI input
             InputManager.Instance.EnableActionMap(ActionMaps.CHARACTER);
             InputManager.Instance.EnableActionMap(ActionMaps.CAMERA);
+            InputManager.Instance.DisableActionMap(ActionMaps.UI);
         }
     }
 
