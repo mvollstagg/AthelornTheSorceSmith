@@ -34,6 +34,14 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
 
         // Set the initial panel to the inventory panel
         _ShowPanel(InGameMenus.INVENTORY);
+        if (InputManager.Instance.IsCurrentDeviceMouse)
+        {
+            TurnMenuInteractable(true);
+        }
+        else
+        {
+            TurnMenuInteractable(false);
+        }
     }
 
     public void ToggleInGameMenu()
@@ -52,6 +60,14 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
             InputManager.Instance.EnableActionMap(ActionMaps.CHARACTER);
             InputManager.Instance.EnableActionMap(ActionMaps.CAMERA);
             InputManager.Instance.DisableActionMap(ActionMaps.UI);
+        }
+    }
+
+    public void TurnMenuInteractable(bool interactable)
+    {
+        foreach (Button button in _menuButtons.Values)
+        {
+            button.interactable = interactable;
         }
     }
 

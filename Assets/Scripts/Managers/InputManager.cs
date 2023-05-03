@@ -159,13 +159,14 @@ public class InputManager : Singleton<InputManager>
 
 	public void OnSwitch(InputValue value)
 	{
-		// TODO: Change current control scheme
 		if(InputType == InputTypeEnum.KeyboardMouse)
 		{
+			InGameMenuManager.Instance.TurnMenuInteractable(false);
 			_playerInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
 		}
 		else if(InputType == InputTypeEnum.Gamepad)
 		{
+			InGameMenuManager.Instance.TurnMenuInteractable(true);
 			_playerInput.SwitchCurrentControlScheme("KeyboardMouse", Keyboard.current, Mouse.current);
 		}
 	}
