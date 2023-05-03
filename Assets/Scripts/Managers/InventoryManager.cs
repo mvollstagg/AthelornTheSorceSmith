@@ -340,7 +340,8 @@ public class InventoryManager : Singleton<InventoryManager>
     private void _UpdateItemDetails(int slotIndex)
     {
         InventorySlot inventorySlot = _inventory[slotIndex];
-        _itemDetailsPanel.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
+        _itemDetailsPanel.Find("ItemPreview").GetComponent<Image>().sprite = inventorySlot.Item.icon;
+        _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;
         _itemDetailsPanel.Find("Description").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.description;
         _itemDetailsPanel.Find("Details").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.GetDetailsDisplay();
