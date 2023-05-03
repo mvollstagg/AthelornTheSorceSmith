@@ -44,6 +44,7 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
         {
             // Enable UI input and disable rest of the input
             InputManager.Instance.SwitchActionMap(ActionMaps.UI);
+            InputManager.Instance.EnableActionMap(ActionMaps.INGAMEMENU);
         }
         else
         {

@@ -71,15 +71,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""AddItem"",
-                    ""type"": ""Button"",
-                    ""id"": ""3e1a299f-d0df-4af8-8f29-3760534904f8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -278,17 +269,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8363dcf2-547b-4952-a902-b4507983215b"",
-                    ""path"": ""<Keyboard>/t"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""AddItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -942,6 +922,15 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""AddItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""954d98bf-4d0e-4200-bd7a-4a950abc5ed1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""DropItemStack"",
                     ""type"": ""Button"",
                     ""id"": ""fe80017a-809c-4e8b-b22f-1088ebe82667"",
@@ -1068,6 +1057,17 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""action"": ""ItemSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bc9f655-c03d-4e01-8110-41dbec2226bb"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""AddItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1158,7 +1158,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
         m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
         m_Character_Switch = m_Character.FindAction("Switch", throwIfNotFound: true);
-        m_Character_AddItem = m_Character.FindAction("AddItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1182,6 +1181,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         // InGameMenu
         m_InGameMenu = asset.FindActionMap("InGameMenu", throwIfNotFound: true);
         m_InGameMenu_DropItem = m_InGameMenu.FindAction("DropItem", throwIfNotFound: true);
+        m_InGameMenu_AddItem = m_InGameMenu.FindAction("AddItem", throwIfNotFound: true);
         m_InGameMenu_DropItemStack = m_InGameMenu.FindAction("DropItemStack", throwIfNotFound: true);
         m_InGameMenu_SortInventory = m_InGameMenu.FindAction("SortInventory", throwIfNotFound: true);
         m_InGameMenu_ItemSelect = m_InGameMenu.FindAction("ItemSelect", throwIfNotFound: true);
@@ -1254,7 +1254,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Jump;
     private readonly InputAction m_Character_Sprint;
     private readonly InputAction m_Character_Switch;
-    private readonly InputAction m_Character_AddItem;
     public struct CharacterActions
     {
         private @CharacterAssets m_Wrapper;
@@ -1264,7 +1263,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
         public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
         public InputAction @Switch => m_Wrapper.m_Character_Switch;
-        public InputAction @AddItem => m_Wrapper.m_Character_AddItem;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1289,9 +1287,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
-            @AddItem.started += instance.OnAddItem;
-            @AddItem.performed += instance.OnAddItem;
-            @AddItem.canceled += instance.OnAddItem;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -1311,9 +1306,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
-            @AddItem.started -= instance.OnAddItem;
-            @AddItem.performed -= instance.OnAddItem;
-            @AddItem.canceled -= instance.OnAddItem;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -1562,6 +1554,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_InGameMenu;
     private List<IInGameMenuActions> m_InGameMenuActionsCallbackInterfaces = new List<IInGameMenuActions>();
     private readonly InputAction m_InGameMenu_DropItem;
+    private readonly InputAction m_InGameMenu_AddItem;
     private readonly InputAction m_InGameMenu_DropItemStack;
     private readonly InputAction m_InGameMenu_SortInventory;
     private readonly InputAction m_InGameMenu_ItemSelect;
@@ -1570,6 +1563,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         private @CharacterAssets m_Wrapper;
         public InGameMenuActions(@CharacterAssets wrapper) { m_Wrapper = wrapper; }
         public InputAction @DropItem => m_Wrapper.m_InGameMenu_DropItem;
+        public InputAction @AddItem => m_Wrapper.m_InGameMenu_AddItem;
         public InputAction @DropItemStack => m_Wrapper.m_InGameMenu_DropItemStack;
         public InputAction @SortInventory => m_Wrapper.m_InGameMenu_SortInventory;
         public InputAction @ItemSelect => m_Wrapper.m_InGameMenu_ItemSelect;
@@ -1585,6 +1579,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @DropItem.started += instance.OnDropItem;
             @DropItem.performed += instance.OnDropItem;
             @DropItem.canceled += instance.OnDropItem;
+            @AddItem.started += instance.OnAddItem;
+            @AddItem.performed += instance.OnAddItem;
+            @AddItem.canceled += instance.OnAddItem;
             @DropItemStack.started += instance.OnDropItemStack;
             @DropItemStack.performed += instance.OnDropItemStack;
             @DropItemStack.canceled += instance.OnDropItemStack;
@@ -1601,6 +1598,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @DropItem.started -= instance.OnDropItem;
             @DropItem.performed -= instance.OnDropItem;
             @DropItem.canceled -= instance.OnDropItem;
+            @AddItem.started -= instance.OnAddItem;
+            @AddItem.performed -= instance.OnAddItem;
+            @AddItem.canceled -= instance.OnAddItem;
             @DropItemStack.started -= instance.OnDropItemStack;
             @DropItemStack.performed -= instance.OnDropItemStack;
             @DropItemStack.canceled -= instance.OnDropItemStack;
@@ -1698,7 +1698,6 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
-        void OnAddItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1726,6 +1725,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     public interface IInGameMenuActions
     {
         void OnDropItem(InputAction.CallbackContext context);
+        void OnAddItem(InputAction.CallbackContext context);
         void OnDropItemStack(InputAction.CallbackContext context);
         void OnSortInventory(InputAction.CallbackContext context);
         void OnItemSelect(InputAction.CallbackContext context);

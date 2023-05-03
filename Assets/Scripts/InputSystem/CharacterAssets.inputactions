@@ -49,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "AddItem",
-                    "type": "Button",
-                    "id": "3e1a299f-d0df-4af8-8f29-3760534904f8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -256,17 +247,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Switch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8363dcf2-547b-4952-a902-b4507983215b",
-                    "path": "<Keyboard>/t",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "AddItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -920,6 +900,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "AddItem",
+                    "type": "Button",
+                    "id": "954d98bf-4d0e-4200-bd7a-4a950abc5ed1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "DropItemStack",
                     "type": "Button",
                     "id": "fe80017a-809c-4e8b-b22f-1088ebe82667",
@@ -1044,6 +1033,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ItemSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8bc9f655-c03d-4e01-8110-41dbec2226bb",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "AddItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
