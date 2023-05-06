@@ -19,7 +19,7 @@ public class CursorManager : Singleton<CursorManager>
     {
         // Instantiate pointer cursor from _cursorSOs under _cursors
         _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
-        EventManager.Instance.AddListener<OnMouseInteractableEventArgs>("OnMouseEnterInteractable", CursorInteractor_OnMouseEnterInteractable);
+        EventManager.Instance.AddListener<OnMouseInteractableEventArgs>(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, CursorInteractor_OnMouseEnterInteractable);
     }
 
     private void CursorInteractor_OnMouseEnterInteractable(object sender, OnMouseInteractableEventArgs e)

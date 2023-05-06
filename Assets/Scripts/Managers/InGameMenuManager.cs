@@ -33,7 +33,6 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
         }
 
         // Set the initial panel to the inventory panel
-        _ShowPanel(InGameMenus.INVENTORY);
         if (InputManager.Instance.IsCurrentDeviceMouse)
         {
             TurnMenuInteractable(true);
@@ -47,15 +46,17 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
     public void ToggleInGameMenu()
     {
         _inGameMenu.gameObject.SetActive(!_inGameMenu.gameObject.activeSelf);
-        _ShowPanel(InGameMenus.INVENTORY);
+            
         if (_inGameMenu.gameObject.activeSelf)
         {
+            _ShowPanel(InGameMenus.INVENTORY);
             // Enable UI input and disable rest of the input
             InputManager.Instance.SwitchActionMap(ActionMaps.UI);
             InputManager.Instance.EnableActionMap(ActionMaps.INGAMEMENU);
         }
         else
         {
+            InventoryManager.Instance.OnInventoryDisabled();
             // Enable Character inputs and disable UI input
             InputManager.Instance.EnableActionMap(ActionMaps.CHARACTER);
             InputManager.Instance.EnableActionMap(ActionMaps.CAMERA);
@@ -82,6 +83,16 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
         // Show the panel with the given name
         if (_tabPanel.Find(panelName) != null)
         {
+            if(panelName != InGameMenus.INVENTORY || !_inGameMenu.gameObject.activeSelf)
+            {
+                InventoryManager.Instance.OnInventoryDisabled();
+            }
+
+            if (panelName == InGameMenus.INVENTORY)
+            {
+                InventoryManager.Instance.OnInventoryEnabled();
+            }
+            
             _tabPanel.Find(panelName).gameObject.SetActive(true);
 
             // Chance OutlineFrame parent to the new panel

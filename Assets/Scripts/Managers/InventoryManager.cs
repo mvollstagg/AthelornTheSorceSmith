@@ -12,11 +12,11 @@ using UnityEngine.UI;
 public class InventoryManager : Singleton<InventoryManager>
 {
     [Header("UI References")]
-    [SerializeField] private GameObject _inventoryPanel;
     [SerializeField] private Transform _itemsGrid;
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
     [SerializeField] private RectTransform _outlineGlow;
+    [SerializeField] private GameObject _previewCamera;
 
     [Header("Drag and Drop")]
     [SerializeField] private RectTransform _grabbedItemSlot;
@@ -55,21 +55,26 @@ public class InventoryManager : Singleton<InventoryManager>
         itemGrab.AddListener(_OnItemGrabbed);
     }
 
+    public void OnInventoryDisabled()
+    {
+        _hoveredSlotIndex = -1;
+        _grabbedSlotIndex = -1;
+        _grabbedItemSlot.gameObject.SetActive(false);
+        _outlineGlow.gameObject.SetActive(false);
+        _previewCamera.gameObject.SetActive(false);
+    }
+
+    public void OnInventoryEnabled()
+    {
+        _previewCamera.gameObject.SetActive(true);
+    }
+
     protected virtual void LateUpdate()
     {
         var _mousePosition = Input.mousePosition;
         var _newPosition = Vector2.zero;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
         _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
-    }
-
-    public void ToggleInventoryPanel()
-    {
-        bool active = !_inventoryPanel.activeSelf;
-        if (active) _UpdateGridItems();
-        EventSystem.current.SetSelectedGameObject(_itemsGrid.GetChild(0).gameObject);
-        _itemsGrid.GetChild(0).gameObject.GetComponent<Selectable>().Select();
-        _inventoryPanel.SetActive(active);
     }
 
     public void AddItem()
