@@ -20879,7 +20879,7 @@ MonoBehaviour:
   _itemDetailsPanel: {fileID: 1687734890}
   _inventoryWeightText: {fileID: 504037842}
   _outlineGlow: {fileID: 18086139}
-  _previewCamera: {fileID: 1779820510}
+  _previewCamera: {fileID: 1669172404}
   _grabbedItemSlot: {fileID: 2884892151221773303}
   _canvas: {fileID: 1729761762}
   itemHover:
@@ -21598,6 +21598,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2824669795048066471, guid: 12893678bbcb9e0448eec6344e9c14bf,
     type: 3}
   m_PrefabInstance: {fileID: 984772155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1669172404 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7901156504731726283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3856023287374570886}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1677774688
 GameObject:
@@ -23096,12 +23102,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771481965}
   m_CullTransparentMesh: 1
---- !u!1 &1779820510 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5681218512026505263, guid: a559ff99e437a7941b3c557eb5bd7f1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3856023287374570886}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1784870164
 GameObject:
   m_ObjectHideFlags: 0
@@ -28289,7 +28289,7 @@ PrefabInstance:
     - target: {fileID: 5681218512026505263, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6598279037706970283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
@@ -28299,7 +28299,7 @@ PrefabInstance:
     - target: {fileID: 6598279037706970283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8880082898184117750, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}

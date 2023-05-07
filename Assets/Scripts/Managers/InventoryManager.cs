@@ -16,7 +16,7 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
     [SerializeField] private RectTransform _outlineGlow;
-    [SerializeField] private GameObject _previewCamera;
+    [SerializeField] private Transform _previewCamera;
 
     [Header("Drag and Drop")]
     [SerializeField] private RectTransform _grabbedItemSlot;
@@ -40,7 +40,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public List<int> _inventorySlots = new List<int>();
     
 
-    void Start()
+    private void Start()
     {
         _maxNumberOfSlots = _itemsGrid.childCount;
         AddItem(_testItem, 1);
@@ -55,6 +55,15 @@ public class InventoryManager : Singleton<InventoryManager>
         itemGrab.AddListener(_OnItemGrabbed);
     }
 
+    private void LateUpdate()
+    {
+        var _mousePosition = Input.mousePosition;
+        var _newPosition = Vector2.zero;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
+        _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
+    }
+    
+
     public void OnInventoryDisabled()
     {
         _hoveredSlotIndex = -1;
@@ -66,15 +75,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void OnInventoryEnabled()
     {
+        _outlineGlow.gameObject.SetActive(true);
         _previewCamera.gameObject.SetActive(true);
-    }
-
-    protected virtual void LateUpdate()
-    {
-        var _mousePosition = Input.mousePosition;
-        var _newPosition = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
-        _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
     }
 
     public void AddItem()
