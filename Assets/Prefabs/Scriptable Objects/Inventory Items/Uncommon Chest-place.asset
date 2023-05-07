@@ -25,6 +25,7 @@ MonoBehaviour:
   durability: 35
   rarity: 1
   type: 1
+  equipmentSlotType: 4
   traits:
   - Type: 23
     Status: 0
@@ -33,4 +34,4 @@ MonoBehaviour:
   physicalDefenceVariability: 3
   baseMagicalDefence: 45
   magicalDefenceVariability: 15
-  armorType: 1
+  armorType: 5

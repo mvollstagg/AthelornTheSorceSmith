@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Scripts.Entities.Enum;
 
-public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IPointerClickHandler
+public class EquipmentSlotManager : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IPointerClickHandler
 {
-    public int _slotIndex;
+    public EquipmentSlotType _slotType;
+    private int _slotIndex;
     private RectTransform rectTransform;
-    private const bool IS_EQUIPMENT = false;
+    private const bool IS_EQUIPMENT = true;
 
     private void Awake()
     {
@@ -30,6 +30,10 @@ public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             InventoryManager.Instance.itemGrab.Invoke(_slotIndex, IS_EQUIPMENT);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            InventoryManager.Instance._UnequipItem(_slotIndex);
         }
     }
 }

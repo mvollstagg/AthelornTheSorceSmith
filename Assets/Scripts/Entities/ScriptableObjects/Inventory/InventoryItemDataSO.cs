@@ -23,6 +23,7 @@ public class InventoryItemDataSO : ScriptableObject
     public int durability;
     public ItemRarity rarity;
     public ItemType type;
+    public EquipmentSlotType equipmentSlotType = EquipmentSlotType.None;
     [SerializeField]
     public List<ItemTrait> traits = new List<ItemTrait>();
 

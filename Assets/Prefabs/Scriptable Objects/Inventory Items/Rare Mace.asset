@@ -27,6 +27,7 @@ MonoBehaviour:
   durability: 75
   rarity: 2
   type: 0
+  equipmentSlotType: 10
   traits:
   - Type: 0
     Status: 0

@@ -6,25 +6,27 @@ namespace Scripts.Entities.Enum
     {
         [Description("Head")]
         Head,
-        [Description("Chest")]
-        Chest,
-        [Description("Legs")]
-        Legs,
-        [Description("Feet")]
-        Feet,
-        [Description("Hands")]
-        Hands,
-        [Description("Shoulders")]
-        Shoulders,
+        [Description("Earring")]
+        Earring,
         [Description("Neck")]
         Neck,
-        [Description("Ring")]
-        Ring,
-        [Description("Trinket")]
-        Trinket,
+        [Description("Shoulders")]
+        Shoulders,
+        [Description("Chest")]
+        Chest,
+        [Description("Gloves")]
+        Gloves,
         [Description("Belt")]
         Belt,
-        [Description("Cloak")]
-        Cloak
+        [Description("Pants")]
+        Pants,
+        [Description("Boots")]
+        Boots,
+        [Description("Ring")]
+        Ring,
+        [Description("RightHand")]
+        RightHand,
+        [Description("LeftHand")]
+        LeftHand
     }
 }
