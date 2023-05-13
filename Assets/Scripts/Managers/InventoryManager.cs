@@ -33,13 +33,6 @@ public class InventoryManager : Singleton<InventoryManager>
 
     [Header("Test Items")]
     [SerializeField] private List<InventoryItemDataSO> _testItems;
-    
-    [System.Serializable]
-    public class InventoryDetails
-    {
-        public int index;
-        public string name;
-    }
 
     [Header("Active Slots")]
     [SerializeField] public List<InventoryDetails> _inventorySlots = new List<InventoryDetails>();
@@ -58,12 +51,15 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void LateUpdate()
     {
-        var _mousePosition = Input.mousePosition;
-        var _newPosition = Vector2.zero;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
-        _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
-        _inventorySlots = _inventory.Keys.Select(x => new InventoryDetails { index = x, name = _inventory[x].Item.name }).ToList();
-        _equipmentSlots = _equipments.Keys.Select(x => new InventoryDetails { index = x, name = _equipments[x].Item.name }).ToList();
+        if (_grabbedSlotIndex != -1)
+        {
+            var _mousePosition = Input.mousePosition;
+            var _newPosition = Vector2.zero;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
+            _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
+        }
+        _inventorySlots = _inventory.Keys.Select(x => new InventoryDetails { Index = x, Name = _inventory[x].Item.name }).ToList();
+        _equipmentSlots = _equipments.Keys.Select(x => new InventoryDetails { Index = x, Name = _equipments[x].Item.name }).ToList();
     }
     
 
@@ -202,7 +198,8 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         List<InventorySlot> sortedSlots = _inventory
             .Values
-            .OrderBy((InventorySlot s) => -s.Item.price * s.Amount)
+            .OrderByDescending((InventorySlot s) => s.Item.price * s.Amount)
+            .ThenBy((InventorySlot s) => s.Item.name)
             .ToList();
 
         Dictionary<int, InventorySlot> newSlots =
