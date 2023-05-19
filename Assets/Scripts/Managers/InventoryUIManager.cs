@@ -46,7 +46,10 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _grabbedItemSlot.gameObject.SetActive(false);
         _outlineGlow.gameObject.SetActive(false);
         _previewCamera.gameObject.SetActive(false);
-        SetGridItem(InventoryManager.Instance.GrabbedSlotIndex);
+        if (InventoryManager.Instance.GrabbedSlotIndex != -1)
+        {
+            SetGridItem(InventoryManager.Instance.GrabbedSlotIndex);
+        }
     }
 
     public void OnInventoryEnabled()
@@ -89,7 +92,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     public void UpdateItemDetails(int slotIndex)
     {
         _itemDetailsPanel.gameObject.SetActive(false);
-        InventorySlot inventorySlot = InventoryManager.Instance.InventoryItems[slotIndex];
+        if (!InventoryManager.Instance.InventoryItems.TryGetValue(slotIndex, out InventorySlot inventorySlot)) return;
         _itemDetailsPanel.Find("ItemPreview").GetComponent<Image>().sprite = inventorySlot.Item.icon;
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;

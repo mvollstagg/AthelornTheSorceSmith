@@ -88,6 +88,15 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
         {            
             _tabPanel.Find(panelName).gameObject.SetActive(true);
 
+            if (panelName == InGameMenus.INVENTORY)
+            {
+                InventoryManager.Instance.OnInventoryEnabled();
+            }
+            else
+            {
+                InventoryManager.Instance.OnInventoryDisabled();
+            }
+
             // Chance OutlineFrame parent to the new panel
             _menuOutline.SetParent(_menuPanel.Find(panelName));
             _menuOutline.anchoredPosition = Vector2.zero;

@@ -57,6 +57,7 @@ public class InventoryManager : Singleton<InventoryManager>
     
     public void OnInventoryDisabled()
     {
+        Debug.Log("Inventory disabled");
         InventoryUIManager.Instance.OnInventoryDisabled();
         _hoveredSlotIndex = -1;
         _grabbedSlotIndex = -1;
@@ -157,18 +158,17 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             _inventory.Remove(slotIndex);
         }
-        else
-            InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
 
         // Multiply by -1 to remove weight
         InventoryUIManager.Instance.SetInventoryWeight(slot.Item.weight * (slot.Amount >= 0 ? amount : slot.Amount) * -1);
+        InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
         InventoryUIManager.Instance.UpdateGridItems();
     }
 
     public void OnDropItemAction()
     {
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
-        if (!_inventory.ContainsKey(selectedSlotIndex))
+        if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedSlotIndex != -1)
             return;
 
         RemoveItem(selectedSlotIndex);
@@ -177,7 +177,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public void OnDropItemStackAction()
     {
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
-        if (!_inventory.ContainsKey(selectedSlotIndex))
+        if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedSlotIndex != -1)
             return;
 
         RemoveItem(selectedSlotIndex, -1);
