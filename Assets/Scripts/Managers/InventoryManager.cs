@@ -57,9 +57,9 @@ public class InventoryManager : Singleton<InventoryManager>
     
     public void OnInventoryDisabled()
     {
+        InventoryUIManager.Instance.OnInventoryDisabled();
         _hoveredSlotIndex = -1;
         _grabbedSlotIndex = -1;
-        InventoryUIManager.Instance.OnInventoryDisabled();
     }
 
     public void OnInventoryEnabled()
@@ -344,7 +344,7 @@ public class InventoryManager : Singleton<InventoryManager>
         _inventory.Add(slotIndex, grabbedItem);
         InventoryUIManager.Instance.SetGridItem(slotIndex);
 
-
+        InventoryUIManager.Instance.UpdateGridItems();
         _grabbedSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
         InventoryUIManager.Instance.UpdateItemDetails(slotIndex);

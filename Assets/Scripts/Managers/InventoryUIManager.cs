@@ -45,6 +45,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _grabbedItemSlot.gameObject.SetActive(false);
         _outlineGlow.gameObject.SetActive(false);
         _previewCamera.gameObject.SetActive(false);
+        SetGridItem(InventoryManager.Instance.GrabbedSlotIndex);
     }
 
     public void OnInventoryEnabled()
