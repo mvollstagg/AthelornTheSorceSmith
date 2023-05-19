@@ -22110,11 +22110,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab22cc3f2fe82db4e84414d2b106a86d, type: 2}
   - {fileID: 11400000, guid: d1682d4c95302a042a54eb1d974deb49, type: 2}
   - {fileID: 11400000, guid: e4de61bdc95234f42a05e63185b31eac, type: 2}
-  - {fileID: 11400000, guid: 505d235012515814eb2faa0abefac784, type: 2}
   - {fileID: 11400000, guid: afa17311a2ff0ab46ac453404e10c717, type: 2}
   - {fileID: 11400000, guid: af645a127184daf4f98e631bdd32c64f, type: 2}
   - {fileID: 11400000, guid: 332af7ab83c31f84187abd1f03cb4c2b, type: 2}
   - {fileID: 11400000, guid: 1209067f74d1da744aa2f1f4f58b4251, type: 2}
+  - {fileID: 11400000, guid: 505d235012515814eb2faa0abefac784, type: 2}
   _inventorySlots: []
   _equipmentSlots: []
 --- !u!114 &1607502146

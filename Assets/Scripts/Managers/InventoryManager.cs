@@ -70,60 +70,65 @@ public class InventoryManager : Singleton<InventoryManager>
     public void AddItem()
     {
         AddItem(_testItems[Random.Range(0, _testItems.Count)], 1);
+        // AddItem(_testItems[17], 20);
         InventoryUIManager.Instance.UpdateGridItems();
     }
         
-    public void AddItem(InventoryItemDataSO item, int amount = 1, int dropIndex = -1)
+    public void AddItem(InventoryItemDataSO item, int amount = 1)
     {
-        Debug.Log($"Adding {amount} {item.name} to inventory.");
-        int remaining = amount;        
+        int remaining = amount;
 
-        // If there is a slot index to drop the item into, try to add it to that slot
-        if (_grabbedSlotIndex == -1)
+        // Look for existing slots that can hold more items if item max stack size is greater than 1
+        if (item.maxStackSize > 1)
         {
-            // Try to add to existing slots
-            foreach (var slot in _inventory.Values)
+            foreach (var slot in _inventory.Where(x => x.Value.Item.code == item.code))
             {
-                // If the slot can't hold more items or it doesn't match the item being added, skip it
-                if (slot.Amount == slot.Item.maxStackSize || slot.Item.code != item.code)
-                    continue;
-
                 // Calculate the amount of items that can be added to the slot without exceeding its max stack size
-                int availableToAdd = slot.Item.maxStackSize - slot.Amount;
+                int availableToAdd = slot.Value.Item.maxStackSize - slot.Value.Amount;
 
-                // If we can add all remaining items to this slot, do so and exit the function
+                // If we can add all remaining items to this slot, do so and exit the loop
                 if (remaining <= availableToAdd)
                 {
-                    slot.Amount += remaining;
+                    slot.Value.Amount += remaining;
                     remaining = 0;
                     break;
                 }
 
-                // Otherwise, fill the slot to its max stack size and continue to the next slot
-                slot.Amount += availableToAdd;
+                // Otherwise, fill the slot to its max stack size
+                slot.Value.Amount += availableToAdd;
                 remaining -= availableToAdd;
             }
-        }        
+        }
 
-        // If there are still items remaining to be added, create new slots for them if there is a free slot
+        // Fill existing slots to their maximum stack size before creating new slots
         while (remaining > 0)
         {
-            // If there are no free slots, exit the function
-            if (_inventory.Count >= _maxNumberOfSlots)
-                break;
+            var existingSlot = _inventory.FirstOrDefault(slot => slot.Value.Item.code == item.code && slot.Value.Amount < slot.Value.Item.maxStackSize);
 
-            int stackCount = Mathf.Min(item.maxStackSize, remaining);
-
-            int index = dropIndex == -1 ? _GetNextSlotIndex() : dropIndex;
-            _inventory.Add(index, new InventorySlot()
+            if (existingSlot.Value != null)
             {
-                Item = item,
-                Amount = stackCount
-            });
+                int availableToAdd = existingSlot.Value.Item.maxStackSize - existingSlot.Value.Amount;
+                int stackCount = Mathf.Min(availableToAdd, remaining);
 
-            InventoryUIManager.Instance.SetGridItem(index);
+                existingSlot.Value.Amount += stackCount;
+                remaining -= stackCount;
+            }
+            else
+            {
+                // If there are no free slots, exit the loop
+                if (_inventory.Count >= _maxNumberOfSlots)
+                    break;
 
-            remaining -= stackCount;
+                int stackCount = Mathf.Min(item.maxStackSize, remaining);
+                
+                _inventory.Add(_GetNextSlotIndex(), new InventorySlot()
+                {
+                    Item = item,
+                    Amount = stackCount
+                });
+
+                remaining -= stackCount;
+            }
         }
 
         // Update total weight of inventory
@@ -134,14 +139,14 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             Debug.Log($"{remaining} {item.name} exceeded the maximum stack size.");
         }
+
+        InventoryUIManager.Instance.UpdateGridItems();
     }
+
     
     public void RemoveItem(int slotIndex, int amount = 1)
     {
-        Debug.Log($"Removing {amount} items from slot {slotIndex}.");
-        if (!_inventory.ContainsKey(slotIndex)) return;
-
-        InventorySlot slot = _inventory[slotIndex];
+        if (!_inventory.TryGetValue(slotIndex, out InventorySlot slot)) return;
 
         if (amount == -1)
             amount = slot.Amount;
@@ -151,15 +156,13 @@ public class InventoryManager : Singleton<InventoryManager>
         if (slot.Amount <= 0)
         {
             _inventory.Remove(slotIndex);
-            InventoryUIManager.Instance.UnsetGridItem(slotIndex);
         }
         else
-        {
-            InventoryUIManager.Instance.SetGridItem(slotIndex);
-        }
+            InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
 
         // Multiply by -1 to remove weight
         InventoryUIManager.Instance.SetInventoryWeight(slot.Item.weight * (slot.Amount >= 0 ? amount : slot.Amount) * -1);
+        InventoryUIManager.Instance.UpdateGridItems();
     }
 
     public void OnDropItemAction()
@@ -221,7 +224,6 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         AddItem(_equipments[slotIndex].Item, 1);
         _equipments.Remove(slotIndex);
-        InventoryUIManager.Instance.UnsetGridItem(slotIndex);
         InventoryUIManager.Instance.UpdateGridItems();
     }
 
@@ -232,41 +234,26 @@ public class InventoryManager : Singleton<InventoryManager>
         // Check if there is an item already grabbed
         if (_grabbedSlotIndex != -1)
         {
-            if (isEquipmentSlot)
+            // If the grabbed item is the same as the one being grabbed, drop it
+            if (_grabbedSlotIndex == slotIndex)
             {
-                // var item = _inventory[_grabbedSlotIndex];
-                // var equipmentSlot = _equipmentsGrid.GetChild(slotIndex).gameObject;
-
-                // if (item.Item.equipmentSlotType == EquipmentSlotType.None)
-                // {
-                //     return;
-                // }
-
-                // if (item.Item.equipmentSlotType == equipmentSlot.GetComponent<EquipmentSlotManager>()._slotType)
-                // {
-                //     _EquipItem(slotIndex, item);
-                // }
+                _grabbedSlotIndex = -1;
+                InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
+                InventoryUIManager.Instance.UpdateGridItems();
+                return;
             }
+            // If the grabbed item is different, swap them
             else
             {
-                // If the grabbed item is the same as the one being grabbed, drop it
-                if (_grabbedSlotIndex == slotIndex)
+                if (_inventory.ContainsKey(slotIndex))
                 {
-                    _DropGrabbedItem(slotIndex);
-                    return;
+                    _SwapItems(_grabbedSlotIndex, slotIndex);
                 }
-                // If the grabbed item is different, swap them
                 else
                 {
-                    if (_inventory.ContainsKey(slotIndex))
-                    {
-                        _SwapItems(_grabbedSlotIndex, slotIndex);
-                    }
-                    else
-                    {
-                        _DropGrabbedItem(slotIndex);
-                    }
+                    _DropGrabbedItem(slotIndex);
                 }
+                InventoryUIManager.Instance.UpdateGridItems();
             }
         }
         // If there is no item grabbed, grab the item
@@ -275,6 +262,7 @@ public class InventoryManager : Singleton<InventoryManager>
             if (_inventory.ContainsKey(slotIndex))
                 _GrabItem(slotIndex);
         }
+
     }
 
     private void _GrabItem(int slotIndex)
@@ -316,41 +304,22 @@ public class InventoryManager : Singleton<InventoryManager>
 
         _grabbedSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-        InventoryUIManager.Instance.SetGridItem(slotIndex);
-        InventoryUIManager.Instance.SetGridItem(grabbedSlotIndex);
         InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
-        InventoryUIManager.Instance.UpdateGridItems();
     }
 
 
     private void _DropGrabbedItem(int slotIndex)
     {
-        if (_grabbedSlotIndex == slotIndex)
-        {
-            // If the grabbed item is dropped back into the same slot, no action is needed
-            _grabbedSlotIndex = -1;
-            InventoryUIManager.Instance.SetGridItem(slotIndex);
-            InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-            InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
-            return;
-        }
-
         InventorySlot grabbedItem = _inventory[_grabbedSlotIndex];
         
         // Update the index of the grabbed item
         _inventory.Remove(_grabbedSlotIndex);
-        InventoryUIManager.Instance.UnsetGridItem(_grabbedSlotIndex);
-
         _inventory.Add(slotIndex, grabbedItem);
-        InventoryUIManager.Instance.SetGridItem(slotIndex);
 
-        InventoryUIManager.Instance.UpdateGridItems();
         _grabbedSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
         InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
     }
-
-
 
     private int _GetNextSlotIndex()
     {

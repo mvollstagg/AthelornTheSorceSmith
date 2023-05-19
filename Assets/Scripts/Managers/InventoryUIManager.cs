@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Scripts.Core;
 using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
@@ -87,6 +88,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void UpdateItemDetails(int slotIndex)
     {
+        _itemDetailsPanel.gameObject.SetActive(false);
         InventorySlot inventorySlot = InventoryManager.Instance.InventoryItems[slotIndex];
         _itemDetailsPanel.Find("ItemPreview").GetComponent<Image>().sprite = inventorySlot.Item.icon;
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
@@ -102,29 +104,29 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void UpdateGridItems()
     {
-        // Keep track of the current slot index
-        int currentSlotIndex = 0;
+        // Get the occupied slot indexes
+        HashSet<int> occupiedIndexes = new HashSet<int>(InventoryManager.Instance.InventoryItems.Keys);
 
-        // Iterate through each slot in the inventory dictionary
-        foreach (KeyValuePair<int, InventorySlot> p in InventoryManager.Instance.InventoryItems)
+        // Get the empty slot indexes
+        List<int> emptySlotIndexes = Enumerable.Range(0, _itemsGrid.childCount)
+            .Except(occupiedIndexes)
+            .ToList();
+
+        // Set grid items for occupied slots
+        foreach (int occupiedIndex in occupiedIndexes)
         {
-            // If the slot index is less than the current slot index, skip it
-            if (p.Key < currentSlotIndex)
-                continue;
-
-            // Set the grid item for the slot
-            SetGridItem(p.Key);
-
-            // Update the current slot index
-            currentSlotIndex = p.Key + 1;
+            SetGridItem(occupiedIndex);
         }
 
-        // Clear any remaining grid items
-        for (int i = currentSlotIndex; i < _itemsGrid.childCount; i++)
-            UnsetGridItem(i);
+        // Unset empty slots
+        foreach (int emptySlotIndex in emptySlotIndexes)
+        {
+            UnsetGridItem(emptySlotIndex);
+        }
     }
 
-    public void SetGridItem(int slotIndex)
+
+    private void SetGridItem(int slotIndex)
     {
         InventorySlot slot = InventoryManager.Instance.InventoryItems[slotIndex];
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
@@ -182,22 +184,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         // }
     }
 
-    public List<int> DistributeItems(int maxStackSize, int amount)
-    {
-        List<int> stackCounts = new List<int>();
-
-        int nStacks = amount / maxStackSize;
-        for (int i = 0; i < nStacks; i++)
-            stackCounts.Add(maxStackSize);
-
-        int remaining = amount % maxStackSize;
-        if (remaining > 0)
-            stackCounts.Add(remaining);
-
-        return stackCounts;
-    }
-
-    public void UnsetGridItem(int slotIndex)
+    private void UnsetGridItem(int slotIndex)
     {
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
 
@@ -213,5 +200,20 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         slotTransform.Find("Icon").gameObject.SetActive(false);
         slotTransform.Find("Rarity").gameObject.SetActive(false);
         slotTransform.Find("Amount").gameObject.SetActive(false);
+    }
+
+    public List<int> DistributeItems(int maxStackSize, int amount)
+    {
+        List<int> stackCounts = new List<int>();
+
+        int nStacks = amount / maxStackSize;
+        for (int i = 0; i < nStacks; i++)
+            stackCounts.Add(maxStackSize);
+
+        int remaining = amount % maxStackSize;
+        if (remaining > 0)
+            stackCounts.Add(remaining);
+
+        return stackCounts;
     }
 }
