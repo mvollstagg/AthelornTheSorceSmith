@@ -5924,7 +5924,7 @@ GameObject:
   - component: {fileID: 392964985}
   - component: {fileID: 392964984}
   m_Layer: 5
-  m_Name: Text
+  m_Name: MoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7168,7 +7168,7 @@ GameObject:
   - component: {fileID: 504037843}
   - component: {fileID: 504037842}
   m_Layer: 5
-  m_Name: Text
+  m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11407,6 +11407,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 809208693}
   m_CullTransparentMesh: 1
+--- !u!4 &817010220 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4437785166918157064, guid: a559ff99e437a7941b3c557eb5bd7f1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3856023287374570886}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &818186236 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2824669795048066471, guid: 12893678bbcb9e0448eec6344e9c14bf,
@@ -21878,6 +21884,7 @@ GameObject:
   - component: {fileID: 1607502140}
   - component: {fileID: 1607502142}
   - component: {fileID: 1607502145}
+  - component: {fileID: 1607502147}
   - component: {fileID: 1607502146}
   m_Layer: 0
   m_Name: GameManagers
@@ -22083,14 +22090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3f9ad74c041704d85f99a914e3e51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemsGrid: {fileID: 259982649}
-  _equipmentsGrid: {fileID: 608168203}
-  _itemDetailsPanel: {fileID: 1687734890}
-  _inventoryWeightText: {fileID: 504037842}
-  _outlineGlow: {fileID: 18086139}
-  _previewCamera: {fileID: 1669172404}
-  _grabbedItemSlot: {fileID: 2884892151221773303}
-  _canvas: {fileID: 1729761762}
   itemHover:
     m_PersistentCalls:
       m_Calls: []
@@ -22134,6 +22133,26 @@ MonoBehaviour:
   _menuPanel: {fileID: 1437524674}
   _tabPanel: {fileID: 684279996}
   _menuOutline: {fileID: 8818740}
+--- !u!114 &1607502147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607502137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33bd4dfe875b50c4baf7d0993f689e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemsGrid: {fileID: 259982649}
+  _equipmentsGrid: {fileID: 608168203}
+  _itemDetailsPanel: {fileID: 1687734890}
+  _inventoryWeightText: {fileID: 504037842}
+  _outlineGlow: {fileID: 18086139}
+  _previewCamera: {fileID: 817010220}
+  _grabbedItemSlot: {fileID: 2884892151221773303}
+  _canvas: {fileID: 1729761762}
 --- !u!1 &1607868493
 GameObject:
   m_ObjectHideFlags: 0
@@ -22822,12 +22841,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2824669795048066471, guid: 12893678bbcb9e0448eec6344e9c14bf,
     type: 3}
   m_PrefabInstance: {fileID: 984772155}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1669172404 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7901156504731726283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3856023287374570886}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1677774688
 GameObject:
