@@ -55,7 +55,6 @@ public class InventoryManager : Singleton<InventoryManager>
         _equipmentSlots = _equipments.Keys.Select(x => new InventoryDetails { Index = x, Name = _equipments[x].Item.name }).ToList();
     }
     
-
     public void OnInventoryDisabled()
     {
         _hoveredSlotIndex = -1;
@@ -76,6 +75,7 @@ public class InventoryManager : Singleton<InventoryManager>
         
     public void AddItem(InventoryItemDataSO item, int amount = 1, int dropIndex = -1)
     {
+        Debug.Log($"Adding {amount} {item.name} to inventory.");
         int remaining = amount;        
 
         // If there is a slot index to drop the item into, try to add it to that slot
@@ -138,6 +138,7 @@ public class InventoryManager : Singleton<InventoryManager>
     
     public void RemoveItem(int slotIndex, int amount = 1)
     {
+        Debug.Log($"Removing {amount} items from slot {slotIndex}.");
         if (!_inventory.ContainsKey(slotIndex)) return;
 
         InventorySlot slot = _inventory[slotIndex];
@@ -149,7 +150,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
         if (slot.Amount <= 0)
         {
-            slot.Amount = 0;
+            _inventory.Remove(slotIndex);
             InventoryUIManager.Instance.UnsetGridItem(slotIndex);
         }
         else
@@ -159,9 +160,6 @@ public class InventoryManager : Singleton<InventoryManager>
 
         // Multiply by -1 to remove weight
         InventoryUIManager.Instance.SetInventoryWeight(slot.Item.weight * (slot.Amount >= 0 ? amount : slot.Amount) * -1);
-
-        if (slot.Amount == 0)
-            _inventory.Remove(slotIndex);
     }
 
     public void OnDropItemAction()
@@ -190,8 +188,7 @@ public class InventoryManager : Singleton<InventoryManager>
             .ThenBy((InventorySlot s) => s.Item.name)
             .ToList();
 
-        Dictionary<int, InventorySlot> newSlots =
-            new Dictionary<int, InventorySlot>();
+        Dictionary<int, InventorySlot> newSlots = new Dictionary<int, InventorySlot>();
         for (int i = 0; i < sortedSlots.Count; i++)
             newSlots.Add(i, sortedSlots[i]);
 
@@ -292,58 +289,68 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _SwapItems(int grabbedSlotIndex, int slotIndex)
     {        
-        InventorySlot grabbedItem = new()
-        {
-            Item = _inventory[_grabbedSlotIndex].Item,
-            Amount = _inventory[_grabbedSlotIndex].Amount
-        };
+        InventorySlot grabbedItem = _inventory[grabbedSlotIndex];
+        InventorySlot swappedItem = _inventory[slotIndex];
 
-        InventorySlot swappedItem = new()
-        {
-            Item = _inventory[slotIndex].Item,
-            Amount = _inventory[slotIndex].Amount
-        };
+        _inventory[grabbedSlotIndex] = swappedItem;
+        _inventory[slotIndex] = grabbedItem;
 
-        RemoveItem(slotIndex, -1);
-        RemoveItem(grabbedSlotIndex, -1);
-        
-        if(grabbedItem.Item.code == swappedItem.Item.code && grabbedItem.Item.maxStackSize > 1)
+        if (grabbedItem.Item.code == swappedItem.Item.code && grabbedItem.Item.maxStackSize > 1)
         {
-            Debug.Log("Same item");
             int totalAmount = grabbedItem.Amount + swappedItem.Amount;
             int stackCount = Mathf.Min(grabbedItem.Item.maxStackSize, totalAmount);
-            AddItem(grabbedItem.Item, stackCount, slotIndex);
-            AddItem(swappedItem.Item, totalAmount - stackCount, grabbedSlotIndex);
+            
+            _inventory[grabbedSlotIndex] = new InventorySlot
+            {
+                Item = grabbedItem.Item,
+                Amount = stackCount
+            };
+            
+            _inventory[slotIndex] = new InventorySlot
+            {
+                Item = swappedItem.Item,
+                Amount = totalAmount - stackCount
+            };
         }
-        else
-        {
-            AddItem(grabbedItem.Item, grabbedItem.Amount, slotIndex);
-            AddItem(swappedItem.Item, swappedItem.Amount, grabbedSlotIndex);
-        }
+
 
         _grabbedSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-        InventoryUIManager.Instance.SetSlotIconOpacity(slotIndex, 1f);
-        InventoryUIManager.Instance.SetSlotIconOpacity(grabbedSlotIndex, 1f);
+        InventoryUIManager.Instance.SetGridItem(slotIndex);
+        InventoryUIManager.Instance.SetGridItem(grabbedSlotIndex);
+        InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
+        InventoryUIManager.Instance.UpdateGridItems();
     }
+
 
     private void _DropGrabbedItem(int slotIndex)
     {
-        InventorySlot droppedItem = new()
+        if (_grabbedSlotIndex == slotIndex)
         {
-            Item = _inventory[_grabbedSlotIndex].Item,
-            Amount = _inventory[_grabbedSlotIndex].Amount
-        };
+            // If the grabbed item is dropped back into the same slot, no action is needed
+            _grabbedSlotIndex = -1;
+            InventoryUIManager.Instance.SetGridItem(slotIndex);
+            InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
+            InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
+            return;
+        }
 
-        RemoveItem(_grabbedSlotIndex, -1);
-        AddItem(droppedItem.Item, droppedItem.Amount, slotIndex);
+        InventorySlot grabbedItem = _inventory[_grabbedSlotIndex];
+        
+        // Update the index of the grabbed item
+        _inventory.Remove(_grabbedSlotIndex);
+        InventoryUIManager.Instance.UnsetGridItem(_grabbedSlotIndex);
+
+        _inventory.Add(slotIndex, grabbedItem);
+        InventoryUIManager.Instance.SetGridItem(slotIndex);
+
 
         _grabbedSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-        
         InventoryUIManager.Instance.UpdateItemDetails(slotIndex);
-        InventoryUIManager.Instance.SetSlotIconOpacity(slotIndex, 1f);
     }
+
+
 
     private int _GetNextSlotIndex()
     {
