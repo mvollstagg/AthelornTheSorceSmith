@@ -30,6 +30,8 @@ public class InventoryManager : Singleton<InventoryManager>
     
     public Dictionary<int, InventorySlot> InventoryItems => _inventory;
     public Dictionary<int, InventorySlot> EquipmentItems => _equipments;
+    public int GrabbedSlotIndex => _grabbedSlotIndex;
+    public int HoveredSlotIndex => _hoveredSlotIndex;
 
     private void Start()
     {
@@ -43,6 +45,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _OnItemHovered(int slotIndex, bool isEquipmentSlot)
     {
+        _hoveredSlotIndex = slotIndex;
         InventoryUIManager.Instance.OnItemHovered(slotIndex);
     }
 

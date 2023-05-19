@@ -21,8 +21,6 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     [HideInInspector] public int HoveredItemSlot => _outlineGlow.parent.GetSiblingIndex();
     
 
-    private int _hoveredSlotIndex = -1;
-    private int _grabbedSlotIndex = -1;
     private float _inventoryTotalWeight = 0f;
 
     public void SetGrabbedItemSlotStatus(bool status)
@@ -33,7 +31,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     
     private void LateUpdate()
     {
-        if (_grabbedSlotIndex != -1)
+        if (InventoryManager.Instance.GrabbedSlotIndex != -1)
         {
             var _mousePosition = Input.mousePosition;
             var _newPosition = Vector2.zero;
@@ -44,8 +42,6 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void OnInventoryDisabled()
     {
-        _hoveredSlotIndex = -1;
-        _grabbedSlotIndex = -1;
         _grabbedItemSlot.gameObject.SetActive(false);
         _outlineGlow.gameObject.SetActive(false);
         _previewCamera.gameObject.SetActive(false);
@@ -74,7 +70,6 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void OnItemHovered(int slotIndex)
     {
-        _hoveredSlotIndex = slotIndex;
         _outlineGlow.transform.SetParent(_itemsGrid.GetChild(slotIndex));
         _outlineGlow.anchoredPosition = Vector2.zero;
         _outlineGlow.gameObject.SetActive(true);
