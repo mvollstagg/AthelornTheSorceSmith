@@ -33,7 +33,7 @@ public class EquipmentSlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // InventoryManager.Instance._UnequipItem(_slotIndex);
+            InventoryManager.Instance.UnequipItemQuick(_slotIndex);
         }
     }
 }

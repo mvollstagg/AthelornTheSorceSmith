@@ -239,6 +239,14 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateEquipmentGrids();
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
+    
+    public void UnequipItemQuick(int slotIndex)
+    {
+        if (!_equipments.ContainsKey(slotIndex))
+            return;
+
+        _UnequipItem(slotIndex);
+    }
 
     private void _UnequipItem(int slotIndex)
     {
@@ -256,11 +264,22 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         var equipmentSlotTransforms = InventoryUIManager.Instance._equipmentsGrid.GetComponentsInChildren<EquipmentSlotManager>(true);
 
-        int availableSlotIndex = equipmentSlotTransforms
-            .Select((equipmentSlot, index) => new { EquipmentSlot = equipmentSlot, Index = index })
-            .FirstOrDefault(x => x.EquipmentSlot._slotType == item.Item.equipmentSlotType)?.Index ?? -1;
+        var matchingSlots = equipmentSlotTransforms
+                                .Select((equipmentSlot, index) => new { EquipmentSlot = equipmentSlot, Index = index })
+                                .Where(x => x.EquipmentSlot._slotType == item.Item.equipmentSlotType)
+                                .Select(x => x.Index)
+                                .ToList();
+        
+        if (matchingSlots.Count >= 2)
+        {
+            // If there are two matching slots, check if one of them is empty. If so, return the empty slot. If not return the first slot
+            if (_equipments.ContainsKey(matchingSlots[0]))
+                return matchingSlots[1];
+            else
+                return matchingSlots[0];
+        }
 
-        return availableSlotIndex;
+        return matchingSlots.Count > 0 ? matchingSlots[0] : -1;
     }
 
 

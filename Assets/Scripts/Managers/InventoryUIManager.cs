@@ -52,6 +52,8 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void OnInventoryEnabled()
     {
+        UpdateEquipmentGrids();
+        UpdateInventoryGrids();
         _outlineGlow.gameObject.SetActive(true);
         _previewCamera.gameObject.SetActive(true);
     }
