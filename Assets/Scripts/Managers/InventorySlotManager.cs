@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,23 +15,23 @@ public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        InventoryManager.Instance.itemHover.Invoke(_slotIndex, IS_EQUIPMENT);
+        InventoryUIManager.Instance.OnInventoryItemHovered(_slotIndex);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        InventoryManager.Instance.itemHover.Invoke(_slotIndex, IS_EQUIPMENT);
+        InventoryUIManager.Instance.OnInventoryItemHovered(_slotIndex);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            InventoryManager.Instance.itemGrab.Invoke(_slotIndex, IS_EQUIPMENT);
+            InventoryManager.Instance.GrabInventoryItem(_slotIndex);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // InventoryManager.Instance._EquipItem(_slotIndex);
+            InventoryManager.Instance.EquipItemQuick(_slotIndex);
         }
     }
 }

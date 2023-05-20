@@ -22090,12 +22090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3f9ad74c041704d85f99a914e3e51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemHover:
-    m_PersistentCalls:
-      m_Calls: []
-  itemGrab:
-    m_PersistentCalls:
-      m_Calls: []
   _testItems:
   - {fileID: 11400000, guid: 4aa14e8d0190880469c871ea3163189b, type: 2}
   - {fileID: 11400000, guid: 53a93f9d0d7de5841acbb03c7115560e, type: 2}
@@ -29810,7 +29804,7 @@ PrefabInstance:
     - target: {fileID: 5681218512026505263, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6598279037706970283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
@@ -29820,7 +29814,7 @@ PrefabInstance:
     - target: {fileID: 6598279037706970283, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8880082898184117750, guid: a559ff99e437a7941b3c557eb5bd7f1b,
         type: 3}

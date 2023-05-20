@@ -17,23 +17,23 @@ public class EquipmentSlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        InventoryManager.Instance.itemHover.Invoke(_slotIndex, IS_EQUIPMENT);
+        InventoryUIManager.Instance.OnEquipmentItemHovered(_slotIndex);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        InventoryManager.Instance.itemHover.Invoke(_slotIndex, IS_EQUIPMENT);
+        InventoryUIManager.Instance.OnEquipmentItemHovered(_slotIndex);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            InventoryManager.Instance.itemGrab.Invoke(_slotIndex, IS_EQUIPMENT);
+            InventoryManager.Instance.GrabEquipmentItem(_slotIndex);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            InventoryManager.Instance._UnequipItem(_slotIndex);
+            // InventoryManager.Instance._UnequipItem(_slotIndex);
         }
     }
 }
