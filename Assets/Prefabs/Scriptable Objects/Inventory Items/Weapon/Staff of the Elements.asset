@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
-  m_Name: Weapon
+  m_Name: Staff of the Elements
   m_EditorClassIdentifier: 
   code: LEGENDARY_STAFF
   itemName: Staff of the Elements

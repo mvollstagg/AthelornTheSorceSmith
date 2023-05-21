@@ -149,6 +149,7 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
 
+    
     // ! ######## Input Methods ########
     public void OnDropItemAction()
     {
@@ -184,6 +185,7 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
 
+    
     // ! ######## Equipment ########
     public void GrabEquipmentItem(int slotIndex)
     {
@@ -207,6 +209,27 @@ public class InventoryManager : Singleton<InventoryManager>
                 InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
                 InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
             }
+            else if (_grabbedEquipmentItemSlotIndex != -1)
+            {
+                // If there is a different item already grabbed and the slot is same slot type, swap the items
+                if (_equipments[_grabbedEquipmentItemSlotIndex].Item.equipmentSlotType == InventoryUIManager.Instance.GetEquipmentSlotType(slotIndex))
+                {
+                    // Check if slot is empty. If so then move the item to the slot if not then swap the items
+                    if (!_equipments.ContainsKey(slotIndex))
+                    {
+                        _equipments.Add(slotIndex, _equipments[_grabbedEquipmentItemSlotIndex]);
+                        _equipments.Remove(_grabbedEquipmentItemSlotIndex);
+                        _grabbedEquipmentItemSlotIndex = -1;
+                        // InventoryUIManager.Instance.SetEquipmentSlotIconOpacity(_grabbedInventoryItemSlotIndex, 1f);
+                        InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
+                        InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
+                    }
+                    else
+                    {
+                        _SwapEquipmentItems(_grabbedEquipmentItemSlotIndex, slotIndex);
+                    }
+                }
+            }
             else if (_equipments.ContainsKey(slotIndex))
             {
                 // If there is no item grabbed, grab the item
@@ -222,13 +245,24 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateEquipmentGrids();
     }
 
+    // TODO: Rename it to QuickItemAction
     public void EquipItemQuick(int slotIndex)
     {
         if (!_inventory.ContainsKey(slotIndex))
             return;
 
-        InventorySlot item = _inventory[slotIndex];
-        _EquipItemQuick(slotIndex, _GetAvailableEquipmentSlot(item), item);
+        InventorySlot InventorySlot = _inventory[slotIndex];
+
+        // Check if the item is an equipable item or consumable or not
+        if (InventorySlot.Item.type == ItemType.Armor || InventorySlot.Item.type == ItemType.Weapon)
+        {
+            _EquipItemQuick(slotIndex, _GetAvailableEquipmentSlot(InventorySlot), InventorySlot);
+        }
+        else if (InventorySlot.Item.type == ItemType.Potion || InventorySlot.Item.type == ItemType.Food)
+        {
+            Debug.Log("Consumable item");
+        }
+        else return;
     }
 
     private void _EquipItemQuick(int fromEquipSlotIndex, int toEquipSlotIndex, InventorySlot item)
@@ -297,48 +331,48 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _SwapEquipmentItems(int grabbedSlotIndex, int slotIndex)
     {        
-        InventorySlot grabbedItem = _inventory[grabbedSlotIndex];
-        InventorySlot swappedItem = _inventory[slotIndex];
+        InventorySlot grabbedItem = _equipments[grabbedSlotIndex];
+        InventorySlot swappedItem = _equipments[slotIndex];
 
-        _inventory[grabbedSlotIndex] = swappedItem;
-        _inventory[slotIndex] = grabbedItem;
+        _equipments[grabbedSlotIndex] = swappedItem;
+        _equipments[slotIndex] = grabbedItem;
 
         if (grabbedItem.Item.code == swappedItem.Item.code && grabbedItem.Item.maxStackSize > 1)
         {
             int totalAmount = grabbedItem.Amount + swappedItem.Amount;
             int stackCount = Mathf.Min(grabbedItem.Item.maxStackSize, totalAmount);
             
-            _inventory[grabbedSlotIndex] = new InventorySlot
+            _equipments[grabbedSlotIndex] = new InventorySlot
             {
                 Item = grabbedItem.Item,
                 Amount = stackCount
             };
             
-            _inventory[slotIndex] = new InventorySlot
+            _equipments[slotIndex] = new InventorySlot
             {
                 Item = swappedItem.Item,
                 Amount = totalAmount - stackCount
             };
         }
 
-
-        _grabbedInventoryItemSlotIndex = -1;
+        _grabbedEquipmentItemSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-        InventoryUIManager.Instance.ShowInventoryItemDetails(slotIndex);
+        InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
     }
 
-    // private void _DropGrabbedEquipmentItem(int slotIndex)
-    // {
-    //     InventorySlot grabbedItem = _equipments[_grabbedEquipmentItemSlotIndex];
-        
-    //     // Update the index of the grabbed item
-    //     _inventory.Remove(_grabbedInventoryItemSlotIndex);
-    //     _inventory.Add(slotIndex, grabbedItem);
+    private void _DropGrabbedEquipmentItem(int fromSlotIndex, int toSlotIndex, InventorySlot item)
+    {
+        // Update the index of the grabbed item
+        _equipments.Remove(fromSlotIndex);
+        // Check if clicked inventory slot is empty. If not then find first avaliable slot
+        var avaliableIndex = _inventory.ContainsKey(toSlotIndex) ? _GetNextSlotIndex() : toSlotIndex;
+        _inventory.Add(avaliableIndex, item);
 
-    //     _grabbedInventoryItemSlotIndex = -1;
-    //     InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-    //     InventoryUIManager.Instance.ShowInventoryItemDetails(slotIndex);
-    // }
+        _grabbedInventoryItemSlotIndex = -1;
+        _grabbedEquipmentItemSlotIndex = -1;
+        InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
+        InventoryUIManager.Instance.ShowInventoryItemDetails(avaliableIndex);
+    }
 
     private int _GetAvailableEquipmentSlot(InventorySlot item)
     {
@@ -361,9 +395,6 @@ public class InventoryManager : Singleton<InventoryManager>
 
         return matchingSlots.Count > 0 ? matchingSlots[0] : -1;
     }
-
-
-
 
 
     // ! ######## Inventory ########
@@ -452,20 +483,6 @@ public class InventoryManager : Singleton<InventoryManager>
         _grabbedInventoryItemSlotIndex = -1;
         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
         InventoryUIManager.Instance.ShowInventoryItemDetails(slotIndex);
-    }
-
-    private void _DropGrabbedEquipmentItem(int fromSlotIndex, int toSlotIndex, InventorySlot item)
-    {
-        // Update the index of the grabbed item
-        _equipments.Remove(fromSlotIndex);
-        // Check if clicked inventory slot is empty. If not then find first avaliable slot
-        var avaliableIndex = _inventory.ContainsKey(toSlotIndex) ? _GetNextSlotIndex() : toSlotIndex;
-        _inventory.Add(avaliableIndex, item);
-
-        _grabbedInventoryItemSlotIndex = -1;
-        _grabbedEquipmentItemSlotIndex = -1;
-        InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
-        InventoryUIManager.Instance.ShowInventoryItemDetails(avaliableIndex);
     }
 
     private int _GetNextSlotIndex()

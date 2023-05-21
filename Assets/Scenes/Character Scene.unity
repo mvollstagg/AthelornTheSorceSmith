@@ -22090,6 +22090,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3f9ad74c041704d85f99a914e3e51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grabbedInventoryItemSlotIndex: -1
+  _grabbedEquipmentItemSlotIndex: -1
   _testItems:
   - {fileID: 11400000, guid: 4aa14e8d0190880469c871ea3163189b, type: 2}
   - {fileID: 11400000, guid: 53a93f9d0d7de5841acbb03c7115560e, type: 2}
@@ -22109,6 +22111,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 332af7ab83c31f84187abd1f03cb4c2b, type: 2}
   - {fileID: 11400000, guid: 1209067f74d1da744aa2f1f4f58b4251, type: 2}
   - {fileID: 11400000, guid: 505d235012515814eb2faa0abefac784, type: 2}
+  - {fileID: 11400000, guid: 17ee598954b62924396327fb49a9cb49, type: 2}
   _inventorySlots: []
   _equipmentSlots: []
 --- !u!114 &1607502146

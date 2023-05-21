@@ -8,6 +8,10 @@ namespace Scripts.Entities.Enum
         Weapon,
         [Description("Armor")]
         Armor,
+        [Description("Potion")]
+        Potion,
+        [Description("Food")]
+        Food,
         [Description("Component")]
         Component,
         [Description("Miscellaneous")]
