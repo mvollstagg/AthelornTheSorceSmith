@@ -25,13 +25,18 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     
     private void LateUpdate()
     {
-        if (InventoryManager.Instance.GrabbedSlotIndex != -1)
+        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1)
         {
             var _mousePosition = Input.mousePosition;
             var _newPosition = Vector2.zero;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, _mousePosition, _canvas.worldCamera, out _newPosition);
             _grabbedItemSlot.position = _canvas.transform.TransformPoint(_newPosition + new Vector2(0, -100f));
         }
+    }
+
+    public EquipmentSlotType GetEquipmentSlotType(int slotIndex)
+    {
+        return _equipmentsGrid.GetChild(slotIndex).GetComponent<EquipmentSlotManager>()._slotType;
     }
 
     public void SetGrabbedItemSlotStatus(bool status)
@@ -44,9 +49,13 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _grabbedItemSlot.gameObject.SetActive(false);
         _outlineGlow.gameObject.SetActive(false);
         _previewCamera.gameObject.SetActive(false);
-        if (InventoryManager.Instance.GrabbedSlotIndex != -1)
+        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1)
         {
-            SetInventoryGridItem(InventoryManager.Instance.GrabbedSlotIndex);
+            SetInventoryGridItem(InventoryManager.Instance.GrabbedInventoryItemSlotIndex);
+        }
+        if (InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1)
+        {
+            SetEquipmentGridItem(InventoryManager.Instance.GrabbedEquipmentItemSlotIndex);
         }
     }
 
@@ -58,9 +67,18 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _previewCamera.gameObject.SetActive(true);
     }
 
-    public void SetSlotIconOpacity(int slotIndex, float opacity)
+    public void SetInventorySlotIconOpacity(int slotIndex, float opacity)
     {
         _itemsGrid
+        .GetChild(slotIndex)
+        .Find("Icon")
+        .GetComponent<Image>()
+        .color = new Color(1f, 1f, 1f, opacity);
+    }
+
+    public void SetEquipmentSlotIconOpacity(int slotIndex, float opacity)
+    {
+        _equipmentsGrid
         .GetChild(slotIndex)
         .Find("Icon")
         .GetComponent<Image>()

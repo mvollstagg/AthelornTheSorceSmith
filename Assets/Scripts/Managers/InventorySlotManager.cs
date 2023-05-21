@@ -31,6 +31,7 @@ public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
+            if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1) return;
             InventoryManager.Instance.EquipItemQuick(_slotIndex);
         }
     }
