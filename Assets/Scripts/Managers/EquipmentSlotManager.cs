@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Scripts.Entities.Enum;
+using Scripts.Entities.Class;
 
 public class EquipmentSlotManager : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IPointerClickHandler
 {
@@ -17,11 +18,14 @@ public class EquipmentSlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemHover });
         InventoryUIManager.Instance.OnEquipmentItemHovered(_slotIndex);
     }
 
+
     public void OnSelect(BaseEventData eventData)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemHover });
         InventoryUIManager.Instance.OnEquipmentItemHovered(_slotIndex);
     }
 

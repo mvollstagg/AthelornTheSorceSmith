@@ -21886,6 +21886,7 @@ GameObject:
   - component: {fileID: 1607502145}
   - component: {fileID: 1607502147}
   - component: {fileID: 1607502146}
+  - component: {fileID: 1607502148}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -22150,6 +22151,26 @@ MonoBehaviour:
   _previewCamera: {fileID: 817010220}
   _grabbedItemSlot: {fileID: 2884892151221773303}
   _canvas: {fileID: 1729761762}
+--- !u!114 &1607502148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607502137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58aeda96645968a4a93b1b8979aad007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffects:
+  - {fileID: 8300000, guid: f847b736c2c155740b415ba4cac3cdb3, type: 3}
+  - {fileID: 8300000, guid: eeb55285cd292e54587b4a3185e7a6f1, type: 3}
+  - {fileID: 8300000, guid: 2a6de03a9c2e5de40a2aa952a27ec219, type: 3}
+  - {fileID: 8300000, guid: 757590b4144582540ab65fdcfbbd57b8, type: 3}
+  - {fileID: 8300000, guid: 9944bfd6055a59d489e7a2a7e375e646, type: 3}
+  - {fileID: 8300000, guid: b10b50e64d391904295ccb0f14427a56, type: 3}
+  - {fileID: 8300000, guid: 8fcbba8053b148d4aa842ac8705c41ed, type: 3}
 --- !u!1 &1607868493
 GameObject:
   m_ObjectHideFlags: 0

@@ -158,6 +158,7 @@ public class InventoryManager : Singleton<InventoryManager>
             return;
 
         RemoveItem(selectedSlotIndex);
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
     public void OnDropItemStackAction()
@@ -167,6 +168,7 @@ public class InventoryManager : Singleton<InventoryManager>
             return;
 
         RemoveItem(selectedSlotIndex, -1);
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
     public void OnSortInventoryAction()
@@ -232,6 +234,8 @@ public class InventoryManager : Singleton<InventoryManager>
             }
             else if (_equipments.ContainsKey(slotIndex))
             {
+                EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemGrab });
+
                 // If there is no item grabbed, grab the item
                 _grabbedEquipmentItemSlotIndex = slotIndex;
                 InventorySlot inventorySlot = _equipments[slotIndex];
@@ -267,6 +271,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _EquipItemQuick(int fromEquipSlotIndex, int toEquipSlotIndex, InventorySlot item)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemEquip });
+
         // Check if the slot is empty. if not empty, unequip the item first before equipping the new one
         if (_equipments.ContainsKey(toEquipSlotIndex))
             _UnequipItem(toEquipSlotIndex);
@@ -284,6 +290,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _EquipItemDrag(int fromEquipSlotIndex, int toEquipSlotIndex, InventorySlot item)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemEquip });
+
         // Check if grabbed Inventory item slot type and equipment slot type are the same
         if (item.Item.equipmentSlotType != InventoryUIManager.Instance.GetEquipmentSlotType(toEquipSlotIndex))
             return;
@@ -319,6 +327,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _UnequipItem(int slotIndex)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemUnequip });
+
         _inventory.Add(_GetNextSlotIndex(), new InventorySlot()
         {
             Item = _equipments[slotIndex].Item,
@@ -362,6 +372,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void _DropGrabbedEquipmentItem(int fromSlotIndex, int toSlotIndex, InventorySlot item)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemUnequip });
+
         // Update the index of the grabbed item
         _equipments.Remove(fromSlotIndex);
         // Check if clicked inventory slot is empty. If not then find first avaliable slot
@@ -427,6 +439,8 @@ public class InventoryManager : Singleton<InventoryManager>
             }
             else if (_inventory.ContainsKey(slotIndex))
             {
+                EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemGrab });
+
                 // If there is no item grabbed, grab the item
                 _grabbedInventoryItemSlotIndex = slotIndex;
                 InventorySlot inventorySlot = _inventory[slotIndex];

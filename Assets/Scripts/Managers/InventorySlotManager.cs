@@ -1,3 +1,5 @@
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,11 +17,13 @@ public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemHover });
         InventoryUIManager.Instance.OnInventoryItemHovered(_slotIndex);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
+        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemHover });
         InventoryUIManager.Instance.OnInventoryItemHovered(_slotIndex);
     }
 
