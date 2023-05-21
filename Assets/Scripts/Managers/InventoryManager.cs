@@ -237,7 +237,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 InventorySlot inventorySlot = _equipments[slotIndex];
                 InventoryUIManager.Instance.SetGrabItemSlot(inventorySlot);
                 InventoryUIManager.Instance.SetGrabbedItemSlotStatus(true);
-                // InventoryUIManager.Instance.SetEquipmentSlotIconOpacity(_grabbedInventoryItemSlotIndex, 0.25f);
+                InventoryUIManager.Instance.SetEquipmentSlotIconOpacity(_grabbedEquipmentItemSlotIndex, 0.25f);
             }
         }
 

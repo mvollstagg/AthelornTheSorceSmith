@@ -207,7 +207,8 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
         slotTransform.Find("Icon").GetComponent<Image>().sprite = slot.Item.icon;
         slotTransform.Find("Icon").gameObject.SetActive(true);
-        slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != slotIndex)
+            slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         if (slot.Amount > 1)
         {
             slotTransform.Find("Amount").GetComponent<TextMeshProUGUI>().text = slot.Amount.ToString();
@@ -232,9 +233,11 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     {
         InventorySlot slot = InventoryManager.Instance.EquipmentItems[slotIndex];
         Transform slotTransform = _equipmentsGrid.GetChild(slotIndex);
+        slotTransform.Find("Background").GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
         slotTransform.Find("Icon").GetComponent<Image>().sprite = slot.Item.icon;
         slotTransform.Find("Icon").gameObject.SetActive(true);
-        slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        if (InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != slotIndex)
+            slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         if (slot.Item.rarity != ItemRarity.Common)
         {
             slotTransform.Find("Rarity").GetComponent<Image>().color = ItemRarityColors.GetColor(slot.Item.rarity);
