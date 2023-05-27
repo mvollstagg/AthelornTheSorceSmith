@@ -36,8 +36,8 @@ namespace Scripts.Entities.Enum
         Stamina,
         [Description("Energy")]
         Energy,
-        [Description("Defense")]
-        Defense,
+        [Description("Defence")]
+        Defence,
         [Description("Attack")]
         Attack,
         [Description("Damage")]
@@ -50,7 +50,7 @@ namespace Scripts.Entities.Enum
         MagicResistance,
         [Description("Magic Power")]
         MagicPower,
-        [Description("Magic Defense")]
+        [Description("Magic Defence")]
         MagicDefense,
         [Description("Magic Damage")]
         MagicDamage,
@@ -62,7 +62,7 @@ namespace Scripts.Entities.Enum
         PhysicalResistance,
         [Description("Physical Power")]
         PhysicalPower,
-        [Description("Physical Defense")]
+        [Description("Physical Defence")]
         PhysicalDefense,
         [Description("Physical Damage")]
         PhysicalDamage,

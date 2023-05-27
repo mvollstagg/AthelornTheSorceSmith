@@ -9,6 +9,20 @@ public class LevelDataSO : ScriptableObject
 {
     public List<ExperienceLevel> levels = new List<ExperienceLevel>();
 
+    public int GetRequiredExperience(int level)
+    {
+        // Assuming your LevelDataSO has a List<ExperienceLevel> called 'levels'
+        if (level > 0 && level <= levels.Count)
+        {
+            return levels[level - 1].requiredExperience;
+        }
+        else
+        {
+            // Return a default value or handle the case when the level is out of range
+            return 0;
+        }
+    }
+
     // Custom editor script to add levels in the Inspector
     #if UNITY_EDITOR
     [CustomEditor(typeof(LevelDataSO))]
