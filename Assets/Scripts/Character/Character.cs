@@ -13,6 +13,7 @@ public class Character : Singleton<Character>
     #endregion
 
     #region Close Public Variables
+    [SerializeField] private LevelDataSO _levelData;
     #endregion
 
     #region Private Variables
