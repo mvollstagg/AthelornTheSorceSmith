@@ -263,8 +263,8 @@ public class InventoryManager : Singleton<InventoryManager>
             _EquipItemQuick(slotIndex, _GetAvailableEquipmentSlot(InventorySlot), InventorySlot);
         }
         else if (InventorySlot.Item.type == ItemType.Potion || InventorySlot.Item.type == ItemType.Food)
-        {
-            Debug.Log("Consumable item");
+        {            Character.Instance.ConsumeItem(InventorySlot.Item);
+            RemoveItem(slotIndex);
         }
         else return;
     }

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5740c49157cb94eaf9a8a01bdf65d9, type: 3}
+  m_Name: Potion of Endurance
+  m_EditorClassIdentifier: 
+  code: STAMINA_POTION
+  itemName: Potion of Endurance
+  description: A revitalizing potion that boosts stamina.
+  icon: {fileID: 21300000, guid: 4e8b35477a7fb5a46870c1973a523722, type: 3}
+  weight: 0.25
+  price: 70
+  maxStackSize: 20
+  durability: 100
+  rarity: 0
+  type: 2
+  equipmentSlotType: 12
+  traits:
+  - Type: 14
+    Status: 0
+    Value: 20

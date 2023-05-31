@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a928574b8716a43accaddfb62a0a9f, type: 3}
   m_Name: CharacterDataSO
   m_EditorClassIdentifier: 
-  strength: 10
-  dexterity: 5
-  intelligence: 10
-  speed: 6
-  vitality: 10
-  endurance: 5
+  strength: 22
+  dexterity: 4
+  intelligence: 17
+  speed: 8
+  vitality: 27
+  endurance: 21

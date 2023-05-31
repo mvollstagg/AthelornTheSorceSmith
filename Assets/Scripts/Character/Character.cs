@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Scripts.Core;
 using UnityEngine;
+using AthelornTheSorceSmith.Assets.Scripts.Core;
+using Scripts.Entities.Enum;
 
-public class Character : Singleton<Character>
+public class Character : Singleton<Character>, ICharacter
 {
     #region Public Variables
     [HideInInspector]
@@ -25,12 +27,38 @@ public class Character : Singleton<Character>
     #region Private Variables
     
     #endregion
+
+    public void ConsumeItem(InventoryItemDataSO item)
+    {
+        if (item.type == ItemType.Potion || item.type == ItemType.Food)
+        {
+            foreach (var trait in item.traits)
+            {
+                var traitStatusMultiplier = trait.Status == TraitStatus.Positive ? 1 : -1;
+                if (trait.Type == TraitType.Health)
+                {
+                    health += trait.Value * traitStatusMultiplier;
+                    health = Mathf.Clamp(health, 0, _characterData.maxHealth);
+                }
+                else if (trait.Type == TraitType.Mana)
+                {
+                    mana += trait.Value * traitStatusMultiplier;
+                    mana = Mathf.Clamp(mana, 0, _characterData.maxMana);
+                }
+                else if (trait.Type == TraitType.Stamina)
+                {
+                    stamina += trait.Value * traitStatusMultiplier;
+                    stamina = Mathf.Clamp(stamina, 0, _characterData.maxStamina);
+                }
+            }
+        }
+    }
     
     private void Awake()
     {
-        health = _characterData.maxHealth;
-        mana = _characterData.maxMana;
-        stamina = _characterData.maxStamina;
+        health = _characterData.maxHealth / 2;
+        mana = _characterData.maxMana / 2;
+        stamina = _characterData.maxStamina / 2;
 
         // get a reference to our main camera
         if (_mainCamera == null)
