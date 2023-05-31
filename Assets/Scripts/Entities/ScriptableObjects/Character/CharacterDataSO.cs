@@ -21,6 +21,11 @@ public class CharacterDataSO : ScriptableObject
     public int attack { get; private set; }     // Attack power
     public int defence { get; private set; }    // Defence power
 
+    void OnEnable()
+    {
+        CalculateDerivedStats();
+    }
+
     // Calculate and update the derived stats
     public void CalculateDerivedStats()
     {
