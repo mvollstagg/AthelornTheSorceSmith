@@ -20,6 +20,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     [SerializeField] private Canvas _canvas;
     [HideInInspector] public int ItemGridCount => _itemsGrid.childCount;
     [HideInInspector] public int HoveredItemSlot => _outlineGlow.parent.GetSiblingIndex();
+    [HideInInspector] public HoveredItemSlotType HoveredItemSlotType;
     private float _inventoryTotalWeight = 0f;
 
     
@@ -93,6 +94,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void OnInventoryItemHovered(int slotIndex)
     {
+        HoveredItemSlotType = HoveredItemSlotType.Inventory;
         _outlineGlow.transform.SetParent(_itemsGrid.GetChild(slotIndex));
         _outlineGlow.anchoredPosition = Vector2.zero;
         _outlineGlow.gameObject.SetActive(true);
@@ -109,6 +111,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void OnEquipmentItemHovered(int slotIndex)
     {
+        HoveredItemSlotType = HoveredItemSlotType.Equipment;
         _outlineGlow.transform.SetParent(_equipmentsGrid.GetChild(slotIndex));
         _outlineGlow.anchoredPosition = Vector2.zero;
         _outlineGlow.gameObject.SetActive(true);

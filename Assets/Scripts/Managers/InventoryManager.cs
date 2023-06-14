@@ -129,7 +129,7 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
 
-    public void RemoveItem(int slotIndex, int amount = 1)
+    public void RemoveInventoryItem(int slotIndex, int amount = 1)
     {
         if (!_inventory.TryGetValue(slotIndex, out InventorySlot slot)) return;
 
@@ -149,15 +149,38 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
 
+    public void RemoveEquipmentItem(int slotIndex)
+    {
+        if (!_equipments.TryGetValue(slotIndex, out InventorySlot slot)) return;
+
+        _equipments.Remove(slotIndex);
+
+        InventoryUIManager.Instance.SetInventoryWeight(slot.Item.weight * -1);
+        InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
+        InventoryUIManager.Instance.UpdateEquipmentGrids();
+    }
+
     
     // ! ######## Input Methods ########
     public void OnDropItemAction()
     {
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
-        if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
-            return;
 
-        RemoveItem(selectedSlotIndex);
+        if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Inventory)
+        {
+            if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
+                return;
+
+            RemoveInventoryItem(selectedSlotIndex);
+        }
+        else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
+        {
+            if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
+                return;
+            
+            RemoveEquipmentItem(selectedSlotIndex);
+        }
+
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
@@ -167,7 +190,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
             return;
 
-        RemoveItem(selectedSlotIndex, -1);
+        RemoveInventoryItem(selectedSlotIndex, -1);
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
@@ -249,8 +272,7 @@ public class InventoryManager : Singleton<InventoryManager>
         InventoryUIManager.Instance.UpdateEquipmentGrids();
     }
 
-    // TODO: Rename it to QuickItemAction
-    public void EquipItemQuick(int slotIndex)
+    public void QuickItemAction(int slotIndex)
     {
         if (!_inventory.ContainsKey(slotIndex))
             return;
@@ -260,16 +282,16 @@ public class InventoryManager : Singleton<InventoryManager>
         // Check if the item is an equipable item or consumable or not
         if (InventorySlot.Item.type == ItemType.Armor || InventorySlot.Item.type == ItemType.Weapon)
         {
-            _EquipItemQuick(slotIndex, _GetAvailableEquipmentSlot(InventorySlot), InventorySlot);
+            _QuickItemAction(slotIndex, _GetAvailableEquipmentSlot(InventorySlot), InventorySlot);
         }
         else if (InventorySlot.Item.type == ItemType.Potion || InventorySlot.Item.type == ItemType.Food)
         {            Character.Instance.ConsumeItem(InventorySlot.Item);
-            RemoveItem(slotIndex);
+            RemoveInventoryItem(slotIndex);
         }
         else return;
     }
 
-    private void _EquipItemQuick(int fromEquipSlotIndex, int toEquipSlotIndex, InventorySlot item)
+    private void _QuickItemAction(int fromEquipSlotIndex, int toEquipSlotIndex, InventorySlot item)
     {
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemEquip });
 
