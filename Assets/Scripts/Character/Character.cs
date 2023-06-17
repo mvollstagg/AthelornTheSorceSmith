@@ -78,6 +78,7 @@ public class Character : Singleton<Character>, ICharacter
     }
 }
 
+// TODO: Move it to Entities
 public class CharacterStat
 {
     public string name;

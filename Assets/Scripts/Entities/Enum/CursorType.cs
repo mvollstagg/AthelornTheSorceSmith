@@ -6,6 +6,7 @@ namespace Scripts.Entities.Enum
         Enter,
         Sell,
         Pointer,
-        Build
+        Build,
+        Loot,
     }
 }

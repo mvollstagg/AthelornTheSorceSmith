@@ -171,6 +171,7 @@ public class InventoryManager : Singleton<InventoryManager>
             if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
                 return;
 
+            LootManager.Instance.DropItem(_inventory[selectedSlotIndex].Item);
             RemoveInventoryItem(selectedSlotIndex);
         }
         else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
@@ -180,6 +181,7 @@ public class InventoryManager : Singleton<InventoryManager>
             
             RemoveEquipmentItem(selectedSlotIndex);
         }
+
 
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }

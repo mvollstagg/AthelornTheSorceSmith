@@ -196,5 +196,10 @@ public class InputManager : Singleton<InputManager>
 		// InventoryManager.Instance.itemGrab.Invoke();
 	}
 
+	public void OnInteract(InputValue value)
+	{
+		CharacterInteraction.Instance.Interact();
+	}
+
 	#endregion
 }

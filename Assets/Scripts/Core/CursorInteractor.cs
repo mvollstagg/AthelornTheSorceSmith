@@ -13,13 +13,28 @@ public class CursorInteractor : MonoBehaviour, IInteractable
         IInteractable interactable = this;
     }
 
-    private void OnMouseEnter()
+    public void OnMouseEnter()
     {
         EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = _cursorType });
     }
 
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
         EventManager.Instance.Trigger(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, this, new OnMouseInteractableEventArgs { CursorType = CursorType.Pointer });
+    }
+
+    public void Interact()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ShowUI()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void HideUI()
+    {
+        throw new NotImplementedException();
     }
 }

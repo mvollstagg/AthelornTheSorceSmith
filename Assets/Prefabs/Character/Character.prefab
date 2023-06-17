@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 3670750693565082705}
   - component: {fileID: 8315028755389115739}
   - component: {fileID: 2717626840211940441}
+  - component: {fileID: 6376417380879122650}
   m_Layer: 3
   m_Name: Character
   m_TagString: Character
@@ -74,7 +75,7 @@ Transform:
   - {fileID: 2410264329255966811}
   - {fileID: 7901156504731726283}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &4749176026383344414
 CharacterController:
@@ -117,6 +118,11 @@ MonoBehaviour:
   _mainCamera: {fileID: 0}
   _controller: {fileID: 0}
   inventoryMaxWeight: 300
+  health: 0
+  mana: 0
+  stamina: 0
+  _characterData: {fileID: 0}
+  _levelData: {fileID: 0}
 --- !u!114 &2561099874310131444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +261,20 @@ MonoBehaviour:
     m_Bits: 64
   canPush: 1
   strength: 0.5
+--- !u!114 &6376417380879122650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331091898908734692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce49cd5c411ed642b84a4c0d1eacac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootBagPrefab: {fileID: 0}
+  interactionRadius: 3
 --- !u!1 &404871836445681559
 GameObject:
   m_ObjectHideFlags: 0
