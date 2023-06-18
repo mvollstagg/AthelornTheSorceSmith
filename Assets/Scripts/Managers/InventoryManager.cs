@@ -179,6 +179,7 @@ public class InventoryManager : Singleton<InventoryManager>
             if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
                 return;
             
+            LootManager.Instance.DropItem(new InventorySlot() { Item = _equipments[selectedSlotIndex].Item, Amount = 1 });
             RemoveEquipmentItem(selectedSlotIndex);
         }
 

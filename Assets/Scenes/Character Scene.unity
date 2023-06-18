@@ -6925,7 +6925,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 999999999
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fa4e7f18a8b609540834d3b869746c69, type: 2}
   m_sharedMaterial: {fileID: -4298945641521294926, guid: fa4e7f18a8b609540834d3b869746c69,
@@ -27124,7 +27124,7 @@ MonoBehaviour:
   _equipmentsGrid: {fileID: 608168203}
   _itemDetailsPanel: {fileID: 1687734890}
   _inventoryWeightText: {fileID: 504037842}
-  _inventoryMoneyText: {fileID: 0}
+  _inventoryMoneyText: {fileID: 392964984}
   _outlineGlow: {fileID: 18086139}
   _previewCamera: {fileID: 817010220}
   _grabbedItemSlot: {fileID: 2884892151221773303}
