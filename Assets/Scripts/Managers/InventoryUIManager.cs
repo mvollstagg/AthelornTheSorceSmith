@@ -14,6 +14,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     [SerializeField] public Transform _equipmentsGrid;
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] private TextMeshProUGUI _inventoryWeightText;
+    [SerializeField] private TextMeshProUGUI _inventoryMoneyText;
     [SerializeField] private RectTransform _outlineGlow;
     [SerializeField] private Transform _previewCamera;
     [SerializeField] public RectTransform _grabbedItemSlot;
@@ -88,8 +89,14 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     public void SetInventoryWeight(float weightToAdd)
     {
+        // TODO: Move calculations to InventoryManager
         _inventoryTotalWeight += weightToAdd;
         _inventoryWeightText.text = $"{_inventoryTotalWeight.ToString("0.0")}/{Character.Instance.inventoryMaxWeight}";
+    }
+
+    public void SetInventoryMoney()
+    {
+        _inventoryMoneyText.text = $"{Character.Instance.money}";
     }
 
     public void OnInventoryItemHovered(int slotIndex)

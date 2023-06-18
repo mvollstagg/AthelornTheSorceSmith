@@ -13,7 +13,7 @@ public class LootBag : MonoBehaviour, IInteractable
     private int maxSlots = 6;  // Maximum number of item slots in the bag
     public int money;  // Amount of money in the bag
 
-    [SerializeField] private List<InventoryItemDataSO> items;  // List of items in the bag
+    [SerializeField] private List<InventorySlot> items = new List<InventorySlot>();  // List of items in the bag
     private float timer = 20f; // 2 minutes
     private Canvas canvas;
     private TextMeshProUGUI timerText;
@@ -35,12 +35,13 @@ public class LootBag : MonoBehaviour, IInteractable
         if (timer <= 0)
         {
             CharacterInteraction.Instance.RemoveInteractableFromNearbyList(this);
+            LootManager.Instance.ResetLootBag(this);
             Destroy(this.gameObject);
         }
     }
 
     // Add an item to the bag
-    public void AddItem(InventoryItemDataSO item)
+    public void AddItem(InventorySlot item)
     {
         if (items.Count >= maxSlots)
         {
@@ -52,7 +53,7 @@ public class LootBag : MonoBehaviour, IInteractable
     }
 
     // Remove an item from the bag
-    public void RemoveItem(InventoryItemDataSO item)
+    public void RemoveItem(InventorySlot item)
     {
         if (items.Contains(item))
         {
@@ -61,7 +62,7 @@ public class LootBag : MonoBehaviour, IInteractable
     }
 
     // Retrieve all items in the bag
-    public List<InventoryItemDataSO> GetItems()
+    public List<InventorySlot> GetItems()
     {
         return items;
     }
@@ -98,7 +99,7 @@ public class LootBag : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        InGameUIManager.Instance.ShowLootBagUI(this);
+        LootManager.Instance.InteractLootBag(this);
     }
 
     public void OnMouseEnter()

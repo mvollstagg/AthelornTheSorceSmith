@@ -13,6 +13,7 @@ public class Character : Singleton<Character>, ICharacter
     public CharacterController _controller;
     
     [Header("Character Stats")]
+    public int money = 0;
     public int inventoryMaxWeight = 300;
     public int health;
     public int mana;

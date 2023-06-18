@@ -52,6 +52,9 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
             _ShowPanel(InGameMenus.INVENTORY);
             InventoryManager.Instance.OnInventoryEnabled();
 
+            // ShowOff if loot bag is active
+            LootUIManager.Instance.HideLootBag();
+            
             // Enable UI input and disable rest of the input
             InputManager.Instance.SwitchActionMap(ActionMaps.UI);
             InputManager.Instance.EnableActionMap(ActionMaps.INGAMEMENU);
@@ -64,6 +67,7 @@ public class InGameMenuManager : Singleton<InGameMenuManager>
             InputManager.Instance.EnableActionMap(ActionMaps.CHARACTER);
             InputManager.Instance.EnableActionMap(ActionMaps.CAMERA);
             InputManager.Instance.DisableActionMap(ActionMaps.UI);
+            InputManager.Instance.DisableActionMap(ActionMaps.INGAMEMENU);
         }
     }
 

@@ -18,6 +18,60 @@ public class CharacterInteraction : Singleton<CharacterInteraction>
         interactionCollider.radius = interactionRadius;
     }
 
+    void FixedUpdate()
+    {
+        // Check if the closest interactable is still in the nearby interactables list
+        if (closestInteractable != null && !nearbyInteractables.Contains(closestInteractable))
+        {
+            closestInteractable.HideUI();
+            closestInteractable = null;
+        }
+
+        // Check if the closest interactable is still the closest interactable
+        if (closestInteractable != null)
+        {
+            float distance = Vector3.Distance(transform.position, closestInteractable.transform.position);
+            if (distance > interactionRadius)
+            {
+                closestInteractable.HideUI();
+                closestInteractable = null;
+            }
+        }
+
+        // Find the closest interactable object among the nearby interactables
+        if (closestInteractable == null)
+        {
+            float closestDistance = Mathf.Infinity;
+            Vector3 characterPosition = transform.position;
+
+            foreach (IInteractable interactable in nearbyInteractables)
+            {
+                // Check if the interactable object is destroyed before accessing it
+                if (interactable == null)
+                {
+                    nearbyInteractables.Remove(interactable);
+                    continue;
+                }
+
+                float distance = Vector3.Distance(characterPosition, interactable.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestInteractable = interactable;
+                }
+            }
+        }
+
+        // Show the UI for the closest interactable and hide the UI for the rest
+        foreach (IInteractable interactable in nearbyInteractables)
+        {
+            if (interactable == closestInteractable)
+                interactable.ShowUI();
+            else
+                interactable.HideUI();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         IInteractable interactable = other.GetComponent<IInteractable>();
@@ -88,6 +142,10 @@ public class CharacterInteraction : Singleton<CharacterInteraction>
 
     public void RemoveInteractableFromNearbyList(IInteractable interactable)
     {
+        if (closestInteractable == interactable)
+        {
+            closestInteractable = null;
+        }
         nearbyInteractables.Remove(interactable);
     }
 

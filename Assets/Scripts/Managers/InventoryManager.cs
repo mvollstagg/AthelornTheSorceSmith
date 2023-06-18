@@ -171,7 +171,7 @@ public class InventoryManager : Singleton<InventoryManager>
             if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
                 return;
 
-            LootManager.Instance.DropItem(_inventory[selectedSlotIndex].Item);
+            LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = 1 });
             RemoveInventoryItem(selectedSlotIndex);
         }
         else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
@@ -192,6 +192,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
             return;
 
+        LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = _inventory[selectedSlotIndex].Amount });
         RemoveInventoryItem(selectedSlotIndex, -1);
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
@@ -533,5 +534,11 @@ public class InventoryManager : Singleton<InventoryManager>
             index++;
         }
         return index;
+    }
+
+    public void AddMoney(int amount)
+    {
+        Character.Instance.money += amount;
+        InventoryUIManager.Instance.SetInventoryMoney();
     }
 }
