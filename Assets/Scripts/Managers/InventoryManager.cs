@@ -183,18 +183,29 @@ public class InventoryManager : Singleton<InventoryManager>
             RemoveEquipmentItem(selectedSlotIndex);
         }
 
-
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
     public void OnDropItemStackAction()
     {
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
-        if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
-            return;
+        if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Inventory)
+        {
+            if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
+                return;
 
-        LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = _inventory[selectedSlotIndex].Amount });
-        RemoveInventoryItem(selectedSlotIndex, -1);
+            LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = _inventory[selectedSlotIndex].Amount });
+            RemoveInventoryItem(selectedSlotIndex);
+        }
+        else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
+        {
+            if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
+                return;
+            
+            LootManager.Instance.DropItem(new InventorySlot() { Item = _equipments[selectedSlotIndex].Item, Amount = _equipments[selectedSlotIndex].Amount });
+            RemoveEquipmentItem(selectedSlotIndex);
+        }
+
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
     }
 
