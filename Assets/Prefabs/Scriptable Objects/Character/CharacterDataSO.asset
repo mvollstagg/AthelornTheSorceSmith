@@ -16,5 +16,5 @@ MonoBehaviour:
   dexterity: 3
   intelligence: 5
   speed: 3
-  vitality: 9
-  endurance: 2
+  vitality: 3
+  endurance: 3
