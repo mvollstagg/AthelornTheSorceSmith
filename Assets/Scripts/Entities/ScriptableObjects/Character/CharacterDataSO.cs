@@ -7,22 +7,68 @@ using UnityEngine;
 public class CharacterDataSO : ScriptableObject
 {
     // Base stats
-    [SerializeField] private int strength;      // Physical power
-    [SerializeField] private int dexterity;     // Agility and reflexes
-    [SerializeField] private int intelligence;  // Mental acuity
-    [SerializeField] private int speed;         // Movement speed
-    [SerializeField] private int vitality;      // Endurance and resilience
-    [SerializeField] private int endurance;     // Defensive capability
+    [SerializeField] public int strength;      // Physical power
+    [SerializeField] public int dexterity;     // Agility and reflexes
+    [SerializeField] public int intelligence;  // Mental acuity
+    [SerializeField] public int speed;         // Movement speed
+    [SerializeField] public int vitality;      // Endurance and resilience
+    [SerializeField] public int endurance;     // Defensive capability
 
     // Derived stats
     public int maxHealth { get; private set; }  // Maximum health points
+    public int currentHealth { get; set; }  // Current health points
     public int maxStamina { get; private set; } // Maximum stamina points
+    public int currentStamina { get; set; } // Current stamina points
     public int maxMana { get; private set; }    // Maximum mana points
+    public int currentMana { get; set; }    // Current mana points
     public int attack { get; private set; }     // Attack power
     public int defence { get; private set; }    // Defence power
 
+    public int level { get; private set; }    // Current level
+    public int experience { get; private set; }    // Current experience
+    public int statPoints { get; set; }    // Stat points available to spend
+
+    private bool _isInitialized = false;
+
+    public void LevelUp()
+    {
+        experience -= Character.Instance.RequiredExperienceForNextLevel;
+        
+        level++;
+        statPoints++;
+
+    }
+
+    public void GainExperience(int experience)
+    {
+        this.experience += experience;
+    }
+
     void OnEnable()
     {
+        CalculateDerivedStats();
+
+        if (!_isInitialized)
+        {
+            currentHealth = maxHealth;
+            currentMana = maxMana;
+            currentStamina = maxStamina;
+            level = 1;
+            experience = 0;
+            statPoints = 0;
+            _isInitialized = true;
+        }
+    }
+
+    public void ResetCharacterData()
+    {
+        Debug.Log("Resetting character data");
+        currentHealth = maxHealth;
+        currentMana = maxMana;
+        currentStamina = maxStamina;
+        level = 1;
+        experience = 0;
+        statPoints = 0;
         CalculateDerivedStats();
     }
 
@@ -99,6 +145,11 @@ public class CharacterDataSO : ScriptableObject
             EditorGUILayout.IntField("Attack", ((CharacterDataSO)target).attack);
             EditorGUILayout.IntField("Defence", ((CharacterDataSO)target).defence);
             EditorGUI.EndDisabledGroup();
+
+            if (GUILayout.Button("Reset Character Data"))
+            {
+                ((CharacterDataSO)target).ResetCharacterData();
+            }
         }
 
         private void DrawBaseStat(string label, SerializedProperty property)
