@@ -24,6 +24,8 @@ public class ExpPoint : MonoBehaviour, IInteractable
     public void Interact()
     {
         Character.Instance.GainExperience(this.expAmount);
+        CharacterInteraction.Instance.RemoveInteractableFromNearbyList(this);
+        Destroy(this.gameObject);
     }
 
     public void OnMouseEnter()

@@ -40,17 +40,17 @@ public class Character : Singleton<Character>, ICharacter
                 if (trait.Type == TraitType.Health)
                 {
                     _characterData.currentHealth += trait.Value * traitStatusMultiplier;
-                    _characterData.currentHealth = Mathf.Clamp(_characterData.currentHealth, 0, _characterData.maxHealth);
+                    _characterData.currentHealth = Mathf.Clamp((float)_characterData.currentHealth, 0, (float)_characterData.maxHealth);
                 }
                 else if (trait.Type == TraitType.Mana)
                 {
                     _characterData.currentMana += trait.Value * traitStatusMultiplier;
-                    _characterData.currentMana = Mathf.Clamp(_characterData.currentMana, 0, _characterData.maxMana);
+                    _characterData.currentMana = Mathf.Clamp((float)_characterData.currentMana, 0, (float)_characterData.maxMana);
                 }
                 else if (trait.Type == TraitType.Stamina)
                 {
                     _characterData.currentStamina += trait.Value * traitStatusMultiplier;
-                    _characterData.currentStamina = Mathf.Clamp(_characterData.currentStamina, 0, _characterData.maxStamina);
+                    _characterData.currentStamina = Mathf.Clamp((float)_characterData.currentStamina, 0, (float)_characterData.maxStamina);
                 }
             }
         }
@@ -71,20 +71,20 @@ public class Character : Singleton<Character>, ICharacter
     public Dictionary<string, CharacterStat> GetStats()
     {
         var stats = new Dictionary<string, CharacterStat>();
-        stats["Health"] = new CharacterStat("Health", _characterData.currentHealth, _characterData.maxHealth);
-        stats["Mana"] = new CharacterStat("Mana", _characterData.currentMana, _characterData.maxMana);
-        stats["Stamina"] = new CharacterStat("Stamina", _characterData.currentStamina, _characterData.maxStamina);
-        stats["Strength"] = new CharacterStat("Strength", _characterData.strength, _characterData.strength);
-        stats["Dexterity"] = new CharacterStat("Dexterity", _characterData.dexterity, _characterData.dexterity);
-        stats["Intelligence"] = new CharacterStat("Intelligence", _characterData.intelligence, _characterData.intelligence);
-        stats["Speed"] = new CharacterStat("Speed", _characterData.speed, _characterData.speed);
-        stats["Vitality"] = new CharacterStat("Vitality", _characterData.vitality, _characterData.vitality);
-        stats["Endurance"] = new CharacterStat("Endurance", _characterData.endurance, _characterData.endurance);
-        stats["Max Health"] = new CharacterStat("Max Health", _characterData.maxHealth, _characterData.maxHealth);
-        stats["Max Stamina"] = new CharacterStat("Max Stamina", _characterData.maxStamina, _characterData.maxStamina);
-        stats["Max Mana"] = new CharacterStat("Max Mana", _characterData.maxMana, _characterData.maxMana);
-        stats["Attack"] = new CharacterStat("Attack", _characterData.attack, _characterData.attack);
-        stats["Defence"] = new CharacterStat("Defence", _characterData.defence, _characterData.defence);
+        stats["Health"] = new CharacterStat("Health", (int)_characterData.currentHealth, (int)_characterData.maxHealth);
+        stats["Mana"] = new CharacterStat("Mana", (int)_characterData.currentMana, (int)_characterData.maxMana);
+        stats["Stamina"] = new CharacterStat("Stamina", (int)_characterData.currentStamina, (int)_characterData.maxStamina);
+        // stats["Strength"] = new CharacterStat("Strength", _characterData.strength, _characterData.strength);
+        // stats["Dexterity"] = new CharacterStat("Dexterity", _characterData.dexterity, _characterData.dexterity);
+        // stats["Intelligence"] = new CharacterStat("Intelligence", _characterData.intelligence, _characterData.intelligence);
+        // stats["Speed"] = new CharacterStat("Speed", _characterData.speed, _characterData.speed);
+        // stats["Vitality"] = new CharacterStat("Vitality", _characterData.vitality, _characterData.vitality);
+        // stats["Endurance"] = new CharacterStat("Endurance", _characterData.endurance, _characterData.endurance);
+        // stats["Max Health"] = new CharacterStat("Max Health", _characterData.maxHealth, _characterData.maxHealth);
+        // stats["Max Stamina"] = new CharacterStat("Max Stamina", _characterData.maxStamina, _characterData.maxStamina);
+        // stats["Max Mana"] = new CharacterStat("Max Mana", _characterData.maxMana, _characterData.maxMana);
+        // stats["Attack"] = new CharacterStat("Attack", _characterData.attack, _characterData.attack);
+        // stats["Defence"] = new CharacterStat("Defence", _characterData.defence, _characterData.defence);
         stats["Stat Points"] = new CharacterStat("Stat Points", _characterData.statPoints, byte.MaxValue);
 
         return stats;
@@ -107,14 +107,14 @@ public class Character : Singleton<Character>, ICharacter
                 case "Intelligence":
                     _characterData.intelligence += points;
                     break;
-                case "Speed":
-                    _characterData.speed += points;
-                    break;
                 case "Vitality":
                     _characterData.vitality += points;
                     break;
-                case "Endurance":
-                    _characterData.endurance += points;
+                case "Focus":
+                    _characterData.focus += points;
+                    break;
+                case "Charisma":
+                    _characterData.charisma += points;
                     break;
             }
         }
@@ -122,20 +122,17 @@ public class Character : Singleton<Character>, ICharacter
 
     public void GainExperience(int experience)
     {
-        _characterData.GainExperience(experience);
-
-        if (_characterData.experience >= RequiredExperienceForNextLevel)
-        {
-            LevelUp();
-        }
+        _characterData.GainExperience(experience);    
     }
 
     private void LevelUp()
     {
-        _characterData.LevelUp();
-        RequiredExperienceForNextLevel = _levelData.GetRequiredExperience(_characterData.level);
-
         // Perform any additional level up actions here
+    }
+
+    public int GetRequiredExperienceForLevel(int level)
+    {
+        return _levelData.GetRequiredExperience(level);
     }
 
     #if UNITY_EDITOR
@@ -164,11 +161,34 @@ public class Character : Singleton<Character>, ICharacter
     {
         InitializeGUIStyles();
         EditorGUILayout.LabelField("Derrived Stats", EditorStyles.boldLabel);
-        DrawProgressBar("Health", _characterData.currentHealth, _characterData.maxHealth, Color.red);
-        DrawProgressBar("Mana", _characterData.currentMana, _characterData.maxMana, Color.blue);
-        DrawProgressBar("Stamina", _characterData.currentStamina, _characterData.maxStamina, new Color(1f, 0.7f, 0f));
-        EditorGUILayout.LabelField("Attack: " + _characterData.attack, labelStyle);
-        EditorGUILayout.LabelField("Defence: " + _characterData.defence, labelStyle);
+        DrawProgressBar("Health", (int)_characterData.currentHealth, (int)_characterData.maxHealth, Color.red);
+        DrawProgressBar("Mana", (int)_characterData.currentMana, (int)_characterData.maxMana, Color.blue);
+        DrawProgressBar("Stamina", (int)_characterData.currentStamina, (int)_characterData.maxStamina, new Color(1f, 0.7f, 0f));
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Physical Damage: " + _characterData.physicalDamage, labelStyle);
+        EditorGUILayout.LabelField("Physical Defence: " + _characterData.physicalDefence, labelStyle);
+        EditorGUILayout.LabelField("Magical Damage: " + _characterData.magicalDamage, labelStyle);
+        EditorGUILayout.LabelField("Magical Defence: " + _characterData.magicalDefence, labelStyle);
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Critical Chance: " + _characterData.criticalStrikeChance + "%", labelStyle);
+        EditorGUILayout.LabelField("Critical Damage: " + _characterData.criticalStrikeDamage + "%", labelStyle);
+        EditorGUILayout.LabelField("Accuracy: " + _characterData.accuracy, labelStyle);
+        EditorGUILayout.LabelField("Dodge Chance: " + _characterData.dodgeChance + "%", labelStyle);
+        EditorGUILayout.LabelField("Block Chance: " + _characterData.blockChance + "%", labelStyle);
+        EditorGUILayout.LabelField("Influence Bonus: " + _characterData.influenceBonus + "%", labelStyle);
+        EditorGUILayout.LabelField("Negotiation Bonus: " + _characterData.negotiationBonus + "%", labelStyle);
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Fire Resistance: " + _characterData.fireResistance + "%", labelStyle);
+        EditorGUILayout.LabelField("Water Resistance: " + _characterData.waterResistance + "%", labelStyle);
+        EditorGUILayout.LabelField("Earth Resistance: " + _characterData.earthResistance + "%", labelStyle);
+        EditorGUILayout.LabelField("Air Resistance: " + _characterData.airResistance + "%", labelStyle);
+        EditorGUILayout.LabelField("Poison Resistance: " + _characterData.poisonResistance + "%", labelStyle);
 
         EditorGUILayout.Space();
 
@@ -176,9 +196,9 @@ public class Character : Singleton<Character>, ICharacter
         EditorGUILayout.LabelField("Strength: " + _characterData.strength, labelStyle);
         EditorGUILayout.LabelField("Dexterity: " + _characterData.dexterity, labelStyle);
         EditorGUILayout.LabelField("Intelligence: " + _characterData.intelligence, labelStyle);
-        EditorGUILayout.LabelField("Speed: " + _characterData.speed, labelStyle);
         EditorGUILayout.LabelField("Vitality: " + _characterData.vitality, labelStyle);
-        EditorGUILayout.LabelField("Endurance: " + _characterData.endurance, labelStyle);
+        EditorGUILayout.LabelField("Focus: " + _characterData.focus, labelStyle);
+        EditorGUILayout.LabelField("Charisma: " + _characterData.charisma, labelStyle);
 
         EditorGUILayout.Space();
 
