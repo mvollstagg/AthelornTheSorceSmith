@@ -53,6 +53,7 @@ public class Character : Singleton<Character>, ICharacter
                     _characterData.currentStamina = Mathf.Clamp((float)_characterData.currentStamina, 0, (float)_characterData.maxStamina);
                 }
             }
+            _characterData.SaveStats();
         }
     }
     
@@ -68,26 +69,9 @@ public class Character : Singleton<Character>, ICharacter
         
     }
 
-    public Dictionary<string, CharacterStat> GetStats()
+    public CharacterDataSO GetCharacterData()
     {
-        var stats = new Dictionary<string, CharacterStat>();
-        stats["Health"] = new CharacterStat("Health", (int)_characterData.currentHealth, (int)_characterData.maxHealth);
-        stats["Mana"] = new CharacterStat("Mana", (int)_characterData.currentMana, (int)_characterData.maxMana);
-        stats["Stamina"] = new CharacterStat("Stamina", (int)_characterData.currentStamina, (int)_characterData.maxStamina);
-        // stats["Strength"] = new CharacterStat("Strength", _characterData.strength, _characterData.strength);
-        // stats["Dexterity"] = new CharacterStat("Dexterity", _characterData.dexterity, _characterData.dexterity);
-        // stats["Intelligence"] = new CharacterStat("Intelligence", _characterData.intelligence, _characterData.intelligence);
-        // stats["Speed"] = new CharacterStat("Speed", _characterData.speed, _characterData.speed);
-        // stats["Vitality"] = new CharacterStat("Vitality", _characterData.vitality, _characterData.vitality);
-        // stats["Endurance"] = new CharacterStat("Endurance", _characterData.endurance, _characterData.endurance);
-        // stats["Max Health"] = new CharacterStat("Max Health", _characterData.maxHealth, _characterData.maxHealth);
-        // stats["Max Stamina"] = new CharacterStat("Max Stamina", _characterData.maxStamina, _characterData.maxStamina);
-        // stats["Max Mana"] = new CharacterStat("Max Mana", _characterData.maxMana, _characterData.maxMana);
-        // stats["Attack"] = new CharacterStat("Attack", _characterData.attack, _characterData.attack);
-        // stats["Defence"] = new CharacterStat("Defence", _characterData.defence, _characterData.defence);
-        stats["Stat Points"] = new CharacterStat("Stat Points", _characterData.statPoints, byte.MaxValue);
-
-        return stats;
+        return _characterData;
     }
 
     public void AddStatPoints(string stat, int points)
@@ -135,7 +119,7 @@ public class Character : Singleton<Character>, ICharacter
         return _levelData.GetRequiredExperience(level);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [CustomEditor(typeof(Character))]
     public class CharacterEditor : Editor
     {
@@ -231,5 +215,5 @@ public class Character : Singleton<Character>, ICharacter
         texture.Apply();
         return texture;
     }
-    #endif
+#endif
 }

@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40af23e7cd12b0b4b894bf0547a82a83, type: 3}
+  m_Name: UIStatDataSO
+  m_EditorClassIdentifier: 
+  statDataList:
+  - name: Strength
+    description: 'Strength is a measure of your raw physical power and the force
+      behind your attacks. It directly increases both physical and elemental weapon
+      damage for all weapons, making your strikes more potent and devastating. Additionally,
+      investing points in Strength enhances your critical damage bonus, allowing
+      your critical strikes to deal even more damage. Strengthening your muscles
+      and honing your physical prowess will turn you into a formidable force on the
+      battlefield. '
+  - name: Dexterity
+    description: "Dexterity reflects your agility, precision, and quick reflexes.
+      By investing in Dexterity, you increase your critical strike chance, making
+      your attacks more likely to hit with lethal precision. It also boosts your
+      dodge chance, allowing you to evade incoming attacks and minimize the damage
+      you take. Skilled use of items and specialized abilities can further augment
+      your critical strike chance and dodge chance, making you a highly elusive and
+      deadly combatant.\r"
+  - name: Intelligence
+    description: Intelligence represents your knowledge, understanding, and affinity
+      for magic. By investing in Intelligence, you amplify your magical power, making
+      your spells and magical abilities more potent and effective. Strengthening
+      your Intelligence allows you to unleash devastating magical attacks and manipulate
+      the forces of the arcane with precision. Additionally, Intelligence improves
+      your magical resistance, making you more resilient against enemy magical attacks
+      and reducing their impact. Augmenting your Intelligence enables you to harness
+      the full potential of your magical abilities and become a formidable spellcaster.
+  - name: Vitality
+    description: "Vitality represents your endurance, resilience, and overall toughness.
+      By increasing your Vitality, you enhance your maximum health, making you more
+      resistant to damage and improving your chances of survival in intense battles.
+      Additionally, investing points in Vitality increases your armor multiplier,
+      providing additional protection against physical attacks. It also boosts your
+      block chance when using shields, allowing you to deflect or mitigate incoming
+      damage. Augmenting your Vitality will make you a stalwart defender and ensure
+      your longevity in the face of adversity.\r"
+  - name: Focus
+    description: Focus is a measure of your mental and spiritual energy. Investing
+      in Focus increases your maximum mana, allowing you to cast more spells and
+      use magical abilities more frequently. It also enhances your maximum stamina,
+      providing you with increased endurance for physical activities such as running,
+      dodging, or performing strenuous actions in combat. By strengthening your Focus,
+      you tap into your inner reserves of energy and unlock greater magical potential,
+      giving you an edge in casting spells and sustaining prolonged battles.
+  - name: Charisma
+    description: Charisma reflects your charm, presence, and persuasive abilities.
+      By increasing your Charisma, you enhance your ability to influence others,
+      increasing the chances of successfully persuading, convincing, or inspiring
+      them. A higher Charisma stat grants you an advantage in negotiating and diplomacy,
+      allowing you to secure more favorable outcomes or striking better deals. Strengthening
+      your Charisma enables you to effectively navigate social interactions and gain
+      the trust and cooperation of those around you, opening up new opportunities
+      and enhancing your leadership skills.
+  - name: Health
+    description: Health Points, often referred to as HP, represent your character's
+      overall vitality and resilience. It represents your character's ability to
+      withstand damage and stay in the fight. Increasing your HP augments your character's
+      survivability, allowing them to endure more punishment before succumbing to
+      defeat.
+  - name: Mana
+    description: Mana Points, often referred to as MP, represent your character's
+      reserve of magical energy. It fuels your spellcasting abilities, allowing you
+      to cast spells and utilize magical abilities. Increasing your MP expands your
+      magical reservoir, granting you more mana to unleash powerful spells and abilities.
+  - name: Stamina
+    description: Stamina Points, often referred to as SP, represent your character's
+      physical and mental endurance. It is expended when performing strenuous physical
+      actions or sustaining magical activities. Increasing your SP boosts your overall
+      stamina, enabling you to engage in prolonged physical exertion or sustain magical
+      activity for extended periods.
+  - name: PhysicalDamage
+    description: "Physical Damage represents the amount of damage your character
+      can inflict with physical attacks. It encompasses the force and impact of your
+      strikes, both with weapons and unarmed combat. Increasing your Physical Damage
+      allows you to deal more harm to enemies when engaging in close-quarters combat.\r"
+  - name: PhysicalDefence
+    description: Physical Defense measures your character's ability to resist and
+      mitigate incoming physical attacks. It represents your resilience against physical
+      damage, such as cuts, slashes, or blunt force trauma. Enhancing your Physical
+      Defense reduces the impact of enemy physical attacks, making you harder to
+      harm in combat.
+  - name: MagicalDamage
+    description: "Magical Damage reflects the potency and strength of your character's
+      magical abilities. It determines the amount of damage your spells or magical
+      attacks inflict on enemies. Increasing your Magical Damage augments the destructive
+      power of your magical arsenal, making your spells more potent and formidable.\r"
+  - name: MagicalDefence
+    description: Magical Defense represents your character's resistance against magical
+      attacks and spells. It mitigates the damage received from arcane forces, elemental
+      spells, or mystical energy. Enhancing your Magical Defense reduces the effectiveness
+      of enemy magical attacks, bolstering your resilience against spells and arcane
+      abilities.
+  - name: CriticalStrikeChance
+    description: Critical Strike Chance represents the likelihood of landing a critical
+      hit in combat. A critical hit inflicts extra damage, often with additional
+      effects, and is a significant advantage in battles. Increasing your Critical
+      Strike Chance enhances your chances of landing critical hits, allowing you
+      to deal devastating blows to your enemies.
+  - name: CriticalStrikeDamage
+    description: Critical Strike Damage represents the additional damage inflicted
+      when landing a critical strike on an opponent. A critical strike occurs when
+      you successfully hit a vulnerable spot or exploit a weakness, resulting in
+      a devastating blow. Enhancing your Critical Strike Damage increases the severity
+      of these strikes, allowing you to deal even greater damage when critical hits
+      are landed. With higher Critical Strike Damage, you have the potential to turn
+      the tide of battle by unleashing devastating attacks that can cripple or defeat
+      your foes in a single, precise strike.
+  - name: Accuracy
+    description: Accuracy measures your character's precision and proficiency in
+      hitting targets with attacks. It represents your character's ability to strike
+      foes accurately and consistently. Enhancing your Accuracy improves your chances
+      of successfully hitting enemies, reducing the likelihood of missing or having
+      attacks evade their targets.
+  - name: DodgeChance
+    description: Dodge Chance represents your character's ability to evade incoming
+      attacks, effectively dodging and avoiding damage. It reflects your agility,
+      reflexes, and nimbleness in combat. Enhancing your Dodge Chance increases the
+      likelihood of evading enemy attacks, reducing the amount of damage you receive.
+  - name: BlockChance
+    description: Block Chance represents your character's ability to block incoming
+      attacks when using a shield. It reflects your skill in using defensive maneuvers
+      and shields effectively. Enhancing your Block Chance improves the likelihood
+      of successfully blocking enemy attacks, reducing the damage taken when using
+      a shield.
+  - name: InfluenceBonus
+    description: Influence Bonus reflects your character's charisma, presence, and
+      ability to exert influence over others. It represents your persuasiveness,
+      leadership qualities, and natural charm. Enhancing your Influence Bonus increases
+      your chances of successfully influencing others, persuading or convincing them
+      to align with your goals or viewpoints.
+  - name: NegotiationBonus
+    description: "Negotiation Bonus represents your character's skill and aptitude
+      in negotiation and diplomacy. It reflects your ability to navigate conversations
+      and secure favorable outcomes in social encounters. Enhancing your Negotiation
+      Bonus improves your chances of achieving successful negotiations, improving
+      the likelihood of favorable deals or agreements.\r"
+  - name: FireResistance
+    description: "Fire Resistance reduces the damage taken from fire-based attacks,
+      spells, or environmental hazards. Enhancing your Fire Resistance makes you
+      more resistant to the scorching heat and intense flames, mitigating the impact
+      of fire-based assaults.\r"
+  - name: WaterResistance
+    description: "Water Resistance reduces the damage taken from water-based attacks,
+      spells, or environmental hazards. Enhancing your Water Resistance fortifies
+      your character against aquatic assaults, allowing you to withstand the chilling
+      effects of water-based attacks or the dangers of underwater environments.\r"
+  - name: EarthResistance
+    description: Earth Resistance reduces the damage taken from earth-based attacks,
+      spells, or environmental hazards. Enhancing your Earth Resistance strengthens
+      your character's resilience against the crushing force of rocks and the tremors
+      of the earth, mitigating the effects of earth-based attacks.
+  - name: AirResistance
+    description: Air Resistance reduces the damage taken from air-based attacks,
+      spells, or environmental hazards. Enhancing your Air Resistance bolsters your
+      character's ability to withstand the howling winds and the forces of tempestuous
+      storms, reducing the impact of air-based assaults.
+  - name: PoisonResistance
+    description: Poison Resistance reduces the damage taken from poison-based attacks,
+      spells, or environmental hazards. Enhancing your Poison Resistance enhances
+      your character's resistance to venomous toxins and harmful poisons, diminishing
+      their detrimental effects on your health and well-being.

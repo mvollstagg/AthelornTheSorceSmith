@@ -11,5 +11,6 @@ namespace Scripts.Entities.Class
         public static string ON_CAMERA_ROTATE_GAMEPAD { get; private set; } = "OnCameraRotateGamepad";
         public static string ON_CAMERA_ROTATE_GAMEPAD_CANCELED { get; private set; } = "OnCameraRotateCanceledGamepad";
         public static string ON_PLAY_SFX { get; private set; } = "OnPlaySoundEffects";
+        public static string ON_CHARACTER_STAT_INFO_CHANGED { get; private set; } = "OnCharacterInfoChanged";
     }
 }

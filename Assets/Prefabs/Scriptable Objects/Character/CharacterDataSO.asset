@@ -14,7 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: 3
   dexterity: 3
-  intelligence: 5
-  speed: 3
-  vitality: 3
-  endurance: 3
+  intelligence: 3
+  vitality: 4
+  focus: 4
+  charisma: 4
+  physicalDamageBaseValue: 10
+  physicalDefenceBaseValue: 25
+  magicalDamageBaseValue: 10
+  magicalDefenceBaseValue: 25
+  hpBaseValue: 50
+  mpBaseValue: 30
+  spBaseValue: 100
+  criticalStrikeChanceBaseValue: 5
+  criticalStrikeDamageBaseValue: 50
+  accuracyBaseValue: 40
+  dodgeChanceBaseValue: 5
+  blockChanceBaseValue: 0
+  influenceBonusBaseValue: 1
+  negotiationBonusBaseValue: 1

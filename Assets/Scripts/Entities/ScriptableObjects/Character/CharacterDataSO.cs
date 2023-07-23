@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Entities.Class;
@@ -68,22 +69,69 @@ public class CharacterDataSO : ScriptableObject
     public int statPoints { get; set; }                                     // Stat points available to spend
     #endregion
 
-    private bool _isInitialized = false;                                    // Flag to check if the character data has been initialized
+    private const string INITIALIZED_KEY = "IsInitialized"; // Key for PlayerPrefs
 
-    void OnEnable()
+    void Awake()
     {
-        if (!_isInitialized)
+        CalculateDerivedStats();
+        if (!PlayerPrefs.HasKey(INITIALIZED_KEY))
         {
-            currentHealth = maxHealth;
-            currentMana = maxMana;
-            currentStamina = maxStamina;
-            level = 1;
-            experience = 0;
-            statPoints = 0;
-            _isInitialized = true;
+            InitializeStats();
+            PlayerPrefs.SetInt(INITIALIZED_KEY, 1);
         }
 
+        LoadStats();
         CalculateDerivedStats();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveStats();
+    }
+
+    private void InitializeStats()
+    {
+        ResetCharacterData();
+        SaveStats();
+    }
+
+    private void LoadStats()
+    {
+        // Load saved stats values from PlayerPrefs (if any)
+        currentHealth = PlayerPrefs.GetFloat("CurrentHealth");
+        currentMana = PlayerPrefs.GetFloat("CurrentMana");
+        currentStamina = PlayerPrefs.GetFloat("CurrentStamina");
+
+        strength = PlayerPrefs.GetInt("Strength");
+        dexterity = PlayerPrefs.GetInt("Dexterity");
+        intelligence = PlayerPrefs.GetInt("Intelligence");
+        vitality = PlayerPrefs.GetInt("Vitality");
+        focus = PlayerPrefs.GetInt("Focus");
+        charisma = PlayerPrefs.GetInt("Charisma");
+
+        level = PlayerPrefs.GetInt("Level");
+        experience = PlayerPrefs.GetInt("Experience");
+        statPoints = PlayerPrefs.GetInt("StatPoints");
+    }
+
+    // Save the stats whenever necessary, for example, when the game is saved
+    public void SaveStats()
+    {
+        PlayerPrefs.SetFloat("CurrentHealth", (float)currentHealth);
+        PlayerPrefs.SetFloat("CurrentMana", (float)currentMana);
+        PlayerPrefs.SetFloat("CurrentStamina", (float)currentStamina);
+
+        PlayerPrefs.SetInt("Strength", strength);
+        PlayerPrefs.SetInt("Dexterity", dexterity);
+        PlayerPrefs.SetInt("Intelligence", intelligence);
+        PlayerPrefs.SetInt("Vitality", vitality);
+        PlayerPrefs.SetInt("Focus", focus);
+        PlayerPrefs.SetInt("Charisma", charisma);
+        
+        PlayerPrefs.SetInt("Level", level);
+        PlayerPrefs.SetInt("Experience", experience);
+        PlayerPrefs.SetInt("StatPoints", statPoints);
+        PlayerPrefs.Save();
     }
 
     public void LevelUp()
@@ -147,7 +195,6 @@ public class CharacterDataSO : ScriptableObject
         CalculateDerivedStats();
     }
 
-
     public void ResetCharacterData()
     {
         Debug.Log("Resetting character data");
@@ -187,6 +234,102 @@ public class CharacterDataSO : ScriptableObject
         blockChance = blockChanceBaseValue + ( dexterity * 0.04 );
         influenceBonus = influenceBonusBaseValue + ( charisma * 0.03 );
         negotiationBonus = negotiationBonusBaseValue + ( charisma * 0.02 );
+    }
+
+    public Dictionary<string, CharacterStat> GetStats()
+    {
+        var stats = new Dictionary<string, CharacterStat>();
+
+        stats["Stat Points"] = new CharacterStat("Stat Points", statPoints, byte.MaxValue);
+
+        stats["Strength"] = new CharacterStat("Strength", strength, strength);
+        stats["Dexterity"] = new CharacterStat("Dexterity", dexterity, dexterity);
+        stats["Intelligence"] = new CharacterStat("Intelligence", intelligence, intelligence);
+        stats["Vitality"] = new CharacterStat("Vitality", vitality, vitality);
+        stats["Focus"] = new CharacterStat("Focus", focus, focus);
+        stats["Charisma"] = new CharacterStat("Charisma", charisma, charisma);
+        
+        stats["Health"] = new CharacterStat("Health", (int)currentHealth, (int)maxHealth);
+        stats["Mana"] = new CharacterStat("Mana", (int)currentMana, (int)maxMana);
+        stats["Stamina"] = new CharacterStat("Stamina", (int)currentStamina, (int)maxStamina);
+
+        return stats;
+    }
+
+    public Dictionary<string, CharacterStat> GetBaseStats()
+    {
+        var stats = new Dictionary<string, CharacterStat>();
+
+        stats["Strength"] = new CharacterStat("Strength", strength, strength);
+        stats["Dexterity"] = new CharacterStat("Dexterity", dexterity, dexterity);
+        stats["Intelligence"] = new CharacterStat("Intelligence", intelligence, intelligence);
+        stats["Vitality"] = new CharacterStat("Vitality", vitality, vitality);
+        stats["Focus"] = new CharacterStat("Focus", focus, focus);
+        stats["Charisma"] = new CharacterStat("Charisma", charisma, charisma);
+
+        return stats;
+    }
+
+    internal void IncreaseStat(string statName)
+    {
+        switch (statName)
+        {
+            case "Strength":
+                strength++;
+                break;
+            case "Dexterity":
+                dexterity++;
+                break;
+            case "Intelligence":
+                intelligence++;
+                break;
+            case "Vitality":
+                vitality++;
+                break;
+            case "Focus":
+                focus++;
+                break;
+            case "Charisma":
+                charisma++;
+                break;
+            default:
+                Debug.LogWarning("Invalid statName provided: " + statName);
+                break;
+        }
+
+        // Recalculate derived stats after increasing the stat
+        CalculateDerivedStats();
+    }
+
+    internal void DecreaseStat(string statName)
+    {
+        switch (statName)
+        {
+            case "Strength":
+                strength--;
+                break;
+            case "Dexterity":
+                dexterity--;
+                break;
+            case "Intelligence":
+                intelligence--;
+                break;
+            case "Vitality":
+                vitality--;
+                break;
+            case "Focus":
+                focus--;
+                break;
+            case "Charisma":
+                charisma--;
+                break;
+            default:
+                Debug.LogWarning("Invalid statName provided: " + statName);
+                break;
+        }
+
+        // Recalculate derived stats after decreasing the stat
+        CalculateDerivedStats();
     }
 
 #if UNITY_EDITOR

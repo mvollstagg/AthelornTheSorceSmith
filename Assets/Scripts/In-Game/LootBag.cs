@@ -26,7 +26,7 @@ public class LootBag : MonoBehaviour, IInteractable
         HideUI();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (isShowingUI)
             timerText.text = string.Format("{0}:{1:00}", Mathf.Floor(timer / 60), timer % 60);

@@ -70,7 +70,7 @@ public class InputManager : Singleton<InputManager>
 		#endregion
 	}
 
-	void Update()
+	void LateUpdate()
 	{
 		ActiveActionMaps = _inputActionMaps.Where(x => x.Value.enabled).Select(x => x.Key).ToList();
 	}
