@@ -26,8 +26,6 @@ public class Character : Singleton<Character>, ICharacter
 
     #region Private Variables
     private GUIStyle labelStyle;
-
-    public int RequiredExperienceForNextLevel { get; private set; }
     #endregion
 
     public void ConsumeItem(InventoryItemDataSO item)

@@ -22546,7 +22546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64705884, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22558,7 +22558,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.5
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -28496,6 +28496,7 @@ MonoBehaviour:
   statsCharacterMenu: {fileID: 7472680149235570699}
   baseStatsCharacterMenu: {fileID: 578465779158063274}
   derrivedStatsCharacterMenu: {fileID: 7550677416566967626}
+  expBar: {fileID: 2015989647}
   statDetailsText: {fileID: 1620349415}
   statPointsDetailsText: {fileID: 1931242305}
   statDataSO: {fileID: 11400000, guid: d6f8fd80f2cfff74d97cbc7021c41781, type: 2}
@@ -36726,7 +36727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2072887697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41413,7 +41414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &2943817313658372501
 CanvasRenderer:
   m_ObjectHideFlags: 0

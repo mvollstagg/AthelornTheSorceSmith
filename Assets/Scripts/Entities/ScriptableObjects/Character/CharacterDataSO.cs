@@ -136,7 +136,7 @@ public class CharacterDataSO : ScriptableObject
 
     public void LevelUp()
     {
-        experience -= Character.Instance.RequiredExperienceForNextLevel;
+        experience -= Character.Instance.GetRequiredExperienceForLevel(level);
         
         level++;
         statPoints++;
@@ -252,6 +252,9 @@ public class CharacterDataSO : ScriptableObject
         stats["Health"] = new CharacterStat("Health", (int)currentHealth, (int)maxHealth);
         stats["Mana"] = new CharacterStat("Mana", (int)currentMana, (int)maxMana);
         stats["Stamina"] = new CharacterStat("Stamina", (int)currentStamina, (int)maxStamina);
+        
+        stats["Level"] = new CharacterStat("Level", (int)level, (int)level);
+        stats["Experience"] = new CharacterStat("Experience", (int)experience, (int)Character.Instance.GetRequiredExperienceForLevel(level));
 
         return stats;
     }

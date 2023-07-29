@@ -16,6 +16,7 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     public Transform statsCharacterMenu;
     public Transform baseStatsCharacterMenu;
     public Transform derrivedStatsCharacterMenu;
+    public Transform expBar;
     public TMP_Text statDetailsText;
     public TMP_Text statPointsDetailsText;
     public UIStatDataSO statDataSO;
@@ -235,6 +236,15 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
                 barImage.fillAmount = Mathf.Clamp01(fillAmount);
             }
         }
+
+        // Adjust ExpBar
+        Image expBarImage = expBar.transform.Find("Line").GetComponent<Image>();
+        float expFillAmount = (float)statsData["Experience"].currentValue / statsData["Experience"].maxValue;
+        expBarImage.fillAmount = Mathf.Clamp01(expFillAmount);
+        // Adjust ExpBar text for example 1200/2400 Lv. 24
+        TextMeshProUGUI expText = expBar.transform.Find("Details").GetComponent<TextMeshProUGUI>();
+        expText.text = $"{statsData["Experience"].currentValue}/{statsData["Experience"].maxValue} Lv. {statsData["Level"].currentValue}";
+        
     }
 
     public void UpdateInGameCharacterStatUI(Dictionary<string, CharacterStat> statsData)
