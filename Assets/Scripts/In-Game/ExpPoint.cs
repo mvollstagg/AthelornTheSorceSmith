@@ -10,15 +10,22 @@ using UnityEngine;
 public class ExpPoint : MonoBehaviour, IInteractable
 {
     public int expAmount = 100;
+    private Canvas canvas;
+
+    private void Start()
+    {
+        canvas = GetComponentInChildren<Canvas>();
+        HideUI();
+    }
 
     public void ShowUI()
     {
-        
+        canvas.enabled = true;
     }
 
     public void HideUI()
     {
-        
+        canvas.enabled = false;
     }
 
     public void Interact()

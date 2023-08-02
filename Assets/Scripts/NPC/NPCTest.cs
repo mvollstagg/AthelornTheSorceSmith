@@ -9,9 +9,17 @@ using UnityEngine.UI;
 public class NPCTest : MonoBehaviour, IInteractable
 {
     [SerializeField] private CursorType _cursorType;
+    private Canvas canvas;
+
+    private void Start()
+    {
+        canvas = GetComponentInChildren<Canvas>();
+        HideUI();
+    }
+
     public void HideUI()
     {
-        Debug.Log("This NPC is hiding UI", this.gameObject);
+        canvas.enabled = false;
     }
 
     public void Interact()
@@ -21,7 +29,7 @@ public class NPCTest : MonoBehaviour, IInteractable
 
     public void ShowUI()
     {
-        Debug.Log("This NPC is showing UI", this.gameObject);
+        canvas.enabled = true;
     }
 
     public void OnMouseEnter()

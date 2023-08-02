@@ -30,5 +30,14 @@ namespace Scripts.Core
                 return _instance;
             }
         }
+
+        protected virtual void OnDestroy()
+        {
+            // When the Singleton is destroyed, set the instance to null
+            if (_instance == this)
+            {
+                _instance = null;
+            }
+        }
     }
 }

@@ -18,7 +18,8 @@ public class CursorManager : Singleton<CursorManager>
     void Start()
     {
         // Instantiate pointer cursor from _cursorSOs under _cursors
-        _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
+        // TODO: Uncomment
+        // _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == CursorType.Pointer).CursorTransform, _cursors);
         EventManager.Instance.AddListener<OnMouseInteractableEventArgs>(GameEvents.ON_MOUSE_ENTER_INTERACTABLE, CursorInteractor_OnMouseEnterInteractable);
     }
 
@@ -27,7 +28,8 @@ public class CursorManager : Singleton<CursorManager>
         // Destroy current cursor
         if(_currentCursor != null)
             Destroy(_currentCursor.gameObject);
-        _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == e.CursorType).CursorTransform, _cursors);
+        // TODO: Uncomment
+        // _currentCursor = Instantiate(_cursorSOList.FirstOrDefault(x => x.CursorType == e.CursorType).CursorTransform, _cursors);
     }
 
     void Update()

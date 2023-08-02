@@ -159,6 +159,8 @@ public class CharacterDataSO : ScriptableObject
         {
             LevelUp();
         }
+
+        SaveStats();
     }
 
     public void SpendStatPoint(CharacterStatType stat)

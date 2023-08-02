@@ -25,3 +25,11 @@ MonoBehaviour:
     requiredExperience: 1600
   - level: 6
     requiredExperience: 3200
+  - level: 7
+    requiredExperience: 3800
+  - level: 8
+    requiredExperience: 4400
+  - level: 9
+    requiredExperience: 5200
+  - level: 10
+    requiredExperience: 6000
