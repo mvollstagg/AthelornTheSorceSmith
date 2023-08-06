@@ -28008,6 +28008,8 @@ GameObject:
   - component: {fileID: 1607502151}
   - component: {fileID: 1607502148}
   - component: {fileID: 1607502153}
+  - component: {fileID: 1607502154}
+  - component: {fileID: 1607502155}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -28378,6 +28380,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints: []
+--- !u!114 &1607502154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607502137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 372dabd17bf846845b2c4ca917e29c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1607502155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607502137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 643a05e0856a5f145916d596184dd298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1607868493
 GameObject:
   m_ObjectHideFlags: 0
