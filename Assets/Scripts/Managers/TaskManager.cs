@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TaskManager : Singleton<TaskManager>
 {
-    private readonly Dictionary<string, Action> fireAndForgetTasks = new();
+    private readonly Dictionary<string, Action> _fireAndForgetTasks = new();
     private readonly Dictionary<string, Action> _delayedTasks = new ();
     private readonly Dictionary<string, Action> _recurringTasks = new ();
     private readonly Dictionary<string, Func<bool>> _continuationTasks = new ();

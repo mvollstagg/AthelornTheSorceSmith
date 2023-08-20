@@ -10,63 +10,53 @@ namespace Scripts.Entities.Enum
         Dexterity,
         [Description("Intelligence")]
         Intelligence,
-        [Description("Charisma")]
-        Charisma,
-        [Description("Luck")]
-        Luck,
-        [Description("Endurance")]
-        Endurance,
-        [Description("Agility")]
-        Agility,
-        [Description("Speed")]
-        Speed,
-        [Description("Accuracy")]
-        Accuracy,
-        [Description("Critical")]
-        Critical,
-        [Description("Resistance")]
-        Resistance,
         [Description("Vitality")]
         Vitality,
+        [Description("Focus")]
+        Focus,
+        [Description("Charisma")]
+        Charisma,
+
+        [Description("Pysical Damage")]
+        PhysicalDamage,
+        [Description("Pysical Defence")]
+        PhysicalDefence,
+        [Description("Magical Damage")]
+        MagicalDamage,
+        [Description("Magical Defence")]
+        MagicalDefence,
+
         [Description("Health")]
         Health,
         [Description("Mana")]
         Mana,
         [Description("Stamina")]
         Stamina,
-        [Description("Energy")]
-        Energy,
-        [Description("Defence")]
-        Defence,
-        [Description("Attack")]
-        Attack,
-        [Description("Damage")]
-        Damage,
-        [Description("Armor")]
-        Armor,
-        [Description("Magic")]
-        Magic,
-        [Description("Magic Resistance")]
-        MagicResistance,
-        [Description("Magic Power")]
-        MagicPower,
-        [Description("Magic Defence")]
-        MagicDefense,
-        [Description("Magic Damage")]
-        MagicDamage,
-        [Description("Magic Armor")]
-        MagicArmor,
-        [Description("Physical")]
-        Physical,
-        [Description("Physical Resistance")]
-        PhysicalResistance,
-        [Description("Physical Power")]
-        PhysicalPower,
-        [Description("Physical Defence")]
-        PhysicalDefense,
-        [Description("Physical Damage")]
-        PhysicalDamage,
-        [Description("Physical Armor")]
-        PhysicalArmor
+
+        [Description("Critical Strike Chance")]
+        CriticalStrikeChance,
+        [Description("Critical Strike Damage")]
+        CriticalStrikeDamage,
+        [Description("Accuracy")]
+        Accuracy,
+        [Description("Dodge Chance")]
+        DodgeChance,
+        [Description("Block Chance")]
+        BlockChance,
+        [Description("Influence Bonus")]
+        InfluenceBonus,
+        [Description("Negotiation Bonus")]
+        NegotiationBonus,
+
+        [Description("Fire Resistance")]
+        FireResistance,
+        [Description("Water Resistance")]
+        WaterResistance,
+        [Description("Earth Resistance")]
+        EarthResistance,
+        [Description("Air Resistance")]
+        AirResistance,
+        [Description("Poison Resistance")]
+        PoisonResistance
     }
 }

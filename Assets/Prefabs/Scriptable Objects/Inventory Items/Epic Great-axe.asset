@@ -27,9 +27,12 @@ MonoBehaviour:
   type: 0
   equipmentSlotType: 10
   traits:
-  - Type: 0
+  - Type: 3
     Status: 0
-    Value: 61
+    Value: 20
+  - Type: 3
+    Status: 1
+    Value: 10
   baseDamage: 150
   damageVariability: 15
   criticalStrikeChance: 0.1

@@ -1,14 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Core;
 using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
     [Header("Drag and Drop")]
-    private int _hoveredSlotIndex = -1;
     public int _grabbedInventoryItemSlotIndex = -1;
     public int _grabbedEquipmentItemSlotIndex = -1;
     private int _maxNumberOfSlots;
@@ -48,7 +49,6 @@ public class InventoryManager : Singleton<InventoryManager>
     public void OnInventoryDisabled()
     {
         InventoryUIManager.Instance.OnInventoryDisabled();
-        _hoveredSlotIndex = -1;
         _grabbedInventoryItemSlotIndex = -1;
         _grabbedEquipmentItemSlotIndex = -1;
     }
@@ -154,6 +154,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (!_equipments.TryGetValue(slotIndex, out InventorySlot slot)) return;
 
         _equipments.Remove(slotIndex);
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
 
         InventoryUIManager.Instance.SetInventoryWeight(slot.Item.weight * -1);
         InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
@@ -257,8 +258,10 @@ public class InventoryManager : Singleton<InventoryManager>
                     // Check if slot is empty. If so then move the item to the slot if not then swap the items
                     if (!_equipments.ContainsKey(slotIndex))
                     {
+                        EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemEquip });
                         _equipments.Add(slotIndex, _equipments[_grabbedEquipmentItemSlotIndex]);
                         _equipments.Remove(_grabbedEquipmentItemSlotIndex);
+                        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
                         _grabbedEquipmentItemSlotIndex = -1;
                         // InventoryUIManager.Instance.SetEquipmentSlotIconOpacity(_grabbedInventoryItemSlotIndex, 1f);
                         InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
@@ -319,7 +322,8 @@ public class InventoryManager : Singleton<InventoryManager>
             Item = item.Item,
             Amount = 1
         });
-        
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
+
         _inventory.Remove(fromEquipSlotIndex);
         InventoryUIManager.Instance.UpdateEquipmentGrids();
         InventoryUIManager.Instance.UpdateInventoryGrids();
@@ -342,6 +346,7 @@ public class InventoryManager : Singleton<InventoryManager>
             Item = item.Item,
             Amount = 1
         });
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
 
         _grabbedEquipmentItemSlotIndex = -1;
         _grabbedInventoryItemSlotIndex = -1;
@@ -372,6 +377,7 @@ public class InventoryManager : Singleton<InventoryManager>
             Amount = 1
         });
         _equipments.Remove(slotIndex);
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
         InventoryUIManager.Instance.UpdateEquipmentGrids();
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
@@ -413,6 +419,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
         // Update the index of the grabbed item
         _equipments.Remove(fromSlotIndex);
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_EQUIPPED_OR_UNEQUIPPED_ITEM, this, EventArgs.Empty);
         // Check if clicked inventory slot is empty. If not then find first avaliable slot
         var avaliableIndex = _inventory.ContainsKey(toSlotIndex) ? _GetNextSlotIndex() : toSlotIndex;
         _inventory.Add(avaliableIndex, item);

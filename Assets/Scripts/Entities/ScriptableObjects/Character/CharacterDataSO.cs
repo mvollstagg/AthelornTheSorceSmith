@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
 using UnityEditor;
@@ -36,41 +37,41 @@ public class CharacterDataSO : ScriptableObject
     #endregion
 
     #region Derived Stats
-    public double physicalDamage { get; private set; }                      // PhysicalDamageBaseValue + ( PhysicalDamageBaseValue * Strength * 0.4 )
-    public double physicalDefence { get; private set; }                     // PhysicalDefenceBaseValue + ( PhysicalDefenceBaseValue * Vitality * 0.3 )
-    public double magicalDamage { get; private set; }                       // MagicalDamageBaseValue + ( MagicalDamageBaseValue * Intelligence * 0.5 )
-    public double magicalDefence { get; private set; }                      // MagicalDefenceBaseValue + ( MagicalDefenceBaseValue * Intelligence * 0.3 )
+    public double physicalDamage { get; set; }                      // PhysicalDamageBaseValue + ( PhysicalDamageBaseValue * Strength * 0.4 )
+    public double physicalDefence { get; set; }                     // PhysicalDefenceBaseValue + ( PhysicalDefenceBaseValue * Vitality * 0.3 )
+    public double magicalDamage { get; set; }                       // MagicalDamageBaseValue + ( MagicalDamageBaseValue * Intelligence * 0.5 )
+    public double magicalDefence { get; set; }                      // MagicalDefenceBaseValue + ( MagicalDefenceBaseValue * Intelligence * 0.3 )
 
-    public double maxHealth { get; private set; }                           // HpBaseValue + ( HpBaseValue * Vitality * 0.1 );
-    public double currentHealth { get; set; }                               // Current health points
-    public double maxMana { get; private set; }                             // MpBaseValue + ( MpBaseValue * Intelligence * 0.1 );
-    public double currentMana { get; set; }                                 // Current mana points
-    public double maxStamina { get; private set; }                          // SpBaseValue + ( SpBaseValue * Focus * 0.01 );
-    public double currentStamina { get; set; }                              // Current stamina points
+    public double maxHealth { get; set; }                           // HpBaseValue + ( HpBaseValue * Vitality * 0.1 );
+    public double currentHealth { get; set; }                       // Current health points
+    public double maxMana { get; set; }                             // MpBaseValue + ( MpBaseValue * Intelligence * 0.1 );
+    public double currentMana { get; set; }                         // Current mana points
+    public double maxStamina { get; set; }                          // SpBaseValue + ( SpBaseValue * Focus * 0.01 );
+    public double currentStamina { get; set; }                      // Current stamina points
 
-    public double criticalStrikeChance { get; private set; }                // CriticalStrikeChanceBaseValue + ( Dexterity * 4 );
-    public double criticalStrikeDamage { get; private set; }                // CriticalStrikeDamageBaseValue + ( Dexterity * 3.5 );
-    public double accuracy { get; private set; }                            // AccuracyBaseValue + ( Dexterity * 2 );
-    public double dodgeChance { get; private set; }                         // DodgeChanceBaseValue + ( Dexterity * 2 );
-    public double blockChance { get; private set; }                         // BlockChanceBaseValue + ( Dexterity * 2 );
-    public double influenceBonus { get; private set; }                      // InfluenceBonusBaseValue + ( Charisma * 0.5 );
-    public double negotiationBonus { get; private set; }                    // NegotiationBonusBaseValue + ( Charisma * 0.5 );
+    public double criticalStrikeChance { get; set; }                // CriticalStrikeChanceBaseValue + ( Dexterity * 4 );
+    public double criticalStrikeDamage { get; set; }                // CriticalStrikeDamageBaseValue + ( Dexterity * 3.5 );
+    public double accuracy { get; set; }                            // AccuracyBaseValue + ( Dexterity * 2 );
+    public double dodgeChance { get; set; }                         // DodgeChanceBaseValue + ( Dexterity * 2 );
+    public double blockChance { get; set; }                         // BlockChanceBaseValue + ( Dexterity * 2 );
+    public double influenceBonus { get; set; }                      // InfluenceBonusBaseValue + ( Charisma * 0.5 );
+    public double negotiationBonus { get; set; }                    // NegotiationBonusBaseValue + ( Charisma * 0.5 );
 
-    public double fireResistance { get; set; }                              // FireResistanceBaseValue + ( Vitality * 0.5 );
-    public double waterResistance { get; set; }                             // WaterResistanceBaseValue + ( Vitality * 0.5 );
-    public double earthResistance { get; set; }                             // EarthResistanceBaseValue + ( Vitality * 0.5 );
-    public double airResistance { get; set; }                               // AirResistanceBaseValue + ( Vitality * 0.5 );
-    public double poisonResistance { get; set; }                            // PoisonResistanceBaseValue + ( Vitality * 0.5 );
+    public double fireResistance { get; set; }                      // FireResistanceBaseValue + ( Vitality * 0.5 );
+    public double waterResistance { get; set; }                     // WaterResistanceBaseValue + ( Vitality * 0.5 );
+    public double earthResistance { get; set; }                     // EarthResistanceBaseValue + ( Vitality * 0.5 );
+    public double airResistance { get; set; }                       // AirResistanceBaseValue + ( Vitality * 0.5 );
+    public double poisonResistance { get; set; }                    // PoisonResistanceBaseValue + ( Vitality * 0.5 );
     #endregion 
 
     #region Character Values
-    public int level { get; private set; }                                  // Current level
-    public int experience { get; private set; }                             // Current experience
-    public int statPoints { get; set; }                                     // Stat points available to spend
+    public int level { get; private set; }                          // Current level
+    public int experience { get; private set; }                     // Current experience
+    public int statPoints { get; set; }                             // Stat points available to spend
     #endregion
 
     private const string INITIALIZED_KEY = "IsInitialized"; // Key for PlayerPrefs
-
+    
     void Awake()
     {
         CalculateDerivedStats();
@@ -83,7 +84,7 @@ public class CharacterDataSO : ScriptableObject
         LoadStats();
         CalculateDerivedStats();
     }
-
+    
     void OnApplicationQuit()
     {
         SaveStats();
