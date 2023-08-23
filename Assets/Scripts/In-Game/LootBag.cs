@@ -14,7 +14,7 @@ public class LootBag : MonoBehaviour, IInteractable
     public int money;  // Amount of money in the bag
 
     [SerializeField] private List<InventorySlot> items = new List<InventorySlot>();  // List of items in the bag
-    private float timer = 20f; // 2 minutes
+    private float timer = 120f; // 2 minutes
     private Canvas canvas;
     private TextMeshProUGUI timerText;
     private bool isShowingUI = false;

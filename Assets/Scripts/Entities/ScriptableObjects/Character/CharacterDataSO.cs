@@ -221,22 +221,77 @@ public class CharacterDataSO : ScriptableObject
     // Calculate and update the derived stats
     public void CalculateDerivedStats()
     {
-        physicalDamage = physicalDamageBaseValue + ( physicalDamageBaseValue * strength * 0.4 );
-        physicalDefence = physicalDefenceBaseValue + ( physicalDefenceBaseValue * vitality * 0.3 );
-        magicalDamage = magicalDamageBaseValue + ( magicalDamageBaseValue * intelligence * 0.5 );
-        magicalDefence = magicalDefenceBaseValue + ( magicalDefenceBaseValue * intelligence * 0.3 );
-        
-        maxHealth = hpBaseValue + ( hpBaseValue * vitality * 0.1 );
-        maxMana = mpBaseValue + ( mpBaseValue * focus * 0.1 );
-        maxStamina = spBaseValue + ( spBaseValue * focus * 0.01 );
+        var equippedItems = InventoryManager.Instance._equipments;
+        // Collect positive and negative modifiers from equipped items
+        List<ItemTrait> positiveStatTraits = new List<ItemTrait>();
+        List<ItemTrait> negativeStatTraits = new List<ItemTrait>();
+        foreach (var equippedItem in equippedItems.Values)
+        {
+            positiveStatTraits.AddRange(equippedItem.Item.traits.Where(y => y.Status == TraitStatus.Positive));
+            negativeStatTraits.AddRange(equippedItem.Item.traits.Where(y => y.Status == TraitStatus.Negative));
+        }
 
-        criticalStrikeChance = criticalStrikeChanceBaseValue + ( dexterity * 4 );
-        criticalStrikeDamage = criticalStrikeDamageBaseValue + ( dexterity * 3.5 );
-        accuracy = accuracyBaseValue + ( dexterity * 2 );
-        dodgeChance = dodgeChanceBaseValue + ( dexterity * 4.5 );
-        blockChance = blockChanceBaseValue + ( dexterity * 0.04 );
-        influenceBonus = influenceBonusBaseValue + ( charisma * 0.03 );
-        negotiationBonus = negotiationBonusBaseValue + ( charisma * 0.02 );
+        // Calculate base stats (without equipped modifiers)
+        int baseStrength = 3;
+        int baseVitality = 3;
+        int baseIntelligence = 3;
+        int baseFocus = 3;
+        int baseDexterity = 3;
+        int baseCharisma = 3;
+
+        // Apply equipped modifiers
+        int equippedStrengthModifier = positiveStatTraits.Where(t => t.Type == TraitType.Strength).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Strength).Sum(t => t.Value);
+        int equippedVitalityModifier = positiveStatTraits.Where(t => t.Type == TraitType.Vitality).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Vitality).Sum(t => t.Value);
+        int equippedIntelligenceModifier = positiveStatTraits.Where(t => t.Type == TraitType.Intelligence).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Intelligence).Sum(t => t.Value);
+        int equippedFocusModifier = positiveStatTraits.Where(t => t.Type == TraitType.Focus).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Focus).Sum(t => t.Value);
+        int equippedDexterityModifier = positiveStatTraits.Where(t => t.Type == TraitType.Dexterity).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Dexterity).Sum(t => t.Value);
+        int equippedCharismaModifier = positiveStatTraits.Where(t => t.Type == TraitType.Charisma).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Charisma).Sum(t => t.Value);
+
+        double equippedPhysicalDamageModifier = positiveStatTraits.Where(t => t.Type == TraitType.PhysicalDamage).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.PhysicalDamage).Sum(t => t.Value);
+        double equippedPhysicalDefenceModifier = positiveStatTraits.Where(t => t.Type == TraitType.PhysicalDefence).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.PhysicalDefence).Sum(t => t.Value);
+        double equippedMagicalDamageModifier = positiveStatTraits.Where(t => t.Type == TraitType.MagicalDamage).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.MagicalDamage).Sum(t => t.Value);
+        double equippedMagicalDefenceModifier = positiveStatTraits.Where(t => t.Type == TraitType.MagicalDefence).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.MagicalDefence).Sum(t => t.Value);
+
+        double equippedHealthModifier = positiveStatTraits.Where(t => t.Type == TraitType.Health).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Health).Sum(t => t.Value);
+        double equippedManaModifier = positiveStatTraits.Where(t => t.Type == TraitType.Mana).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Mana).Sum(t => t.Value);
+        double equippedStaminaModifier = positiveStatTraits.Where(t => t.Type == TraitType.Stamina).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Stamina).Sum(t => t.Value);
+
+        double equippedCriticalStrikeChanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.CriticalStrikeChance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.CriticalStrikeChance).Sum(t => t.Value);
+        double equippedCriticalStrikeDamageModifier = positiveStatTraits.Where(t => t.Type == TraitType.CriticalStrikeDamage).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.CriticalStrikeDamage).Sum(t => t.Value);
+        double equippedAccuracyModifier = positiveStatTraits.Where(t => t.Type == TraitType.Accuracy).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.Accuracy).Sum(t => t.Value);
+        double equippedDodgeChanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.DodgeChance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.DodgeChance).Sum(t => t.Value);
+        double equippedBlockChanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.BlockChance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.BlockChance).Sum(t => t.Value);
+        double equippedInfluenceBonusModifier = positiveStatTraits.Where(t => t.Type == TraitType.InfluenceBonus).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.InfluenceBonus).Sum(t => t.Value);
+        double equippedNegotiationBonusModifier = positiveStatTraits.Where(t => t.Type == TraitType.NegotiationBonus).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.NegotiationBonus).Sum(t => t.Value);
+
+        double equippedFireResistanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.FireResistance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.FireResistance).Sum(t => t.Value);
+        double equippedWaterResistanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.WaterResistance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.WaterResistance).Sum(t => t.Value);
+        double equippedEarthResistanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.EarthResistance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.EarthResistance).Sum(t => t.Value);
+        double equippedAirResistanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.AirResistance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.AirResistance).Sum(t => t.Value);
+        double equippedPoisonResistanceModifier = positiveStatTraits.Where(t => t.Type == TraitType.PoisonResistance).Sum(t => t.Value) - negativeStatTraits.Where(t => t.Type == TraitType.PoisonResistance).Sum(t => t.Value);
+
+        physicalDamage = physicalDamageBaseValue + ( physicalDamageBaseValue * (strength + equippedStrengthModifier) * 0.4 ) + equippedPhysicalDamageModifier;
+        physicalDefence = physicalDefenceBaseValue + ( physicalDefenceBaseValue * (vitality + equippedVitalityModifier) * 0.3 ) + equippedPhysicalDefenceModifier;
+        magicalDamage = magicalDamageBaseValue + ( magicalDamageBaseValue * (intelligence + equippedIntelligenceModifier) * 0.5 ) + equippedMagicalDamageModifier;
+        magicalDefence = magicalDefenceBaseValue + ( magicalDefenceBaseValue * (intelligence + equippedIntelligenceModifier) * 0.3 ) + equippedMagicalDefenceModifier;
+        
+        maxHealth = hpBaseValue + ( hpBaseValue * (vitality + equippedVitalityModifier) * 0.1 ) + equippedHealthModifier;
+        maxMana = mpBaseValue + ( mpBaseValue * (intelligence + equippedIntelligenceModifier) * 0.1 ) + equippedManaModifier;
+        maxStamina = spBaseValue + ( spBaseValue * (focus + equippedFocusModifier) * 0.01 ) + equippedStaminaModifier;
+
+        criticalStrikeChance = criticalStrikeChanceBaseValue + ( dexterity + equippedDexterityModifier ) * 4 + equippedCriticalStrikeChanceModifier;
+        criticalStrikeDamage = criticalStrikeDamageBaseValue + ( dexterity + equippedDexterityModifier ) * 3.5 + equippedCriticalStrikeDamageModifier;
+        accuracy = accuracyBaseValue + ( dexterity + equippedDexterityModifier ) * 2 + equippedAccuracyModifier;
+        dodgeChance = dodgeChanceBaseValue + ( dexterity + equippedDexterityModifier ) * 2 + equippedDodgeChanceModifier;
+        blockChance = blockChanceBaseValue + ( dexterity + equippedDexterityModifier ) * 2 + equippedBlockChanceModifier;
+        influenceBonus = influenceBonusBaseValue + ( charisma + equippedCharismaModifier ) * 0.5 + equippedInfluenceBonusModifier;
+        negotiationBonus = negotiationBonusBaseValue + ( charisma + equippedCharismaModifier ) * 0.5 + equippedNegotiationBonusModifier;
+
+        fireResistance = equippedFireResistanceModifier;
+        waterResistance = equippedWaterResistanceModifier;
+        earthResistance = equippedEarthResistanceModifier;
+        airResistance = equippedAirResistanceModifier;
+        poisonResistance = equippedPoisonResistanceModifier;
     }
 
     public Dictionary<string, CharacterStat> GetStats()
