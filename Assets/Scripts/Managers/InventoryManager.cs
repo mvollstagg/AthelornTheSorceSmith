@@ -165,28 +165,36 @@ public class InventoryManager : Singleton<InventoryManager>
     // ! ######## Input Methods ########
     public void OnDropItemAction()
     {
-        // If there is an item grabbed, then drop item will not work
-        if (_grabbedInventoryItemSlotIndex != -1 || _grabbedEquipmentItemSlotIndex != -1)
-            return;
+        if (_grabbedEquipmentItemSlotIndex != -1 || _grabbedInventoryItemSlotIndex != -1)
+                return;
 
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
 
         if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Inventory)
         {
+            if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
+                return;
+
             LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = 1 });
             RemoveInventoryItem(selectedSlotIndex);
         }
         else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
         {
+            if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
+                return;
+
             LootManager.Instance.DropItem(new InventorySlot() { Item = _equipments[selectedSlotIndex].Item, Amount = 1 });
             RemoveEquipmentItem(selectedSlotIndex);
         }
 
         EventManager.Instance.Trigger(GameEvents.ON_PLAY_SFX, this, new OnSoundEffectsPlayEventArgs { SoundEffectsType = SoundEffectsType.ItemDrop });
-    }
+    }   
 
     public void OnDropItemStackAction()
     {
+        if (_grabbedEquipmentItemSlotIndex != -1 || _grabbedInventoryItemSlotIndex != -1)
+                return;
+                
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
         if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Inventory)
         {
@@ -194,13 +202,13 @@ public class InventoryManager : Singleton<InventoryManager>
                 return;
 
             LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = _inventory[selectedSlotIndex].Amount });
-            RemoveInventoryItem(selectedSlotIndex);
+            RemoveInventoryItem(selectedSlotIndex, -1);
         }
         else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
         {
             if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
                 return;
-            
+
             LootManager.Instance.DropItem(new InventorySlot() { Item = _equipments[selectedSlotIndex].Item, Amount = _equipments[selectedSlotIndex].Amount });
             RemoveEquipmentItem(selectedSlotIndex);
         }
