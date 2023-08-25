@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Character Scene.unity
-    guid: a1ba1b177011246489399fff993e3c55
+    path: Assets/Scenes/Carax Field.unity
+    guid: 6403ffc6df21fad45a84ace52d3a1bfb
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: dd05dcbb1d6b9e149b2af4bcf672d534,
       type: 2}

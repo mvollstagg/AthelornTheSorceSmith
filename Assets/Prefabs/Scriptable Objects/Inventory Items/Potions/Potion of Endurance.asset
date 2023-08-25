@@ -24,6 +24,6 @@ MonoBehaviour:
   type: 2
   equipmentSlotType: 12
   traits:
-  - Type: 14
+  - Type: 12
     Status: 0
     Value: 20

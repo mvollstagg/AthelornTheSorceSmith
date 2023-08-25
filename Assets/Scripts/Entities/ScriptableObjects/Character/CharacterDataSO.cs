@@ -292,6 +292,11 @@ public class CharacterDataSO : ScriptableObject
         earthResistance = equippedEarthResistanceModifier;
         airResistance = equippedAirResistanceModifier;
         poisonResistance = equippedPoisonResistanceModifier;
+
+        // Make sure current health, mana and stamina are not greater than their maximum values
+        currentHealth = Math.Min(currentHealth, maxHealth);
+        currentMana = Math.Min(currentMana, maxMana);
+        currentStamina = Math.Min(currentStamina, maxStamina);
     }
 
     public Dictionary<string, CharacterStat> GetStats()

@@ -165,21 +165,19 @@ public class InventoryManager : Singleton<InventoryManager>
     // ! ######## Input Methods ########
     public void OnDropItemAction()
     {
+        // If there is an item grabbed, then drop item will not work
+        if (_grabbedInventoryItemSlotIndex != -1 || _grabbedEquipmentItemSlotIndex != -1)
+            return;
+
         int selectedSlotIndex = InventoryUIManager.Instance.HoveredItemSlot;
 
         if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Inventory)
         {
-            if (!_inventory.ContainsKey(selectedSlotIndex) || _grabbedInventoryItemSlotIndex != -1)
-                return;
-
             LootManager.Instance.DropItem(new InventorySlot() { Item = _inventory[selectedSlotIndex].Item, Amount = 1 });
             RemoveInventoryItem(selectedSlotIndex);
         }
         else if (InventoryUIManager.Instance.HoveredItemSlotType == HoveredItemSlotType.Equipment)
         {
-            if (!_equipments.ContainsKey(selectedSlotIndex) || _grabbedEquipmentItemSlotIndex != -1)
-                return;
-            
             LootManager.Instance.DropItem(new InventorySlot() { Item = _equipments[selectedSlotIndex].Item, Amount = 1 });
             RemoveEquipmentItem(selectedSlotIndex);
         }
