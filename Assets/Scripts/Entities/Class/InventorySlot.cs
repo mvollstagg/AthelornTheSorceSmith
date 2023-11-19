@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Scripts.Entities.Class
 {
+    [Serializable]
     public class InventorySlot
     {
         public InventoryItemDataSO Item;

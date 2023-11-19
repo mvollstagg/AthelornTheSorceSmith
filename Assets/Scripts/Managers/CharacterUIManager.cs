@@ -20,14 +20,19 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     public TMP_Text statDetailsText;
     public TMP_Text statPointsDetailsText;
     public UIStatDataSO statDataSO;
+    [SerializeField]
     private Dictionary<string, Button> increaseButtons = new Dictionary<string, Button>();
+    [SerializeField]
     private Dictionary<string, Button> decreaseButtons = new Dictionary<string, Button>();
     public Transform applyButton;
     public Transform revertButton;
 
     void Start()
     {
-        UpdateInGameCharacterStatUI(CharacterManager.Instance.characterDataSO.GetStats());
+        if (CharacterManager.Instance.characterDataSO != null)
+        {
+            UpdateInGameCharacterStatUI(CharacterManager.Instance.characterDataSO.GetStats());
+        }
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_STAT_INFO_CHANGED, CharacterUIManager_OnCharacterStatInfoChanged);
 
         // Populate the dictionaries for increase and decrease buttons
@@ -37,8 +42,8 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
             Button increaseButton = statTransform.Find("Increase").GetComponent<Button>();
             Button decreaseButton = statTransform.Find("Decrease").GetComponent<Button>();
 
-            increaseButtons.Add(statName, increaseButton);
-            decreaseButtons.Add(statName, decreaseButton);
+            increaseButtons.TryAdd(statName, increaseButton);
+            decreaseButtons.TryAdd(statName, decreaseButton);
 
             // Add listeners to the buttons
             increaseButton.onClick.AddListener(() => OnIncreaseButtonClicked(statName));

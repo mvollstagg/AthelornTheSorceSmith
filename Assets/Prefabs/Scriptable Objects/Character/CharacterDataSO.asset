@@ -15,9 +15,9 @@ MonoBehaviour:
   strength: 3
   dexterity: 3
   intelligence: 3
-  vitality: 4
-  focus: 4
-  charisma: 4
+  vitality: 3
+  focus: 3
+  charisma: 3
   physicalDamageBaseValue: 10
   physicalDefenceBaseValue: 25
   magicalDamageBaseValue: 10

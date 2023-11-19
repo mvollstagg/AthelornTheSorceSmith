@@ -29,7 +29,7 @@ public class LootManager : Singleton<LootManager>
         lootBag.AddItem(item);
 
         // Set the money amount in the loot bag (if applicable)
-        lootBag.SetMoneyAmount(0);  // Set the initial money amount
+        //lootBag.SetMoneyAmount(0);  // Set the initial money amount
     }
 
     public void DropLoot(List<InventorySlot> items, int moneyAmount)

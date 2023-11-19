@@ -16,6 +16,7 @@ public class LootUIManager : Singleton<LootUIManager>
     [SerializeField] private Transform _lootBoxPanel;
     [SerializeField] private Transform _itemDetailsPanel;
     [SerializeField] public Dictionary<int, InventorySlot> _slotItems = new Dictionary<int, InventorySlot>();
+    [SerializeField] private TextMeshProUGUI _lootBagMoneyText;
 
     public void ShowLootBag(LootBag lootBag)
     {
@@ -30,6 +31,10 @@ public class LootUIManager : Singleton<LootUIManager>
 
         InputManager.Instance.SwitchActionMap(ActionMaps.UI);
         UpdateLootGrids();
+
+        // Set money amount
+        _lootBagMoneyText.text = "Coins: " + lootBag.GetMoneyAmount().ToString();
+
         // Show the loot bag
         _lootBoxPanel.gameObject.SetActive(true);
     }

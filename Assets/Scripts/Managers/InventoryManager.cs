@@ -31,7 +31,7 @@ public class InventoryManager : Singleton<InventoryManager>
     private void Start()
     {
         _maxNumberOfSlots = InventoryUIManager.Instance.ItemGridCount;
-        _testItems.ForEach(x => AddItem(x, 1));
+        //_testItems.ForEach(x => AddItem(x, 1));
     }
 
     private void LateUpdate()

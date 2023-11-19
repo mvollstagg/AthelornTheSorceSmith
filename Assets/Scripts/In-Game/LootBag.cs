@@ -6,14 +6,14 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Collider))]
 public class LootBag : MonoBehaviour, IInteractable
 {
     [SerializeField] private CursorType _cursorType;
     private int maxSlots = 6;  // Maximum number of item slots in the bag
     public int money;  // Amount of money in the bag
 
-    [SerializeField] private List<InventorySlot> items = new List<InventorySlot>();  // List of items in the bag
+    [SerializeField] public List<InventorySlot> items = new List<InventorySlot>();  // List of items in the bag
     private float timer = 120f; // 2 minutes
     private Canvas canvas;
     private TextMeshProUGUI timerText;
