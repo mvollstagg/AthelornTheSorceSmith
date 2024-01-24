@@ -7,49 +7,36 @@ using Scripts.Entities.Enum;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// Inventory Manager must contain only managing stuffs between UI and Character Inventory
 public class InventoryManager : Singleton<InventoryManager>
 {
     [Header("Drag and Drop")]
-    public int _grabbedInventoryItemSlotIndex = -1;
     public int _grabbedEquipmentItemSlotIndex = -1;
     private int _maxNumberOfSlots;
-    [SerializeField] public Dictionary<int, InventorySlot> _inventory = new Dictionary<int, InventorySlot>();
-    [SerializeField] public Dictionary<int, InventorySlot> _equipments = new Dictionary<int, InventorySlot>();
 
-    [Header("Test Items")]
-    [SerializeField] private List<InventoryItemDataSO> _testItems;
+    [Header("Equipment Slots")]
+    [SerializeField] public Dictionary<int, InventorySlot> _equipments = new Dictionary<int, InventorySlot>();
+    public Dictionary<int, InventorySlot> EquipmentItems => _equipments;
 
     [Header("Active Slots")]
-    [SerializeField] public List<InventoryDetails> _inventorySlots = new List<InventoryDetails>();
-    [SerializeField] public List<InventoryDetails> _equipmentSlots = new List<InventoryDetails>();
+    [SerializeField] public List<InventoryDetails> _equipmentSlots = new List<InventoryDetails>(); 
     
-    public Dictionary<int, InventorySlot> InventoryItems => _inventory;
-    public Dictionary<int, InventorySlot> EquipmentItems => _equipments;      
-    public int GrabbedInventoryItemSlotIndex => _grabbedInventoryItemSlotIndex;
     public int GrabbedEquipmentItemSlotIndex => _grabbedEquipmentItemSlotIndex;
 
     private void Start()
     {
         _maxNumberOfSlots = InventoryUIManager.Instance.ItemGridCount;
-        _testItems.ForEach(x => AddItem(x, 1));
     }
 
-    private void LateUpdate()
-    {
-        _inventorySlots = _inventory.Keys.Select(x => new InventoryDetails { Index = x, Name = _inventory[x].Item.name }).ToList();
-        _equipmentSlots = _equipments.Keys.Select(x => new InventoryDetails { Index = x, Name = _equipments[x].Item.name }).ToList();
-    }
-    
     public void AddItem()
     {
-        AddItem(_testItems[Random.Range(0, _testItems.Count)], 1);
         InventoryUIManager.Instance.UpdateInventoryGrids();
     }
 
     public void OnInventoryDisabled()
     {
         InventoryUIManager.Instance.OnInventoryDisabled();
-        _grabbedInventoryItemSlotIndex = -1;
+        CharacterInventory.Instance._grabbedInventoryItemSlotIndex = -1;
         _grabbedEquipmentItemSlotIndex = -1;
     }
 
@@ -60,74 +47,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     // ! ######## Common ########
 
-    public void AddItem(InventoryItemDataSO item, int amount = 1)
-    {
-        int remaining = amount;
-
-        // Look for existing slots that can hold more items if item max stack size is greater than 1
-        if (item.maxStackSize > 1)
-        {
-            foreach (var slot in _inventory.Where(x => x.Value.Item.code == item.code))
-            {
-                // Calculate the amount of items that can be added to the slot without exceeding its max stack size
-                int availableToAdd = slot.Value.Item.maxStackSize - slot.Value.Amount;
-
-                // If we can add all remaining items to this slot, do so and exit the loop
-                if (remaining <= availableToAdd)
-                {
-                    slot.Value.Amount += remaining;
-                    remaining = 0;
-                    break;
-                }
-
-                // Otherwise, fill the slot to its max stack size
-                slot.Value.Amount += availableToAdd;
-                remaining -= availableToAdd;
-            }
-        }
-
-        // Fill existing slots to their maximum stack size before creating new slots
-        while (remaining > 0)
-        {
-            var existingSlot = _inventory.FirstOrDefault(slot => slot.Value.Item.code == item.code && slot.Value.Amount < slot.Value.Item.maxStackSize);
-
-            if (existingSlot.Value != null)
-            {
-                int availableToAdd = existingSlot.Value.Item.maxStackSize - existingSlot.Value.Amount;
-                int stackCount = Mathf.Min(availableToAdd, remaining);
-
-                existingSlot.Value.Amount += stackCount;
-                remaining -= stackCount;
-            }
-            else
-            {
-                // If there are no free slots, exit the loop
-                if (_inventory.Count >= _maxNumberOfSlots)
-                    break;
-
-                int stackCount = Mathf.Min(item.maxStackSize, remaining);
-                
-                _inventory.Add(_GetNextSlotIndex(), new InventorySlot()
-                {
-                    Item = item,
-                    Amount = stackCount
-                });
-
-                remaining -= stackCount;
-            }
-        }
-
-        // Update total weight of inventory
-        float weightToAdd = item.weight * (amount - remaining);
-        InventoryUIManager.Instance.SetInventoryWeight(weightToAdd);
-
-        if (remaining > 0)
-        {
-            Debug.Log($"{remaining} {item.name} exceeded the maximum stack size.");
-        }
-
-        InventoryUIManager.Instance.UpdateInventoryGrids();
-    }
+    
 
     public void RemoveInventoryItem(int slotIndex, int amount = 1)
     {
@@ -251,7 +171,7 @@ public class InventoryManager : Singleton<InventoryManager>
             {
                 // If the grabbed item is the same as the one being grabbed, drop it
                 _grabbedEquipmentItemSlotIndex = -1;
-                _grabbedInventoryItemSlotIndex = -1;
+               CharacterInventory.Instance. _grabbedInventoryItemSlotIndex = -1;
                 // InventoryUIManager.Instance.SetEquipmentSlotIconOpacity(_grabbedInventoryItemSlotIndex, 1f);
                 InventoryUIManager.Instance.SetGrabbedItemSlotStatus(false);
                 InventoryUIManager.Instance.ShowEquipmentItemDetails(slotIndex);
