@@ -66,11 +66,20 @@ public class InputManager : Singleton<InputManager>
 		InputActions.Camera.RotateMouse.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_MOUSE_CANCELED, obj, EventArgs.Empty);
 		InputActions.Camera.RotateGamepad.performed += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD, obj, EventArgs.Empty);
 		InputActions.Camera.RotateGamepad.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD_CANCELED, obj, EventArgs.Empty);
+        #endregion
 
-		#endregion
-	}
+        InputActions.Interaction.Enable();
+        InputActions.Interaction.Attack.performed += (obj) => {
+            Debug.Log("Attack Performed");
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE, obj, EventArgs.Empty);
+        };
+        InputActions.Interaction.Attack.canceled += (obj) => {
+            Debug.Log("Attack Canceled");
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, obj, EventArgs.Empty);
+        };
+    }
 
-	void LateUpdate()
+    void LateUpdate()
 	{
 		ActiveActionMaps = _inputActionMaps.Where(x => x.Value.enabled).Select(x => x.Key).ToList();
 	}
@@ -122,9 +131,9 @@ public class InputManager : Singleton<InputManager>
 		Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 	}
 
-	#region Player Input Actions
+    #region Player Input Actions
 
-	public void OnMove(InputValue value)
+    public void OnMove(InputValue value)
 	{
 		MoveInput(value.Get<Vector2>());
 	}
@@ -142,7 +151,7 @@ public class InputManager : Singleton<InputManager>
 		JumpInput(value.isPressed);
 	}
 
-	public void OnSprint(InputValue value)
+    public void OnSprint(InputValue value)
 	{
 		SprintInput(value.isPressed);
 	}

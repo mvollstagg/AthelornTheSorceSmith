@@ -17,6 +17,7 @@ public class InventoryItemDataSO : ScriptableObject
     [TextArea(3, 10)]
     public string description;
     public Sprite icon;
+    public GameObject prefab;
     public float weight;
     public int price;
     public int maxStackSize;
