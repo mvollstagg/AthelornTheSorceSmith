@@ -26,8 +26,14 @@ public class CharacterMovement : Singleton<CharacterMovement>
     public float _inputMagnitude;
     private float _speed;
     public float _animationBlend;
+    public float _maxAnimationBlend;
     private float _targetRotation = 0.0f;
     #endregion
+
+    private void Start()
+    {
+        _maxAnimationBlend = SprintSpeed;
+    }
 
     void Update()
     {
@@ -82,5 +88,10 @@ public class CharacterMovement : Singleton<CharacterMovement>
         // move the player
         Character.Instance._controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                             new Vector3(0.0f, CharacterJump.Instance._verticalVelocity, 0.0f) * Time.deltaTime);
+    }
+
+    public float GetAnimationBlendMagnitude()
+    {
+        return _animationBlend / _maxAnimationBlend;
     }
 }

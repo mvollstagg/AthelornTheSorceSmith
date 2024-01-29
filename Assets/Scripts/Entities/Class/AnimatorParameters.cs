@@ -19,5 +19,6 @@ namespace Scripts.Entities.Class
         public static string MOTION_SPEED { get; private set; } = "MotionSpeed";
         public static string TRIGGER { get; private set; } = "Trigger";
         public static string ACTION { get; private set; } = "Action";
+        public static string ANIMATION_BLEND { get; private set; } = "AnimationBlend";
     }
 }

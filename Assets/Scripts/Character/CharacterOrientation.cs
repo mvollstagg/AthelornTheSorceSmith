@@ -21,6 +21,7 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
     private float _rotationVelocity;
     private float _remappedMoveInputX;
     private float _remappedMoveInputY;
+    private float _lastRotation;
     #endregion
 
     void Update()
@@ -48,6 +49,7 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
                 Vector3 direction = targetPosition - transform.position;
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 float angle = rotation.eulerAngles.y;
+                _lastRotation = angle;
 
                 // Rotate the character towards the point on the ground, only rotating around the y-axis
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), TurnSpeed * Time.deltaTime);
@@ -55,15 +57,21 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
         }
         else
         {
+            float rotation = _lastRotation;
             Vector3 inputDirection = new Vector3(InputManager.Instance.move.x, 0.0f, InputManager.Instance.move.y).normalized;
 
-            var _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                Character.Instance._mainCamera.transform.eulerAngles.y;
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                CharacterMovement.Instance.RotationSmoothTime);
+            if (inputDirection != Vector3.zero)
+            {
+                var _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                      Character.Instance._mainCamera.transform.eulerAngles.y;
+                rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+                    CharacterMovement.Instance.RotationSmoothTime);
+                
+                _lastRotation = rotation;
+            }
 
             // rotate to face input direction relative to camera position
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            transform.rotation = Quaternion.Euler(0.0f, _lastRotation, 0.0f);
         }
     }
 
