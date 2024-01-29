@@ -389,20 +389,76 @@ BlendTree:
   m_Name: Walk
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b1951e8b17a834a46b2ddc9785879328, type: 3}
+    m_Motion: {fileID: 7400000, guid: 6c5e3b4681956934e905145a47c29f4e, type: 3}
     m_Threshold: 0
-    m_Position: {x: 0, y: 0}
+    m_Position: {x: -0.25, y: 0.25}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: LocomotionMode
     m_Mirror: 0
-  m_BlendParameter: Speed
-  m_BlendParameterY: Blend
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: b1951e8b17a834a46b2ddc9785879328, type: 3}
+    m_Threshold: 0.14285715
+    m_Position: {x: 0, y: 0.5}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 09b9572f86b9d5b408fbcda10d39746a, type: 3}
+    m_Threshold: 0.2857143
+    m_Position: {x: 0.25, y: 0.25}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 59134f7a1fc54b54587a82fd10e567c4, type: 3}
+    m_Threshold: 0.42857143
+    m_Position: {x: -0.5, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 893492c82f942ab4e87fc67eec098643, type: 3}
+    m_Threshold: 0.5714286
+    m_Position: {x: 0.5, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 50d7a1039fd35a2439a4cd5b177d79f6, type: 3}
+    m_Threshold: 0.71428573
+    m_Position: {x: -0.25, y: -0.25}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: eeabe133b2f021c4c8c145605ca37880, type: 3}
+    m_Threshold: 0.85714287
+    m_Position: {x: 0, y: -0.5}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 4166b276c9b8b704bb354d4cc1cc2475, type: 3}
+    m_Threshold: 1
+    m_Position: {x: 0.25, y: -0.25}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: LocomotionMode
+    m_Mirror: 0
+  m_BlendParameter: RemappedMoveInputX
+  m_BlendParameterY: RemappedMoveInputY
   m_MinThreshold: 0
   m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 1
+  m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
-  m_BlendType: 0
+  m_BlendType: 3
 --- !u!1102 &-7333200079347726708
 AnimatorState:
   serializedVersion: 6
