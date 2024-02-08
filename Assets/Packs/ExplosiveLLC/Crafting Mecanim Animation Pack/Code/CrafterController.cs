@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using WarriorAnims;
 
 namespace CraftingAnims
 {
@@ -500,7 +501,6 @@ namespace CraftingAnims
 		/// <param name="time"></param>
 		public void BlendOff(float time)
 		{
-			guiControls.ResetCarry();
 			StartCoroutine(_RightArmBlendOff(time));
 			StartCoroutine(_RightHandBlendOff(time));
 		}
