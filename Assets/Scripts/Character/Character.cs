@@ -110,6 +110,7 @@ public class Character : Singleton<Character>, ICharacter
     private void LevelUp()
     {
         // Perform any additional level up actions here
+        Debug.Log("Leveled Up");
     }
 
     public int GetRequiredExperienceForLevel(int level)
