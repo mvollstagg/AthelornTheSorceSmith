@@ -68,7 +68,7 @@ public class LootManager : Singleton<LootManager>
                 .ForEach(item => InventoryManager.Instance.AddItem(item.Item, item.Amount));
 
         // Add the money from the loot bag to the player's inventory
-        InventoryManager.Instance.AddMoney(_lootBag.GetMoneyAmount());
+        CharacterInventory.Instance.AddMoney(_lootBag.GetMoneyAmount());
 
         // Remove the loot bag from the scene
         CharacterInteraction.Instance.RemoveInteractableFromNearbyList(_lootBag);

@@ -27,7 +27,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     
     private void LateUpdate()
     {
-        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1)
+        if (CharacterInventory.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1)
         {
             var _mousePosition = Input.mousePosition;
             var _newPosition = Vector2.zero;
@@ -51,9 +51,9 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _grabbedItemSlot.gameObject.SetActive(false);
         _outlineGlow.gameObject.SetActive(false);
         _previewCamera.gameObject.SetActive(false);
-        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1)
+        if (CharacterInventory.Instance.GrabbedInventoryItemSlotIndex != -1)
         {
-            SetInventoryGridItem(InventoryManager.Instance.GrabbedInventoryItemSlotIndex);
+            SetInventoryGridItem(CharacterInventory.Instance.GrabbedInventoryItemSlotIndex);
         }
         if (InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1)
         {
@@ -106,7 +106,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
         _outlineGlow.anchoredPosition = Vector2.zero;
         _outlineGlow.gameObject.SetActive(true);
         
-        if (!InventoryManager.Instance.InventoryItems.ContainsKey(slotIndex))
+        if (!CharacterInventory.Instance.InventoryItems.ContainsKey(slotIndex))
         {
             _itemDetailsPanel.gameObject.SetActive(false);
         }
@@ -136,7 +136,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     public void ShowInventoryItemDetails(int slotIndex)
     {
         _itemDetailsPanel.gameObject.SetActive(false);
-        if (!InventoryManager.Instance.InventoryItems.TryGetValue(slotIndex, out InventorySlot inventorySlot)) return;
+        if (!CharacterInventory.Instance.InventoryItems.TryGetValue(slotIndex, out InventorySlot inventorySlot)) return;
         _itemDetailsPanel.Find("ItemPreview").GetComponent<Image>().sprite = inventorySlot.Item.icon;
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().color = ItemRarityColors.GetColor(inventorySlot.Item.rarity);
         _itemDetailsPanel.Find("Title").GetComponent<TextMeshProUGUI>().text = inventorySlot.Item.itemName;
@@ -168,7 +168,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     public void UpdateInventoryGrids()
     {
         // Get the occupied slot indexes
-        HashSet<int> occupiedIndexes = new HashSet<int>(InventoryManager.Instance.InventoryItems.Keys);
+        HashSet<int> occupiedIndexes = new HashSet<int>(CharacterInventory.Instance.InventoryItems.Keys);
 
         // Get the empty slot indexes
         List<int> emptySlotIndexes = Enumerable.Range(0, _itemsGrid.childCount)
@@ -213,11 +213,11 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
 
     private void SetInventoryGridItem(int slotIndex)
     {
-        InventorySlot slot = InventoryManager.Instance.InventoryItems[slotIndex];
+        InventorySlot slot = CharacterInventory.Instance.InventoryItems[slotIndex];
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
         slotTransform.Find("Icon").GetComponent<Image>().sprite = slot.Item.icon;
         slotTransform.Find("Icon").gameObject.SetActive(true);
-        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != slotIndex)
+        if (CharacterInventory.Instance.GrabbedInventoryItemSlotIndex != slotIndex)
             slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         if (slot.Amount > 1)
         {

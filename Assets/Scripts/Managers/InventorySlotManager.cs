@@ -31,11 +31,11 @@ public class InventorySlotManager : MonoBehaviour, IPointerEnterHandler, ISelect
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            InventoryManager.Instance.GrabInventoryItem(_slotIndex);
+            CharacterInventory.Instance.GrabInventoryItem(_slotIndex);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1) return;
+            if (CharacterInventory.Instance.GrabbedInventoryItemSlotIndex != -1 || InventoryManager.Instance.GrabbedEquipmentItemSlotIndex != -1) return;
             InventoryManager.Instance.QuickItemAction(_slotIndex);
         }
     }

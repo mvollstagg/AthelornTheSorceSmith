@@ -102,7 +102,7 @@ public class LootUIManager : Singleton<LootUIManager>
         Transform slotTransform = _itemsGrid.GetChild(slotIndex);
         slotTransform.Find("Icon").GetComponent<Image>().sprite = slot.Item.icon;
         slotTransform.Find("Icon").gameObject.SetActive(true);
-        if (InventoryManager.Instance.GrabbedInventoryItemSlotIndex != slotIndex)
+        if (CharacterInventory.Instance.GrabbedInventoryItemSlotIndex != slotIndex)
             slotTransform.Find("Icon").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         if (slot.Amount > 1)
         {
