@@ -40,7 +40,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
             StartCoroutine(SetFlagTemporaryCoroutine(true, 3));
         //TEST
         crafterStateChangeSpeedTimer += Time.deltaTime;
-        
+        /*
         if(Input.GetKeyDown(KeyCode.Q))SetCrafterStateTypeAnimation(-1);
         if(Input.GetKeyDown(KeyCode.Alpha1)) SetCrafterStateTypeAnimation(6);
         if(Input.GetKeyDown(KeyCode.Alpha2)) SetCrafterStateTypeAnimation(7);
@@ -56,7 +56,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         {
             animator.SetInteger("IsWorking", 0);
         }
-
+*/
         // if(Input.GetKeyDown(KeyCode.E))
         // if(Input.GetKeyDown(KeyCode.R))
 

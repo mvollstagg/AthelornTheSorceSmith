@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd75e095c4444c809aacd51b4b34dda9, type: 3}
+  m_Name: FishingAnimation
+  m_EditorClassIdentifier: 
+  start: {fileID: 7400000, guid: aaa41add5b5136645a5989d161b49158, type: 3}
+  idle: {fileID: 7400000, guid: d35302a4bc529924f97c1bacac6ecb85, type: 3}
+  active: {fileID: 7400000, guid: a0d464b541d1f73438385f0b4c3e7eb5, type: 3}
+  finish: {fileID: 7400000, guid: 83d45c931c9553549a37409dadab3e7d, type: 3}
