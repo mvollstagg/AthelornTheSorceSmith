@@ -21,8 +21,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
     private Animator animator;
 
-    private float crafterStateChangeSpeedTimer;
-
     // TODO: Delete after testing.
     public LocomotionModeType LocomotionMode { get; private set; } = LocomotionModeType.Combat;
 
@@ -38,29 +36,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     {
         if(Input.GetMouseButtonDown(0))
             StartCoroutine(SetFlagTemporaryCoroutine(true, 3));
-        //TEST
-        crafterStateChangeSpeedTimer += Time.deltaTime;
-        
-        if(Input.GetKeyDown(KeyCode.Q))SetCrafterStateTypeAnimation(-1);
-        if(Input.GetKeyDown(KeyCode.Alpha1)) SetCrafterStateTypeAnimation(6);
-        if(Input.GetKeyDown(KeyCode.Alpha2)) SetCrafterStateTypeAnimation(7);
-        if(Input.GetKeyDown(KeyCode.Alpha3)) SetCrafterStateTypeAnimation(8);
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            crafterStateChangeSpeedTimer = 0;
-            animator.SetInteger("IsWorking", 1);
-        }
-
-        if (crafterStateChangeSpeedTimer > 1)
-        {
-            animator.SetInteger("IsWorking", 0);
-        }
-
-        // if(Input.GetKeyDown(KeyCode.E))
-        // if(Input.GetKeyDown(KeyCode.R))
-
-        //TEST
         
         Debug.Log(
             $"Speed: {CharacterMovement.Instance._animationBlend}, MotionSpeed: {CharacterMovement.Instance._inputMagnitude}");
@@ -119,13 +95,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         }
     }
 
-    private void SetCrafterStateTypeAnimation(int stateType)
-    {
-        if (crafterStateChangeSpeedTimer < 1) return;
-
-        animator.SetFloat("CrafterStateType", stateType);
-    }
-    
     [ContextMenu("Combat Mode")]
     public void SetCombatMode()
     {
@@ -137,7 +106,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     {
         LocomotionMode = LocomotionModeType.Idle;
     }
-
 
 
     private void OnCharacterAttackMouseCanceled(object sender, EventArgs e)
