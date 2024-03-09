@@ -19410,42 +19410,6 @@ PrefabInstance:
       addedObject: {fileID: 1822811187}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9457cf76b240341429412148085f6c03, type: 3}
---- !u!1 &1138671817 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5375686874884586409, guid: a559ff99e437a7941b3c557eb5bd7f1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3856023287374570886}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1138671819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138671817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a16aab90cd20b642af7252543c84bf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1138671822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138671817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d9b6ab46d24371a7c1cd19604fc165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  farmingAnimations:
-  - {fileID: 11400000, guid: 89404e07a4e880e438a177d0eed9ebc7, type: 2}
-  - {fileID: 11400000, guid: 8848ddb168745a444aa7274cb7a31465, type: 2}
-  - {fileID: 11400000, guid: 5b5eb87867274e04db35399ac92ce218, type: 2}
-  - {fileID: 11400000, guid: 385a5798753079849b2657c1e2362b20, type: 2}
-  currentAnimation: {fileID: 0}
 --- !u!4 &1149173136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4371624767679590, guid: fa66820763744ef46b5a9cfb5ef88187,
@@ -39734,14 +39698,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 255384734}
-    - targetCorrespondingSourceObject: {fileID: 5375686874884586409, guid: a559ff99e437a7941b3c557eb5bd7f1b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1138671819}
-    - targetCorrespondingSourceObject: {fileID: 5375686874884586409, guid: a559ff99e437a7941b3c557eb5bd7f1b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1138671822}
   m_SourcePrefab: {fileID: 100100000, guid: a559ff99e437a7941b3c557eb5bd7f1b, type: 3}
 --- !u!222 &3863887155847642303
 CanvasRenderer:

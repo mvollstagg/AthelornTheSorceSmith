@@ -8,13 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8de50c57-879a-4280-a059-2db5dfb1b68f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AnimationTestScripts.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AnimationTestScripts/AnimationScriptController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AnimationTestScripts/AnimationScriptController.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AnimationTestScripts/SoMyAnimation.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/AnimationTestScripts/SoMyAnimation.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.AthelornTheSorceSmith/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.AthelornTheSorceSmith/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.AthelornTheSorceSmith/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AthelornTheSorceSmith/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Mage Warrior Mecanim Animation Pack/Animation Controller/Mage Warrior Animation Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Mage Warrior Mecanim Animation Pack/Animation Controller/Mage Warrior Animation Controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Animation Controller/Crafter Animation Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Animation Controller/Crafter Animation Controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Avatar Masks/Crafter Upper Body.mask" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Avatar Masks/Crafter Upper Body.mask" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Code/CrafterState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Crafting Mecanim Animation Pack/Code/CrafterState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Packs/ExplosiveLLC/Warrior/InputSystem Support - Requires InputSystem Package.unitypackage.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Character/Character Animation Controller New.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Character/Character Animation Controller New.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Crafter/Crafter.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Crafter/Crafter.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Render Textures/CharacterPreviewUI.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Render Textures/CharacterPreviewUI.renderTexture" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Character/CharacterAnimator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Character/CharacterAnimator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,7 +107,6 @@
       <updated>1706823072470</updated>
       <workItem from="1706823075649" duration="4393000" />
       <workItem from="1707680280731" duration="5268000" />
-      <workItem from="1708475530046" duration="5515000" />
     </task>
     <servers />
   </component>
