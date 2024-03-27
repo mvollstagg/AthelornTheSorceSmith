@@ -10,10 +10,20 @@ public class CharacterInventory : Singleton<CharacterInventory>
     public int EquippedWeaponId;
     public GameObject RightHand;
     public GameObject RightHandWeaponPrefab;
-    public float ItemEquipped()
+
+    public void ItemEquipped()
     {
-        var isEquipped = InventoryManager.Instance.EquipmentItems.Any(p => p.Value.Item.equipmentSlotType == Scripts.Entities.Enum.EquipmentSlotType.RightHand);
-        
-        return isEquipped ? 1 : 0;
+        var equippedItem = InventoryManager
+                            .Instance
+                            .EquipmentItems
+                            .Where(p => p.Value.Item.equipmentSlotType == Scripts.Entities.Enum.EquipmentSlotType.RightHand)
+                            .FirstOrDefault();
+
+        if (equippedItem.Value == null)
+        {
+            EquippedWeaponId = 0;
+            return;
+        }
+        EquippedWeaponId = equippedItem.Value.Item.id;
     }
 }

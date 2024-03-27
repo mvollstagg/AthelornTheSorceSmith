@@ -5,8 +5,8 @@ namespace Scripts.Entities.Enum
     public enum LocomotionModeType : int
     {
         [Description("Idle")]
-        Idle = 0,
+        Idle = 10,
         [Description("Combat")]
-        Combat = 1,
+        Combat = 20,
     }
 }

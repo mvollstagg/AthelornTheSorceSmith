@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - Character
+  - CombatArea
+  - Collide
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - UI
   - Pushable
   - Interactable
-  - 
-  - 
-  - 
+  - Ground
+  - Walkable
+  - TempCast
   - 
   - 
   - 

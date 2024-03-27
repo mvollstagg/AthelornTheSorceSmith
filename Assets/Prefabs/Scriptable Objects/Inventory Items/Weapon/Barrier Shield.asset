@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
   m_Name: Barrier Shield
   m_EditorClassIdentifier: 
+  id: 16
   code: SILVER_GUARD
   itemName: Silver Guard of Kaan
   description: A sturdy silver shield with intricate engravings.
   icon: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  prefab: {fileID: 0}
   weight: 5
   price: 300
   maxStackSize: 1

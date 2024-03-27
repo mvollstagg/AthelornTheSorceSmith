@@ -12,6 +12,7 @@ using UnityEngine;
 // )]
 public class InventoryItemDataSO : ScriptableObject
 {
+    public byte id;
     public string code;
     public string itemName;
     [TextArea(3, 10)]

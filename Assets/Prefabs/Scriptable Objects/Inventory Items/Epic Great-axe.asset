@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
   m_Name: Epic Great-axe
   m_EditorClassIdentifier: 
+  id: 19
   code: wp2
   itemName: Epic Great-axe
   description: The Great-Axe is a mighty two-handed weapon, capable of dealing massive
@@ -19,6 +20,7 @@ MonoBehaviour:
     makes it slower than other weapons. But when swung with enough force, it can
     cleave through armor and bones alike, leaving a trail of destruction in its wake.
   icon: {fileID: 21300000, guid: 6a20f4dbf06be284e860c0bf6799923a, type: 3}
+  prefab: {fileID: 0}
   weight: 65
   price: 1095
   maxStackSize: 1

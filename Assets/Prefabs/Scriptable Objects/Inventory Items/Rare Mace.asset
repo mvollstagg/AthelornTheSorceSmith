@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
   m_Name: Rare Mace
   m_EditorClassIdentifier: 
+  id: 21
   code: wp3
   itemName: Rare Mace
   description: A mace with spikes is a brutal weapon that delivers crushing blows.
@@ -21,6 +22,7 @@ MonoBehaviour:
     a mace with spikes requires great strength and skill, but those who can master
     it become unstoppable forces on the battlefield.
   icon: {fileID: 21300000, guid: eb979bdcd9c0bfa41811e478c6e2db73, type: 3}
+  prefab: {fileID: 0}
   weight: 26
   price: 600
   maxStackSize: 1

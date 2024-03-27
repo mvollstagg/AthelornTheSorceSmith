@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
   m_Name: Staff of the Elements
   m_EditorClassIdentifier: 
+  id: 17
   code: LEGENDARY_STAFF
   itemName: Staff of the Umut
   description: A legendary staff imbued with the power of the elements.
