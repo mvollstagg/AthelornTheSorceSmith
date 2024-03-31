@@ -21,7 +21,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     private Animator animator;
 
     // TODO: Delete after testing.
-    public LocomotionModeType LocomotionMode { get; private set; } = LocomotionModeType.Combat;
+    public LocomotionModeType LocomotionMode { get; private set; } = LocomotionModeType.Idle;
 
     private void Awake()
     {
@@ -29,13 +29,21 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE, OnCharacterAttackMouse);
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, OnCharacterAttackMouseCanceled);
+
+        EventManager.Instance.AddListener<OnCharacterLocomotionChangedEventArgs>(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, OnCharacterLocomotionModeChanged);
+    }
+
+    private void OnCharacterLocomotionModeChanged(object sender, OnCharacterLocomotionChangedEventArgs e)
+    {
+        LocomotionMode = e.LocomotionMode;
+        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
     }
 
     private void Update()
     {
         // Must be checked every frame 
-        animator.SetFloat(AnimatorParameters.SPEED, CharacterMovement.Instance._animationBlend);
-        animator.SetFloat(AnimatorParameters.MOTION_SPEED, CharacterMovement.Instance._inputMagnitude);
+        animator.SetFloat(AnimatorParameters.SPEED, CharacterMovement.Instance.GetSpeed());
+        animator.SetFloat(AnimatorParameters.MOTION_SPEED, CharacterMovement.Instance.GetInputMagnitude());
         animator.SetFloat(AnimatorParameters.ANIMATION_BLEND, CharacterMovement.Instance.GetAnimationBlendMagnitude());
 
         // TODO: Convert to Events
@@ -43,11 +51,40 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         animator.SetBool(AnimatorParameters.JUMP, InputManager.Instance.jump);
         animator.SetBool(AnimatorParameters.FREE_FALL, CharacterJump.Instance.FreeFall);
 
-        // Remapped move inputs
-        animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_X,
-            CharacterOrientation.Instance.GetInputDirection().x);
-        animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_Y,
-            CharacterOrientation.Instance.GetInputDirection().y);
+        //// Remapped move inputs
+        //animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_X,
+        //    CharacterOrientation.Instance.GetInputDirection().x);
+        //animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_Y,
+        //    CharacterOrientation.Instance.GetInputDirection().y);
+
+
+
+        animator.SetFloat("RemappedMoveInputX", CharacterOrientation.Instance.GetInputDirection().x);
+        animator.SetFloat("RemappedMoveInputY", CharacterOrientation.Instance.GetInputDirection().y);
+        animator.SetBool("Moving", CharacterOrientation.Instance.GetInputDirection().x != 0f || CharacterOrientation.Instance.GetInputDirection().y != 0f);
+
+        // Set Locomotion State
+        //if (CharacterMovement.Instance.GetSpeed() > 0.1f)
+        //{
+        //    animator.SetBool(AnimatorParameters.IDLE, false);
+        //    animator.SetBool(AnimatorParameters.MOVING, true);
+        //}
+        //else
+        //{
+        //    animator.SetBool(AnimatorParameters.IDLE, true);
+        //    animator.SetBool(AnimatorParameters.MOVING, false);
+        //}
+
+        if (CharacterCombatModeSwitch.Instance.isInCombatMode)
+        {
+            LocomotionMode = LocomotionModeType.Combat;
+            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Combat.GetValue<LocomotionModeType, int>());
+        }
+        else
+        {
+            LocomotionMode = LocomotionModeType.Idle;
+            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Idle.GetValue<LocomotionModeType, int>());
+        }
 
         // Equipped weapon 
         if (CharacterInventory.Instance.EquippedWeaponId > 0)
@@ -60,29 +97,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
             animator.SetBool(AnimatorParameters.WEAPON_EQUIPPED, false);
             animator.SetInteger(AnimatorParameters.EQUIPPED_WEAPON_ID, 0);
         }
-
-        // Set Locomotion State
-        if (CharacterMovement.Instance.GetAnimationBlendMagnitude() > 0.1f)
-        {
-            animator.SetBool(AnimatorParameters.IDLE, false);
-            animator.SetBool(AnimatorParameters.MOVING, true);
-        }
-        else
-        {
-            animator.SetBool(AnimatorParameters.IDLE, true);
-            animator.SetBool(AnimatorParameters.MOVING, false);
-        }
-
-        //if (CharacterCombatModeSwitch.Instance.isInCombatMode)
-        //{
-        //    LocomotionMode = LocomotionModeType.Combat;
-        //    animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Combat.GetValue<LocomotionModeType, int>());
-        //}
-        //else
-        //{
-        //    LocomotionMode = LocomotionModeType.Idle;
-        //    animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Idle.GetValue<LocomotionModeType, int>());
-        //}
     }
 
     public void SetCharacterMovementState(CharacterMovementType characterMovementType)

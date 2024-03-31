@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Core;
+using Scripts.Entities.Class;
 using Scripts.Entities.Enum;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
 {
     #region Public Variables
     [Tooltip("Sprint speed of the character in m/s")]
-    public float TurnSpeed = 5.2f;
+    public float TurnSpeed = 15.2f;
     public TMP_Text _debugText;
     #endregion
 
@@ -22,7 +23,13 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
     private float _remappedMoveInputX;
     private float _remappedMoveInputY;
     private float _lastRotation;
+    private Camera cam; // Reference to the main camera
     #endregion
+
+    private void Awake()
+    {
+        cam = Camera.main; // Ensure we have a reference to the main camera
+    }
 
     void Update()
     {
@@ -37,41 +44,26 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
     
     private void RotatePlayer()
     {
-        if(CharacterAnimator.Instance.LocomotionMode == LocomotionModeType.Combat)
+        if (CharacterAnimator.Instance.LocomotionMode == LocomotionModeType.Combat)
         {
-            // Raycast from the camera to the point on the ground where the mouse is pointing
-            Ray ray = Character.Instance._mainCamera.ScreenPointToRay(CursorManager.Instance._mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                // Calculate the angle between the character and the point on the ground
-                Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-                Vector3 direction = targetPosition - transform.position;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-                float angle = rotation.eulerAngles.y;
-                _lastRotation = angle;
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                // Rotate the character towards the point on the ground, only rotating around the y-axis
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), TurnSpeed * Time.deltaTime);
+            if (groundPlane.Raycast(ray, out float position))
+            {
+                Vector3 targetPosition = ray.GetPoint(position);
+                Quaternion targetRotation = Quaternion.LookRotation(targetPosition - new Vector3(transform.position.x, 0, transform.position.z));
+                transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, (TurnSpeed * Time.deltaTime) * TurnSpeed);
             }
+
         }
         else
         {
-            float rotation = _lastRotation;
-            Vector3 inputDirection = new Vector3(InputManager.Instance.move.x, 0.0f, InputManager.Instance.move.y).normalized;
-
-            if (inputDirection != Vector3.zero)
+            // Rotate based on movement direction
+            if (InputManager.Instance.move != Vector2.zero)
             {
-                var _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                      Character.Instance._mainCamera.transform.eulerAngles.y;
-                rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                    CharacterMovement.Instance.RotationSmoothTime);
-                
-                _lastRotation = rotation;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(new Vector3(InputManager.Instance.move.x, 0f, InputManager.Instance.move.y)), Time.deltaTime * TurnSpeed);
             }
-
-            // rotate to face input direction relative to camera position
-            transform.rotation = Quaternion.Euler(0.0f, _lastRotation, 0.0f);
         }
     }
 
