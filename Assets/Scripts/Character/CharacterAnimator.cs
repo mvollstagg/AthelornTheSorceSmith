@@ -73,16 +73,16 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
             animator.SetBool(AnimatorParameters.MOVING, false);
         }
 
-        if (CharacterCombatModeSwitch.Instance.isInCombatMode)
-        {
-            LocomotionMode = LocomotionModeType.Combat;
-            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Combat.GetValue<LocomotionModeType, int>());
-        }
-        else
-        {
-            LocomotionMode = LocomotionModeType.Idle;
-            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Idle.GetValue<LocomotionModeType, int>());
-        }
+        //if (CharacterCombatModeSwitch.Instance.isInCombatMode)
+        //{
+        //    LocomotionMode = LocomotionModeType.Combat;
+        //    animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Combat.GetValue<LocomotionModeType, int>());
+        //}
+        //else
+        //{
+        //    LocomotionMode = LocomotionModeType.Idle;
+        //    animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Idle.GetValue<LocomotionModeType, int>());
+        //}
     }
 
     public void SetCharacterMovementState(CharacterMovementType characterMovementType)

@@ -26327,7 +26327,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607502137}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32448e55f1f092d4da3dbde499173583, type: 3}
   m_Name: 
@@ -32396,6 +32396,7 @@ GameObject:
   - component: {fileID: 2007184153}
   - component: {fileID: 2007184152}
   - component: {fileID: 2007184151}
+  - component: {fileID: 2007184155}
   m_Layer: 0
   m_Name: Cube
   m_TagString: CombatArea
@@ -32489,6 +32490,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2007184155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007184150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291b128f95ad1d7478a44b86a63f1c21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combatZoneTag: Character
+  isInCombatMode: 0
 --- !u!1 &2007828799
 GameObject:
   m_ObjectHideFlags: 0
@@ -40385,6 +40400,7 @@ GameObject:
   - component: {fileID: 8388850206056711833}
   - component: {fileID: 8388850206056711834}
   - component: {fileID: 8388850206056711836}
+  - component: {fileID: 8388850206056711837}
   m_Layer: 3
   m_Name: Character
   m_TagString: Character
@@ -46719,10 +46735,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &8388850206056711834
 MonoBehaviour:
@@ -46738,6 +46754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8388850206056711836}
   TurnSpeed: 5.2
+  rotationSpeed: 15
 --- !u!95 &8388850206056711836
 Animator:
   serializedVersion: 5
@@ -46759,6 +46776,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &8388850206056711837
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3538455931726500194}
+  m_Material: {fileID: 13400000, guid: 4d20c62a46f4d9b48ae8bc125f9b550f, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.98, z: 0}
 --- !u!1 &8399045170267753999
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
 using Scripts.Core;
+using Scripts.Entities.Class;
+using Scripts.Entities.Enum;
 using UnityEngine;
 
 public class CharacterCombatModeSwitch : Singleton<CharacterCombatModeSwitch>
@@ -12,8 +14,13 @@ public class CharacterCombatModeSwitch : Singleton<CharacterCombatModeSwitch>
         // Check if the character enters the combat zone
         if (other.CompareTag(combatZoneTag))
         {
+            Debug.Log("Character entered combat zone");
             // Switch to combat mode
-            SwitchToCombatMode();
+            isInCombatMode = true;
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, this, new OnCharacterLocomotionChangedEventArgs
+            {
+                LocomotionMode = LocomotionModeType.Combat
+            });
         }
     }
 
@@ -22,24 +29,13 @@ public class CharacterCombatModeSwitch : Singleton<CharacterCombatModeSwitch>
         // Check if the character exits the combat zone
         if (other.CompareTag(combatZoneTag))
         {
+            Debug.Log("Character exited combat zone");
             // Switch to normal mode
-            SwitchToNormalMode();
+            isInCombatMode = true;
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, this, new OnCharacterLocomotionChangedEventArgs
+            {
+                LocomotionMode = LocomotionModeType.Idle
+            });
         }
-    }
-
-    void SwitchToCombatMode()
-    {
-        // Example: Set character to combat mode
-        Debug.Log("Character is in combat mode");
-        // Add your combat mode logic here
-        isInCombatMode = true;
-    }
-
-    void SwitchToNormalMode()
-    {
-        // Example: Set character to normal mode
-        Debug.Log("Character is in normal mode");
-        // Add your normal mode logic here
-        isInCombatMode = false;
     }
 }
