@@ -70,12 +70,72 @@ public class InputManager : Singleton<InputManager>
 
         InputActions.Interaction.Enable();
         InputActions.Interaction.Attack.performed += (obj) => {
-            Debug.Log("Attack Performed");
             EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE, obj, EventArgs.Empty);
         };
         InputActions.Interaction.Attack.canceled += (obj) => {
-            Debug.Log("Attack Canceled");
             EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, obj, EventArgs.Empty);
+        };
+
+		// Special Attacks
+        InputActions.Interaction.Spell1.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+			{
+				SpellId = 1
+			});
+        };
+        InputActions.Interaction.Spell1.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell2.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 2
+            });
+        };
+        InputActions.Interaction.Spell2.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell3.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 3
+            });
+        };
+        InputActions.Interaction.Spell3.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell4.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 4
+            });
+        };
+        InputActions.Interaction.Spell4.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell5.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 5
+            });
+        };
+        InputActions.Interaction.Spell5.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
         };
     }
 

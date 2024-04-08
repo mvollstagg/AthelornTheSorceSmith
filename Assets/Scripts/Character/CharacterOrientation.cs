@@ -13,6 +13,7 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
     [Tooltip("Sprint speed of the character in m/s")]
     public float TurnSpeed = 15.2f;
     public TMP_Text _debugText;
+    public GameObject debugSphere;
     #endregion
 
     #region Close Public Variables
@@ -36,10 +37,11 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
         _debugText.text = $"Input X: {_remappedMoveInputX}<br><br>Input Y: {_remappedMoveInputY}";
         RemapInputValues();
 
-        if (InputManager.Instance.IsCurrentDeviceMouse)
-        {
-            RotatePlayer();
-        }
+        //if (InputManager.Instance.IsCurrentDeviceMouse)
+        //{
+        //    RotatePlayer();
+        //}
+        RotatePlayer();
     }
     
     private void RotatePlayer()
@@ -52,6 +54,10 @@ public class CharacterOrientation : Singleton<CharacterOrientation>
             if (groundPlane.Raycast(ray, out float position))
             {
                 Vector3 targetPosition = ray.GetPoint(position);
+                // Move the debug sphere to the hit point
+                debugSphere.SetActive(true);
+                debugSphere.transform.position = targetPosition + new Vector3(0, 0.2f, 0);
+
                 Quaternion targetRotation = Quaternion.LookRotation(targetPosition - new Vector3(transform.position.x, 0, transform.position.z));
                 transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, (TurnSpeed * Time.deltaTime) * TurnSpeed);
             }

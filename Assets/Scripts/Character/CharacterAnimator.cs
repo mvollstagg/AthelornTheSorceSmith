@@ -20,7 +20,16 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
     private Animator animator;
 
-    // TODO: Delete after testing.
+
+
+    public GameObject vfxPrefab; // Assign your VFX prefab in the Inspector
+    public float throwSpeed = 10f;
+    public Transform launchPoint; // Assign a child GameObject as the launch point
+
+    
+
+
+
     public LocomotionModeType LocomotionMode { get; private set; } = LocomotionModeType.Idle;
 
     private void Awake()
@@ -30,13 +39,9 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE, OnCharacterAttackMouse);
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, OnCharacterAttackMouseCanceled);
 
-        EventManager.Instance.AddListener<OnCharacterLocomotionChangedEventArgs>(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, OnCharacterLocomotionModeChanged);
-    }
+        EventManager.Instance.AddListener<OnCharacterAttackSpellEventArgs>(GameEvents.ON_CHARACTER_ATTACK_SPELL, OnCharacterAttackSpell);
 
-    private void OnCharacterLocomotionModeChanged(object sender, OnCharacterLocomotionChangedEventArgs e)
-    {
-        LocomotionMode = e.LocomotionMode;
-        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
+        EventManager.Instance.AddListener<OnCharacterLocomotionChangedEventArgs>(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, OnCharacterLocomotionModeChanged);
     }
 
     private void Update()
@@ -99,6 +104,29 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         }
     }
 
+    
+
+    private void OnCharacterAttackSpell(object sender, OnCharacterAttackSpellEventArgs e)
+    {
+        if (e.SpellId == 0)
+        {
+            animator.SetInteger(AnimatorParameters.CASTING_SPELL_ID, 0);
+            return;
+        }
+
+        LocomotionMode = LocomotionModeType.Combat;
+        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
+        animator.SetInteger(AnimatorParameters.CASTING_SPELL_ID, e.SpellId);
+        animator.SetTrigger(AnimatorParameters.ATTACK);
+
+    }
+
+    private void OnCharacterLocomotionModeChanged(object sender, OnCharacterLocomotionChangedEventArgs e)
+    {
+        LocomotionMode = e.LocomotionMode;
+        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
+    }
+
     public void SetCharacterMovementState(CharacterMovementType characterMovementType)
     {
         switch (characterMovementType)
@@ -136,12 +164,10 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         LocomotionMode = LocomotionModeType.Idle;
     }
 
-
     private void OnCharacterAttackMouseCanceled(object sender, EventArgs e)
     {
         Debug.Log("OnCharacterAttackMouseCanceled");
     }
-
 
     private void OnCharacterAttackMouse(object sender, EventArgs e)
     {
@@ -208,5 +234,17 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     private void OnStrike(AnimationEvent animationEvent)
     {
         Debug.Log("OnStrike");
+    }
+
+    public void Hit(AnimationEvent animationEvent)
+    {
+        GameObject vfxInstance = Instantiate(vfxPrefab, launchPoint.position, Quaternion.identity);
+        Rigidbody rb = vfxInstance.AddComponent<Rigidbody>(); // Add Rigidbody for movement
+        rb.velocity = transform.forward * throwSpeed; // Launch forward
+        // play the sound attached AudioSource on the vfxInstance
+        vfxInstance.GetComponent<AudioSource>().Play();
+
+        // Start the destruction countdown
+        Destroy(vfxInstance, 5f); // Destroy after 5 seconds if it hasn't collided
     }
 }

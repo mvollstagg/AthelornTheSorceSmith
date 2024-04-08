@@ -11,6 +11,7 @@ public class CharacterCombatModeSwitch : Singleton<CharacterCombatModeSwitch>
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("OnTriggerEnter with " + other.tag);
         // Check if the character enters the combat zone
         if (other.CompareTag(combatZoneTag))
         {
@@ -31,7 +32,7 @@ public class CharacterCombatModeSwitch : Singleton<CharacterCombatModeSwitch>
         {
             Debug.Log("Character exited combat zone");
             // Switch to normal mode
-            isInCombatMode = true;
+            isInCombatMode = false;
             EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, this, new OnCharacterLocomotionChangedEventArgs
             {
                 LocomotionMode = LocomotionModeType.Idle

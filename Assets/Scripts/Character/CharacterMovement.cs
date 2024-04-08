@@ -62,10 +62,6 @@ public class CharacterMovement : Singleton<CharacterMovement>
 
         // Ensure the blend value doesn't drop below a minimal threshold.
         if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-        // Update the Animator with the calculated blend value.
-        // This is where you'd map _animationBlend to your Animator parameters.
-        animator.SetFloat("Speed", _animationBlend); // Ensure this matches your actual Animator parameter.
     }
 
     public float GetSpeed()

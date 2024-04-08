@@ -851,6 +851,51 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell1"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba8dda62-eb64-4c9f-a94e-0a25e704cbf3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dafe8d7-c611-497b-9e80-77cba716971e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell3"",
+                    ""type"": ""Button"",
+                    ""id"": ""6195ce9c-b618-4ede-a5fa-fa716fedd48c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell4"",
+                    ""type"": ""Button"",
+                    ""id"": ""0382f793-7c3e-4b59-a953-bf0e6acb9a30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spell5"",
+                    ""type"": ""Button"",
+                    ""id"": ""80cdc128-718e-4073-b6a7-a8275df09ce9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -906,6 +951,61 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd17d4f5-27d9-4808-b05f-afe1998d7add"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Spell1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6b84401-3e2a-4cb9-9796-c9b229e39b3e"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Spell2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1135507-96a6-4992-9c3b-2777f4c8bb02"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Spell3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e6cab4a-111c-41df-95c0-face476c27a9"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Spell4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""464e2b23-4ed2-4428-a3f1-ac305555a138"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Spell5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1227,6 +1327,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Interaction_Gather = m_Interaction.FindAction("Gather", throwIfNotFound: true);
         m_Interaction_Interact = m_Interaction.FindAction("Interact", throwIfNotFound: true);
         m_Interaction_Attack = m_Interaction.FindAction("Attack", throwIfNotFound: true);
+        m_Interaction_Spell1 = m_Interaction.FindAction("Spell1", throwIfNotFound: true);
+        m_Interaction_Spell2 = m_Interaction.FindAction("Spell2", throwIfNotFound: true);
+        m_Interaction_Spell3 = m_Interaction.FindAction("Spell3", throwIfNotFound: true);
+        m_Interaction_Spell4 = m_Interaction.FindAction("Spell4", throwIfNotFound: true);
+        m_Interaction_Spell5 = m_Interaction.FindAction("Spell5", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_RotateMouse = m_Camera.FindAction("RotateMouse", throwIfNotFound: true);
@@ -1509,6 +1614,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_Gather;
     private readonly InputAction m_Interaction_Interact;
     private readonly InputAction m_Interaction_Attack;
+    private readonly InputAction m_Interaction_Spell1;
+    private readonly InputAction m_Interaction_Spell2;
+    private readonly InputAction m_Interaction_Spell3;
+    private readonly InputAction m_Interaction_Spell4;
+    private readonly InputAction m_Interaction_Spell5;
     public struct InteractionActions
     {
         private @CharacterAssets m_Wrapper;
@@ -1516,6 +1626,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @Gather => m_Wrapper.m_Interaction_Gather;
         public InputAction @Interact => m_Wrapper.m_Interaction_Interact;
         public InputAction @Attack => m_Wrapper.m_Interaction_Attack;
+        public InputAction @Spell1 => m_Wrapper.m_Interaction_Spell1;
+        public InputAction @Spell2 => m_Wrapper.m_Interaction_Spell2;
+        public InputAction @Spell3 => m_Wrapper.m_Interaction_Spell3;
+        public InputAction @Spell4 => m_Wrapper.m_Interaction_Spell4;
+        public InputAction @Spell5 => m_Wrapper.m_Interaction_Spell5;
         public InputActionMap Get() { return m_Wrapper.m_Interaction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1534,6 +1649,21 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @Spell1.started += instance.OnSpell1;
+            @Spell1.performed += instance.OnSpell1;
+            @Spell1.canceled += instance.OnSpell1;
+            @Spell2.started += instance.OnSpell2;
+            @Spell2.performed += instance.OnSpell2;
+            @Spell2.canceled += instance.OnSpell2;
+            @Spell3.started += instance.OnSpell3;
+            @Spell3.performed += instance.OnSpell3;
+            @Spell3.canceled += instance.OnSpell3;
+            @Spell4.started += instance.OnSpell4;
+            @Spell4.performed += instance.OnSpell4;
+            @Spell4.canceled += instance.OnSpell4;
+            @Spell5.started += instance.OnSpell5;
+            @Spell5.performed += instance.OnSpell5;
+            @Spell5.canceled += instance.OnSpell5;
         }
 
         private void UnregisterCallbacks(IInteractionActions instance)
@@ -1547,6 +1677,21 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @Spell1.started -= instance.OnSpell1;
+            @Spell1.performed -= instance.OnSpell1;
+            @Spell1.canceled -= instance.OnSpell1;
+            @Spell2.started -= instance.OnSpell2;
+            @Spell2.performed -= instance.OnSpell2;
+            @Spell2.canceled -= instance.OnSpell2;
+            @Spell3.started -= instance.OnSpell3;
+            @Spell3.performed -= instance.OnSpell3;
+            @Spell3.canceled -= instance.OnSpell3;
+            @Spell4.started -= instance.OnSpell4;
+            @Spell4.performed -= instance.OnSpell4;
+            @Spell4.canceled -= instance.OnSpell4;
+            @Spell5.started -= instance.OnSpell5;
+            @Spell5.performed -= instance.OnSpell5;
+            @Spell5.canceled -= instance.OnSpell5;
         }
 
         public void RemoveCallbacks(IInteractionActions instance)
@@ -1787,6 +1932,11 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnGather(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnSpell1(InputAction.CallbackContext context);
+        void OnSpell2(InputAction.CallbackContext context);
+        void OnSpell3(InputAction.CallbackContext context);
+        void OnSpell4(InputAction.CallbackContext context);
+        void OnSpell5(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {
