@@ -8,27 +8,12 @@ using Random = UnityEngine.Random;
 
 public class CharacterAnimator : Singleton<CharacterAnimator>
 {
-    public enum CharacterMovementType : byte
-    {
-        Idle = 1,
-        Walk = 2,
-        Run = 4
-    }
-
     public AudioClip LandingAudioClip;
     public AudioClip[] FootstepAudioClips;
     [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
     private Animator animator;
-
-
-
     public GameObject vfxPrefab; // Assign your VFX prefab in the Inspector
-    public float throwSpeed = 10f;
     public Transform launchPoint; // Assign a child GameObject as the launch point
-
-    
-
-
 
     public LocomotionModeType LocomotionMode { get; private set; } = LocomotionModeType.Idle;
 
@@ -80,17 +65,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         //    animator.SetBool(AnimatorParameters.MOVING, false);
         //}
 
-        if (CharacterCombatModeSwitch.Instance.isInCombatMode)
-        {
-            LocomotionMode = LocomotionModeType.Combat;
-            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Combat.GetValue<LocomotionModeType, int>());
-        }
-        else
-        {
-            LocomotionMode = LocomotionModeType.Idle;
-            animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionModeType.Idle.GetValue<LocomotionModeType, int>());
-        }
-
         // Equipped weapon 
         if (CharacterInventory.Instance.EquippedWeaponId > 0)
         {
@@ -103,8 +77,6 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
             animator.SetInteger(AnimatorParameters.EQUIPPED_WEAPON_ID, 0);
         }
     }
-
-    
 
     private void OnCharacterAttackSpell(object sender, OnCharacterAttackSpellEventArgs e)
     {
@@ -123,45 +95,23 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
     private void OnCharacterLocomotionModeChanged(object sender, OnCharacterLocomotionChangedEventArgs e)
     {
+        Debug.Log("OnCharacterLocomotionModeChanged");
         LocomotionMode = e.LocomotionMode;
         animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
-    }
-
-    public void SetCharacterMovementState(CharacterMovementType characterMovementType)
-    {
-        switch (characterMovementType)
-        {
-            case CharacterMovementType.Idle:
-                animator.SetBool(AnimatorParameters.IDLE, true);
-                animator.SetBool(AnimatorParameters.MOVING, false);
-                animator.SetBool(AnimatorParameters.RUNNING, false);
-                break;
-            case CharacterMovementType.Walk:
-                animator.SetBool(AnimatorParameters.IDLE, false);
-                animator.SetBool(AnimatorParameters.MOVING, true);
-                animator.SetBool(AnimatorParameters.RUNNING, false);
-                break;
-            case CharacterMovementType.Run:
-                animator.SetBool(AnimatorParameters.IDLE, false);
-                animator.SetBool(AnimatorParameters.MOVING, false);
-                animator.SetBool(AnimatorParameters.RUNNING, true);
-                break;
-            default:
-                Debug.LogError("CharacterMovementType Could not found");
-                break;
-        }
     }
 
     [ContextMenu("Combat Mode")]
     public void SetCombatMode()
     {
         LocomotionMode = LocomotionModeType.Combat;
+        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
     }
     
     [ContextMenu("Idle Mode")]
     public void SetIdleMode()
     {
         LocomotionMode = LocomotionModeType.Idle;
+        animator.SetInteger(AnimatorParameters.LOCOMOTIOM_MODE, LocomotionMode.GetValue<LocomotionModeType, int>());
     }
 
     private void OnCharacterAttackMouseCanceled(object sender, EventArgs e)
@@ -172,7 +122,11 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
     private void OnCharacterAttackMouse(object sender, EventArgs e)
     {
         Debug.Log("OnCharacterAttackMouse");
-        // Set combat mode true for next 10 seconds with a coroutine in lambda
+
+        EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, this, new OnCharacterLocomotionChangedEventArgs
+        {
+            LocomotionMode = LocomotionModeType.Combat
+        });
 
         animator.SetTrigger(AnimatorParameters.ATTACK);
     }
@@ -238,13 +192,10 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
     public void Hit(AnimationEvent animationEvent)
     {
+        // Instantiate the fireball prefab
         GameObject vfxInstance = Instantiate(vfxPrefab, launchPoint.position, Quaternion.identity);
-        Rigidbody rb = vfxInstance.AddComponent<Rigidbody>(); // Add Rigidbody for movement
-        rb.velocity = transform.forward * throwSpeed; // Launch forward
-        // play the sound attached AudioSource on the vfxInstance
-        vfxInstance.GetComponent<AudioSource>().Play();
 
         // Start the destruction countdown
-        Destroy(vfxInstance, 5f); // Destroy after 5 seconds if it hasn't collided
+        Destroy(vfxInstance, 2.5f); // Destroy after 2.5 seconds if it hasn't collided
     }
 }
