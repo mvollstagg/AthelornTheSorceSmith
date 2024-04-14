@@ -19147,7 +19147,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8345070698522606490}
+  m_Father: {fileID: 1423027126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1104118840
 GameObject:
@@ -19687,7 +19687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1161410826
 Transform:
   m_ObjectHideFlags: 0
@@ -24085,6 +24085,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1421466468}
   m_CullTransparentMesh: 1
+--- !u!1 &1423027124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1423027126}
+  - component: {fileID: 1423027125}
+  m_Layer: 0
+  m_Name: Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 2800000, guid: 3e9aae350934e02449e499ffc79ca0f3, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1423027125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423027124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1816795d2838f643acc6f6f815cfff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flattenFolder: 1
+--- !u!4 &1423027126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423027124}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1095847285}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1425004575
 GameObject:
   m_ObjectHideFlags: 0
@@ -31335,7 +31381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1898012695
 Transform:
   m_ObjectHideFlags: 0
@@ -33029,7 +33075,7 @@ GameObject:
   - component: {fileID: 2007184152}
   - component: {fileID: 2007184151}
   - component: {fileID: 2007184155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Combat Area
   m_TagString: CombatArea
   m_Icon: {fileID: 0}
@@ -45870,7 +45916,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1095847285}
   - {fileID: 1295180981}
   - {fileID: 2123621496}
   - {fileID: 1457487722}
@@ -46820,6 +46865,7 @@ SceneRoots:
   - {fileID: 93543429}
   - {fileID: 3856023287374570886}
   - {fileID: 54508372}
+  - {fileID: 1423027126}
   - {fileID: 8345070698522606490}
   - {fileID: 2007184154}
   - {fileID: 992599189}

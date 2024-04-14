@@ -1,6 +1,8 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -191,34 +193,44 @@ namespace Verpha.HierarchyDesigner
 
         public static void SaveFolders()
         {
-            List<string> serializedParts = new List<string>();
-            foreach (var folder in folders)
+            List<HierarchyDesigner_Info_Folder> folderList = folders.Values.ToList();
+            string json = JsonUtility.ToJson(new Serialization<HierarchyDesigner_Info_Folder>(folderList), true);
+
+            string folderPath = Path.Combine(Application.dataPath, "Settings/Hierarchy");
+            string filePath = Path.Combine(folderPath, "folders.json");
+
+            if (!Directory.Exists(folderPath))
             {
-                HierarchyDesigner_Info_Folder f = folder.Value;
-                serializedParts.Add($"{f.Name},{HierarchyDesigner_Shared_ColorUtility.ColorToString(f.FolderColor)},{f.ImageType}");
+                Directory.CreateDirectory(folderPath);
             }
-            string serialized = string.Join(";", serializedParts);
-            EditorPrefs.SetString(FolderPrefKey, serialized);
+
+            File.WriteAllText(filePath, json);
             hasModifiedChanges = false;
+
+            Debug.Log("Folders saved to JSON: " + filePath);
         }
 
         public static void LoadFolders()
         {
-            string serialized = EditorPrefs.GetString(FolderPrefKey, "");
-            folders.Clear();
+            string folderPath = Path.Combine(Application.dataPath, "Settings/Hierarchy");
+            string filePath = Path.Combine(folderPath, "folders.json");
 
-            foreach (string serializedFolder in serialized.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            if (File.Exists(filePath))
             {
-                string[] parts = serializedFolder.Split(',');
-                if (parts.Length == 3)
+                string json = File.ReadAllText(filePath);
+                Serialization<HierarchyDesigner_Info_Folder> data = JsonUtility.FromJson<Serialization<HierarchyDesigner_Info_Folder>>(json);
+                folders.Clear();
+
+                foreach (var folder in data.items)
                 {
-                    string name = parts[0];
-                    Color iconColor = HierarchyDesigner_Shared_ColorUtility.ParseColor(parts[1]);
-                    HierarchyDesigner_Info_Folder.FolderImageType folderImageType = HierarchyDesigner_Shared_EnumFilter.ParseEnum(parts[2], HierarchyDesigner_Info_Folder.FolderImageType.Default);
-                    folders[name] = new HierarchyDesigner_Info_Folder(name, iconColor, folderImageType);
+                    folders[folder.Name] = folder;
                 }
+                hasModifiedChanges = false;
             }
-            hasModifiedChanges = false;
+            else
+            {
+                Debug.Log("No folder data file found. Ensure that folders are saved before loading.");
+            }
         }
 
         private void OnDestroy()

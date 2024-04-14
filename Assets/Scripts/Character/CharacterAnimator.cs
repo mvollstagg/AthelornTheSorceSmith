@@ -195,7 +195,20 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         // Instantiate the fireball prefab
         GameObject vfxInstance = Instantiate(vfxPrefab, launchPoint.position, Quaternion.identity);
 
-        // Start the destruction countdown
-        Destroy(vfxInstance, 2.5f); // Destroy after 2.5 seconds if it hasn't collided
+        // Set target under RFX1_TransformMotion script on vfxInstance child GameObject
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (groundPlane.Raycast(ray, out float position))
+        {
+            Vector3 targetPosition = ray.GetPoint(position);
+            // Create an empty GameObject at the target position
+            GameObject target = new GameObject("Target");
+            target.transform.position = targetPosition;
+            // Assign the target GameObject to the RFX1_TransformMotion script
+            vfxInstance.GetComponentInChildren<RFX1_TransformMotion>().Target = target;
+
+            // Start the destruction countdown
+            Destroy(target, 2.5f); // Destroy after 2.5 seconds if it hasn't collided
+        }
     }
 }

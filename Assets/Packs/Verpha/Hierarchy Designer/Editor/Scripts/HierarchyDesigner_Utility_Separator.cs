@@ -290,16 +290,6 @@ namespace Verpha.HierarchyDesigner
             hasModifiedChanges = false;
         }
 
-        [System.Serializable]
-        class Serialization<T>
-        {
-            public List<T> items;
-            public Serialization(List<T> items)
-            {
-                this.items = items;
-            }
-        }
-
         public static void LoadSeparators()
         {
             string folderPath = Path.Combine(Application.dataPath, "Settings/Hierarchy");
