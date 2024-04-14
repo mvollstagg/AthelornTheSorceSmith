@@ -1,6 +1,8 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -272,39 +274,53 @@ namespace Verpha.HierarchyDesigner
 
         public static void SaveSeparators()
         {
-            List<string> serializedParts = new List<string>();
-            foreach (var kvp in separators)
+            // Assuming separators is a Dictionary or similar collection
+            List<HierarchyDesigner_Info_Separator> separatorList = separators.Values.ToList();
+            string json = JsonUtility.ToJson(new Serialization<HierarchyDesigner_Info_Separator>(separatorList), true);
+
+            string folderPath = Path.Combine(Application.dataPath, "Settings/Hierarchy");
+            string filePath = Path.Combine(folderPath, "separators.json");
+
+            if (!Directory.Exists(folderPath))
             {
-                HierarchyDesigner_Info_Separator s = kvp.Value;
-                string serializedSeparator = $"{s.Name},{HierarchyDesigner_Shared_ColorUtility.ColorToString(s.TextColor)},{HierarchyDesigner_Shared_ColorUtility.ColorToString(s.BackgroundColor)},{s.FontStyle},{s.FontSize},{s.TextAlignment},{s.ImageType}";
-                serializedParts.Add(serializedSeparator);
+                Directory.CreateDirectory(folderPath);
             }
-            string serialized = string.Join(";", serializedParts);
-            EditorPrefs.SetString(SeparatorPrefKey, serialized);
+
+            File.WriteAllText(filePath, json);
             hasModifiedChanges = false;
+        }
+
+        [System.Serializable]
+        class Serialization<T>
+        {
+            public List<T> items;
+            public Serialization(List<T> items)
+            {
+                this.items = items;
+            }
         }
 
         public static void LoadSeparators()
         {
-            string serialized = EditorPrefs.GetString(SeparatorPrefKey, "");
-            separators.Clear();
+            string folderPath = Path.Combine(Application.dataPath, "Settings/Hierarchy");
+            string filePath = Path.Combine(folderPath, "separators.json");
 
-            foreach (string serializedSeparator in serialized.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            if (File.Exists(filePath))
             {
-                string[] parts = serializedSeparator.Split(',');
-                if (parts.Length == 7)
+                string json = File.ReadAllText(filePath);
+                Serialization<HierarchyDesigner_Info_Separator> data = JsonUtility.FromJson<Serialization<HierarchyDesigner_Info_Separator>>(json);
+                separators.Clear();
+
+                foreach (var separator in data.items)
                 {
-                    string name = parts[0];
-                    Color textColor = HierarchyDesigner_Shared_ColorUtility.ParseColor(parts[1]);
-                    Color backgroundColor = HierarchyDesigner_Shared_ColorUtility.ParseColor(parts[2]);
-                    FontStyle fontStyle = HierarchyDesigner_Shared_EnumFilter.ParseEnum(parts[3], FontStyle.Normal);
-                    int fontSize = int.Parse(parts[4]);
-                    TextAnchor textAlignment = HierarchyDesigner_Shared_EnumFilter.ParseEnum(parts[5], TextAnchor.MiddleCenter);
-                    HierarchyDesigner_Info_Separator.BackgroundImageType backgroundImageType = HierarchyDesigner_Shared_EnumFilter.ParseEnum(parts[6], HierarchyDesigner_Info_Separator.BackgroundImageType.Classic);
-                    separators[name] = new HierarchyDesigner_Info_Separator(name, textColor, backgroundColor, fontStyle, fontSize, textAlignment, backgroundImageType);
+                    separators[separator.Name] = separator;
                 }
+                hasModifiedChanges = false;
             }
-            hasModifiedChanges = false;
+            else
+            {
+                Debug.Log("No separators file found. Ensure that separators are saved before loading.");
+            }
         }
 
         private void OnDestroy()

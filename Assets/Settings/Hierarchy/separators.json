@@ -1,0 +1,137 @@
+{
+    "items": [
+        {
+            "name": "Camera",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 1.0,
+                "g": 0.43529412150382998,
+                "b": 0.3803921639919281,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Interface",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.41960784792900088,
+                "g": 0.35686275362968447,
+                "b": 0.5843137502670288,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Effects",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.5333333611488342,
+                "g": 0.6901960968971252,
+                "b": 0.29411765933036806,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Lightning",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.6078431606292725,
+                "g": 0.13725490868091584,
+                "b": 0.2078431397676468,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Gameplay",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.2078431397676468,
+                "g": 0.3764705955982208,
+                "b": 0.3529411852359772,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Environment",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.5411764979362488,
+                "g": 0.16862745583057404,
+                "b": 0.886274516582489,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        },
+        {
+            "name": "Persistent",
+            "textColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "backgroundColor": {
+                "r": 0.13705946505069734,
+                "g": 0.5283018946647644,
+                "b": 0.36877676844596865,
+                "a": 1.0
+            },
+            "fontStyle": 3,
+            "fontSize": 12,
+            "textAlignment": 4,
+            "backgroundImageType": 5
+        }
+    ]
+}

@@ -7,59 +7,25 @@ namespace Verpha.HierarchyDesigner
     public class HierarchyDesigner_Info_Separator
     {
         #region Properties
-        private string name = "";
-        private Color textColor = Color.white;
-        private Color backgroundColor = Color.gray;
-        private FontStyle fontStyle = FontStyle.Normal;
-        private int fontSize = 12;
-        private TextAnchor textAlignment = TextAnchor.MiddleCenter;
-        private BackgroundImageType backgroundImageType = BackgroundImageType.Classic;
+        [SerializeField] private string name = "";
+        [SerializeField] private Color textColor = Color.white;
+        [SerializeField] private Color backgroundColor = Color.gray;
+        [SerializeField] private FontStyle fontStyle = FontStyle.Normal;
+        [SerializeField] private int fontSize = 12;
+        [SerializeField] private TextAnchor textAlignment = TextAnchor.MiddleCenter;
+        [SerializeField] private BackgroundImageType backgroundImageType = BackgroundImageType.Classic;
         #endregion
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        public string Name { get => name; set => name = value; }
+        public Color TextColor { get => textColor; set => textColor = value; }
+        public Color BackgroundColor { get => backgroundColor; set => backgroundColor = value; }
+        public FontStyle FontStyle { get => fontStyle; set => fontStyle = value; }
+        public int FontSize { get => fontSize; set => fontSize = value; }
+        public TextAnchor TextAlignment { get => textAlignment; set => textAlignment = value; }
+        public BackgroundImageType ImageType { get => backgroundImageType; set => backgroundImageType = value; }
 
-        public Color TextColor
+        public enum BackgroundImageType
         {
-            get { return textColor; }
-            set { textColor = value; }
-        }
-
-        public Color BackgroundColor
-        {
-            get { return backgroundColor; }
-            set { backgroundColor = value; }
-        }
-
-        public FontStyle FontStyle
-        {
-            get { return fontStyle; }
-            set { fontStyle = value; }
-        }
-
-        public int FontSize
-        {
-            get { return fontSize; }
-            set { fontSize = value; }
-        }
-
-        public TextAnchor TextAlignment
-        {
-            get { return textAlignment; }
-            set { textAlignment = value; }
-        }
-
-        public BackgroundImageType ImageType
-        {
-            get { return backgroundImageType; }
-            set { backgroundImageType = value; }
-        }
-
-        public enum BackgroundImageType 
-        { 
             Classic,
             ClassicFadedTop,
             ClassicFadedLeft,
@@ -70,6 +36,8 @@ namespace Verpha.HierarchyDesigner
             ModernII,
             ModernIII,
         }
+
+        public HierarchyDesigner_Info_Separator() { }
 
         public HierarchyDesigner_Info_Separator(string name, Color textColor, Color backgroundColor, FontStyle fontStyle, int fontSize, TextAnchor textAlignment, BackgroundImageType backgroundImageType)
         {
