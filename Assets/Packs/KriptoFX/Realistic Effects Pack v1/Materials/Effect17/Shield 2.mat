@@ -2,29 +2,20 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 8
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shield 2
   m_Shader: {fileID: 4800000, guid: 5c0bae94734851845ae83a45e1d9ced3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - BlendAdd
-  - Clip_OFF
-  - FrameBlend_OFF
-  - SoftParticles_OFF
-  - VertLight_OFF
+  m_ShaderKeywords: BlendAdd Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight_OFF
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -48,7 +39,6 @@ Material:
         m_Texture: {fileID: 2800000, guid: bc91aacbf07ec3c4394627292a7ce3df, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Ints: []
     m_Floats:
     - DstMode: 1
     - SrcMode: 5
@@ -66,4 +56,3 @@ Material:
     - _FresnelDistort: {r: 8, g: 12, b: 1, a: 1500}
     - _TintColor: {r: 1.7647057, g: 2.8397567, b: 8, a: 0.1}
     - _UVScrollDistort: {r: 8, g: 12, b: 1, a: 1500}
-  m_BuildTextureStacks: []

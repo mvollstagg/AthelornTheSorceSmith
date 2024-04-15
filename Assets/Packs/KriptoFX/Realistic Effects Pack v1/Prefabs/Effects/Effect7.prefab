@@ -4766,7 +4766,7 @@ GameObject:
   - component: {fileID: 4416100733753180}
   - component: {fileID: 108935954833653238}
   - component: {fileID: 114129803901329256}
-  - component: {fileID: 251643286415517778}
+  - component: {fileID: 7610173395462877772}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -4891,7 +4891,7 @@ MonoBehaviour:
   GraphIntensityMultiplier: 2.5
   IsLoop: 0
   canUpdate: 0
---- !u!114 &251643286415517778
+--- !u!114 &7610173395462877772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14517,9 +14517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614680f6bd301be4f8e9007dd0a71604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisableOnMobiles: 1
-  DisabledMobileObjects:
-  - {fileID: 1813977344031104}
   ParticleBudgetForMobiles: 1
 --- !u!1 &1813977344031104
 GameObject:
