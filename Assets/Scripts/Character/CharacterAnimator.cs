@@ -23,47 +23,26 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE, OnCharacterAttackMouse);
         EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, OnCharacterAttackMouseCanceled);
-
         EventManager.Instance.AddListener<OnCharacterAttackSpellEventArgs>(GameEvents.ON_CHARACTER_ATTACK_SPELL, OnCharacterAttackSpell);
-
         EventManager.Instance.AddListener<OnCharacterLocomotionChangedEventArgs>(GameEvents.ON_CHARACTER_LOCOMOTION_MODE_CHANGED, OnCharacterLocomotionModeChanged);
+        EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_JUMP, OnCharacterJump);
+        EventManager.Instance.AddListener(GameEvents.ON_CHARACTER_GROUNDED, OnCharacterGrounded);
     }
 
-    private void Update()
+	private void Update()
     {
         // Must be checked every frame 
         animator.SetFloat(AnimatorParameters.SPEED, CharacterMovement.Instance.GetSpeed());
         animator.SetFloat(AnimatorParameters.MOTION_SPEED, CharacterMovement.Instance.GetInputMagnitude());
         animator.SetFloat(AnimatorParameters.ANIMATION_BLEND, CharacterMovement.Instance.GetAnimationBlendMagnitude());
 
-        // TODO: Convert to Events
-        animator.SetBool(AnimatorParameters.GROUNDED, CharacterGroundCheck.Instance.Grounded);
-        animator.SetBool(AnimatorParameters.JUMP, InputManager.Instance.jump);
-        animator.SetBool(AnimatorParameters.FREE_FALL, CharacterJump.Instance.FreeFall);
-
-        //// Remapped move inputs
-        //animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_X,
-        //    CharacterOrientation.Instance.GetInputDirection().x);
-        //animator.SetFloat(AnimatorParameters.REMAPPED_MOVE_INPUT_Y,
-        //    CharacterOrientation.Instance.GetInputDirection().y);
-
-
-
         animator.SetFloat("RemappedMoveInputX", CharacterOrientation.Instance.GetInputDirection().x);
         animator.SetFloat("RemappedMoveInputY", CharacterOrientation.Instance.GetInputDirection().y);
         animator.SetBool("Moving", CharacterOrientation.Instance.GetInputDirection().x != 0f || CharacterOrientation.Instance.GetInputDirection().y != 0f);
 
-        // Set Locomotion State
-        //if (CharacterMovement.Instance.GetSpeed() > 0.1f)
-        //{
-        //    animator.SetBool(AnimatorParameters.IDLE, false);
-        //    animator.SetBool(AnimatorParameters.MOVING, true);
-        //}
-        //else
-        //{
-        //    animator.SetBool(AnimatorParameters.IDLE, true);
-        //    animator.SetBool(AnimatorParameters.MOVING, false);
-        //}
+        // TODO: Convert to Events
+        animator.SetBool(AnimatorParameters.GROUNDED, CharacterGroundCheck.Instance.Grounded);
+        animator.SetBool(AnimatorParameters.FREE_FALL, CharacterJump.Instance.FreeFall);
 
         // Equipped weapon 
         if (CharacterInventory.Instance.EquippedWeaponId > 0)
@@ -78,7 +57,25 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
         }
     }
 
-    private void OnCharacterAttackSpell(object sender, OnCharacterAttackSpellEventArgs e)
+	private void OnCharacterGrounded(object sender, EventArgs e)
+	{
+		if (CharacterGroundCheck.Instance.Grounded)
+		{
+			animator.SetTrigger("Grounded");
+		}
+	}
+
+	private void OnCharacterJump(object sender, EventArgs e)
+	{
+		//animator.SetBool(AnimatorParameters.JUMP, InputManager.Instance.jump);
+
+        if (CharacterGroundCheck.Instance.Grounded)
+        {
+            animator.SetTrigger("Jumping");
+        }
+	}
+
+	private void OnCharacterAttackSpell(object sender, OnCharacterAttackSpellEventArgs e)
     {
         if (e.SpellId == 0)
         {
@@ -155,6 +152,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
     private void OnLand(AnimationEvent animationEvent)
     {
+        Debug.Log("OnLand");
         if (animationEvent.animatorClipInfo.weight > 0.5f)
             AudioSource.PlayClipAtPoint(LandingAudioClip,
                 transform.TransformPoint(Character.Instance.GetComponent<CharacterController>().center),

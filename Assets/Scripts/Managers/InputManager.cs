@@ -179,6 +179,10 @@ public class InputManager : Singleton<InputManager>
 	public void JumpInput(bool newJumpState)
 	{
 		jump = newJumpState;
+		if (jump)
+		{
+			EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_JUMP, this, EventArgs.Empty);
+		}
 	}
 
 	public void SprintInput(bool newSprintState)

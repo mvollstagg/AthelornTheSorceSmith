@@ -20,5 +20,7 @@ namespace Scripts.Entities.Class
         public static string ON_CHARACTER_ATTACK_MOUSE_CANCELED { get; private set; } = "OnCharacterAttackCanceledMouse";
 
         public static string ON_CHARACTER_ATTACK_SPELL { get; private set; } = "OnCharacterAttackSpell";
+        public static string ON_CHARACTER_JUMP { get; private set; } = "OnCharacterJump";
+        public static string ON_CHARACTER_GROUNDED { get; private set; } = "OnCharacterGrounded";
     }
 }

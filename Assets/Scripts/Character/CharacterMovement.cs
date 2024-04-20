@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Scripts.Core;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.Windows;
 
 public class CharacterMovement : Singleton<CharacterMovement>
 {
@@ -24,13 +26,12 @@ public class CharacterMovement : Singleton<CharacterMovement>
     private float _speed;
     public float _animationBlend;
     public float _maxAnimationBlend;
-    private float _targetRotation = 0.0f;
-    #endregion
+	#endregion
 
-    private void Start()
+	private void Start()
     {
         _maxAnimationBlend = SprintSpeed;
-    }
+	}
 
     void Update()
     {
@@ -48,13 +49,13 @@ public class CharacterMovement : Singleton<CharacterMovement>
         // If there's no movement input, set the target speed to 0.
         if (InputManager.Instance.move == Vector2.zero) targetSpeed = 0.0f;
 
-        // Use input magnitude as a simple proxy for "current speed" for the purpose of lerping.
-        // This assumes a direct correlation between input magnitude and intended speed.
-        float inputMagnitude = InputManager.Instance.move.magnitude;
+		// Use input magnitude as a simple proxy for "current speed" for the purpose of lerping.
+		// This assumes a direct correlation between input magnitude and intended speed.
+		_inputMagnitude = InputManager.Instance.move.magnitude;
 
         // Simplify the speed calculation. Since Root Motion handles actual movement,
         // this speed value is used more as a state indicator for the animation blend.
-        _speed = Mathf.Lerp(_speed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+        _speed = Mathf.Lerp(_speed, targetSpeed * _inputMagnitude, Time.deltaTime * SpeedChangeRate);
 
         // Calculate animation blend value. This should align with your animation blend tree,
         // where the blend value dictates the transition between animations.
@@ -62,7 +63,7 @@ public class CharacterMovement : Singleton<CharacterMovement>
 
         // Ensure the blend value doesn't drop below a minimal threshold.
         if (_animationBlend < 0.01f) _animationBlend = 0f;
-    }
+	}
 
     public float GetSpeed()
     {

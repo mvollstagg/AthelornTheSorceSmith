@@ -28,6 +28,11 @@ public class CharacterGroundCheck : Singleton<CharacterGroundCheck>
     void Update()
     {
         GroundedCheck();
+        // if it not grounded, but then grounded, it's a landing so trigger event
+        if (Grounded)
+        {
+
+        }
     }
 
     private void GroundedCheck()
