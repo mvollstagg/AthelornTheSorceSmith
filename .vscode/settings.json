@@ -71,5 +71,5 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#e25822",
-    "dotnet.defaultSolution": "AthelornTheSorceSmith-LevelDesign.sln"
+    "dotnet.defaultSolution": "AthelornTheSorceSmith.sln"
 }
