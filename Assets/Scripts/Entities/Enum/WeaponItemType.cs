@@ -27,6 +27,8 @@ namespace Scripts.Entities.Enum
         [Description("Shield")]
         Shield,
         [Description("Wand")]
-        Wand
+        Wand,
+        [Description("Tool")]
+        Tool
     }
 }

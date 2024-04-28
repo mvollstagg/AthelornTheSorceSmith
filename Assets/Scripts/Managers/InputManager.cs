@@ -66,11 +66,80 @@ public class InputManager : Singleton<InputManager>
 		InputActions.Camera.RotateMouse.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_MOUSE_CANCELED, obj, EventArgs.Empty);
 		InputActions.Camera.RotateGamepad.performed += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD, obj, EventArgs.Empty);
 		InputActions.Camera.RotateGamepad.canceled += (obj) => EventManager.Instance.Trigger(GameEvents.ON_CAMERA_ROTATE_GAMEPAD_CANCELED, obj, EventArgs.Empty);
+        #endregion
 
-		#endregion
-	}
+        InputActions.Interaction.Enable();
+        InputActions.Interaction.Attack.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE, obj, EventArgs.Empty);
+        };
+        InputActions.Interaction.Attack.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_MOUSE_CANCELED, obj, EventArgs.Empty);
+        };
 
-	void LateUpdate()
+		// Special Attacks
+        InputActions.Interaction.Spell1.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+			{
+				SpellId = 1
+			});
+        };
+        InputActions.Interaction.Spell1.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell2.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 2
+            });
+        };
+        InputActions.Interaction.Spell2.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell3.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 3
+            });
+        };
+        InputActions.Interaction.Spell3.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell4.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 4
+            });
+        };
+        InputActions.Interaction.Spell4.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+        InputActions.Interaction.Spell5.performed += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 5
+            });
+        };
+        InputActions.Interaction.Spell5.canceled += (obj) => {
+            EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_ATTACK_SPELL, obj, new OnCharacterAttackSpellEventArgs
+            {
+                SpellId = 0
+            });
+        };
+    }
+
+    void LateUpdate()
 	{
 		ActiveActionMaps = _inputActionMaps.Where(x => x.Value.enabled).Select(x => x.Key).ToList();
 	}
@@ -110,6 +179,10 @@ public class InputManager : Singleton<InputManager>
 	public void JumpInput(bool newJumpState)
 	{
 		jump = newJumpState;
+		if (jump)
+		{
+			EventManager.Instance.Trigger(GameEvents.ON_CHARACTER_JUMP, this, EventArgs.Empty);
+		}
 	}
 
 	public void SprintInput(bool newSprintState)
@@ -122,9 +195,9 @@ public class InputManager : Singleton<InputManager>
 		Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 	}
 
-	#region Player Input Actions
+    #region Player Input Actions
 
-	public void OnMove(InputValue value)
+    public void OnMove(InputValue value)
 	{
 		MoveInput(value.Get<Vector2>());
 	}
@@ -142,7 +215,7 @@ public class InputManager : Singleton<InputManager>
 		JumpInput(value.isPressed);
 	}
 
-	public void OnSprint(InputValue value)
+    public void OnSprint(InputValue value)
 	{
 		SprintInput(value.isPressed);
 	}

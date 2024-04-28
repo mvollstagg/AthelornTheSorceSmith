@@ -25,5 +25,17 @@ namespace Scripts.Core
 
             return description;
         }
+
+        public static TOutput GetValue<TEnum, TOutput>(this TEnum enumValue)
+            where TEnum : struct, IConvertible
+            where TOutput : IConvertible
+        {
+            if (!typeof(TEnum).IsEnum)
+                throw new ArgumentException("TEnum must be an enumerated type");
+
+            var value = Convert.ChangeType(enumValue, typeof(TOutput));
+            return (TOutput)value;
+        }
+
     }
 }

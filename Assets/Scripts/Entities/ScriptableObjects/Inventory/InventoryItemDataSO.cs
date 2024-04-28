@@ -12,11 +12,13 @@ using UnityEngine;
 // )]
 public class InventoryItemDataSO : ScriptableObject
 {
+    public byte id;
     public string code;
     public string itemName;
     [TextArea(3, 10)]
     public string description;
     public Sprite icon;
+    public GameObject prefab;
     public float weight;
     public int price;
     public int maxStackSize;

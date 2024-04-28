@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db40263c619496a42acf7cc75de2407b, type: 3}
   m_Name: Iron Helm of the Colossus
   m_EditorClassIdentifier: 
+  id: 5
   code: IRON_HELM
   itemName: Iron Helm of the Colossus
   description: A mighty iron helmet worn by the giants of old.
   icon: {fileID: 21300000, guid: eddb0f61210d2f4429ae92bc08d1b3ba, type: 3}
+  prefab: {fileID: 0}
   weight: 8
   price: 500
   maxStackSize: 1

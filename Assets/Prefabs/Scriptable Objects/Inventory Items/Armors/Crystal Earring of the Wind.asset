@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db40263c619496a42acf7cc75de2407b, type: 3}
   m_Name: Crystal Earring of the Wind
   m_EditorClassIdentifier: 
+  id: 1
   code: CRYSTAL_EARRING
   itemName: Crystal Earring of the Wind
   description: An enchanted crystal earring that enhances the wearer's speed and
     agility.
   icon: {fileID: 21300000, guid: 3defc2a84ba699f47a176a36e891bc67, type: 3}
+  prefab: {fileID: 0}
   weight: 0.5
   price: 500
   maxStackSize: 1

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Scripts.Core;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class CharacterJump : Singleton<CharacterJump>
 {
@@ -32,6 +33,8 @@ public class CharacterJump : Singleton<CharacterJump>
     private float _fallTimeoutDelta;
     public float _verticalVelocity;
     private float _terminalVelocity = 53.0f;
+    private float _targetRotation;
+    private CharacterController _controller;
     #endregion
     
     void Start()
@@ -39,12 +42,26 @@ public class CharacterJump : Singleton<CharacterJump>
         // reset our timeouts on start
         _jumpTimeoutDelta = JumpTimeout;
         _fallTimeoutDelta = FallTimeout;
+        _controller = GetComponent<CharacterController>();
     }
     
     void Update()
     {
         JumpAndGravity();
-    }
+
+		// Check if the player is jumping
+		if (!CharacterGroundCheck.Instance.Grounded || InputManager.Instance.jump)
+		{
+			if (InputManager.Instance.move != Vector2.zero)
+			{
+				_targetRotation = Mathf.Atan2(InputManager.Instance.move.x, InputManager.Instance.move.y) * Mathf.Rad2Deg +
+								  Camera.main.transform.eulerAngles.y;
+			}
+			Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+			_controller.Move(targetDirection.normalized * (CharacterMovement.Instance.GetSpeed() * Time.deltaTime) +
+							 new Vector3(0.0f, CharacterJump.Instance._verticalVelocity, 0.0f) * Time.deltaTime);
+		}
+	}
 
     private void JumpAndGravity()
     {

@@ -25,6 +25,9 @@ public class CharacterManager : Singleton<CharacterManager>
     {
         characterDataSO.CalculateDerivedStats();
         Character.Instance.GetCharacterData().CalculateDerivedStats();
+
+        // Update Equipped Weapon Id
+        CharacterInventory.Instance.ItemEquipped();
     }
 
 

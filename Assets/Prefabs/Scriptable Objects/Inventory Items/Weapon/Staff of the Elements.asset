@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88e4c758f4030f48aac1da5ecbe402b, type: 3}
   m_Name: Staff of the Elements
   m_EditorClassIdentifier: 
+  id: 17
   code: LEGENDARY_STAFF
-  itemName: Staff of the Umut
+  itemName: Staff of the Elements
   description: A legendary staff imbued with the power of the elements.
   icon: {fileID: 21300000, guid: 3fa53af4c50543b469421a6895537de8, type: 3}
+  prefab: {fileID: 3844808660582485764, guid: 4a094bd13a554ce429a71f8ade990f26, type: 3}
   weight: 4
   price: 5000
   maxStackSize: 1
