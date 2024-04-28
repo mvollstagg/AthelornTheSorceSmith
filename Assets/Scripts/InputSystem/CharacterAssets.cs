@@ -80,6 +80,15 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""f23c6d85-9a0f-4899-867f-ed7e68e01d9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,17 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f10e4b3-0da2-4d3b-850b-206c392970ae"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad;KeyboardMouse"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1310,6 +1330,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         m_Character_Sprint = m_Character.FindAction("Sprint", throwIfNotFound: true);
         m_Character_Switch = m_Character.FindAction("Switch", throwIfNotFound: true);
         m_Character_Interact = m_Character.FindAction("Interact", throwIfNotFound: true);
+        m_Character_Dash = m_Character.FindAction("Dash", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1413,6 +1434,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Sprint;
     private readonly InputAction m_Character_Switch;
     private readonly InputAction m_Character_Interact;
+    private readonly InputAction m_Character_Dash;
     public struct CharacterActions
     {
         private @CharacterAssets m_Wrapper;
@@ -1423,6 +1445,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Character_Sprint;
         public InputAction @Switch => m_Wrapper.m_Character_Switch;
         public InputAction @Interact => m_Wrapper.m_Character_Interact;
+        public InputAction @Dash => m_Wrapper.m_Character_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1450,6 +1473,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -1472,6 +1498,9 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -1913,6 +1942,7 @@ public partial class @CharacterAssets: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
