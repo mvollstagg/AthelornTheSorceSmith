@@ -71,7 +71,7 @@ public class LootManager : Singleton<LootManager>
         InventoryManager.Instance.AddMoney(_lootBag.GetMoneyAmount());
 
         // Remove the loot bag from the scene
-        CharacterInteraction.Instance.RemoveInteractableFromNearbyList(_lootBag);
+        Character.Instance.GetAbility<CharacterInteractionAbility>().RemoveInteractableFromNearbyList(_lootBag);
         Destroy(_lootBag.gameObject);
         LootUIManager.Instance.HideLootBag();
     }
@@ -98,7 +98,7 @@ public class LootManager : Singleton<LootManager>
         // If the loot bag is empty, remove it from the scene
         if (_lootBag.GetItems().Count == 0)
         {
-            CharacterInteraction.Instance.RemoveInteractableFromNearbyList(_lootBag);
+            Character.Instance.GetAbility<CharacterInteractionAbility>().RemoveInteractableFromNearbyList(_lootBag);
             Destroy(_lootBag.gameObject);
             LootUIManager.Instance.HideLootBag();
         }

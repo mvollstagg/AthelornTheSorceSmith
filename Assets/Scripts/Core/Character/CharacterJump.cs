@@ -50,7 +50,7 @@ public class CharacterJump : Singleton<CharacterJump>
         JumpAndGravity();
 
 		// Check if the player is jumping
-		if (!CharacterGroundCheck.Instance.Grounded || InputManager.Instance.jump)
+		if (!Character.Instance.GetAbility<CharacterGroundCheckAbility>().Grounded || InputManager.Instance.jump)
 		{
 			if (InputManager.Instance.move != Vector2.zero)
 			{
@@ -58,14 +58,14 @@ public class CharacterJump : Singleton<CharacterJump>
 								  Camera.main.transform.eulerAngles.y;
 			}
 			Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-			_controller.Move(targetDirection.normalized * (CharacterMovement.Instance.GetSpeed() * Time.deltaTime) +
+			_controller.Move(targetDirection.normalized * (Character.Instance.GetAbility<CharacterMovementAbility>().GetSpeed() * Time.deltaTime) +
 							 new Vector3(0.0f, CharacterJump.Instance._verticalVelocity, 0.0f) * Time.deltaTime);
 		}
 	}
 
     private void JumpAndGravity()
     {
-        if (CharacterGroundCheck.Instance.Grounded)
+        if (Character.Instance.GetAbility<CharacterGroundCheckAbility>().Grounded)
         {
             // reset the fall timeout timer
             _fallTimeoutDelta = FallTimeout;

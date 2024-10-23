@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AthelornTheSorceSmith.Assets.Scripts.Core;
 using Scripts.Core;
 using Scripts.Entities.Enum;
@@ -18,14 +19,50 @@ public class Character : Singleton<Character>, ICharacter
     
     public CharacterDataSO GetCharacterData() => _characterData;
     public LevelDataSO GetLevelData() => _levelData;
-    
+
+    public List<ScriptableObject> abilities;
+
+    private List<ICharacterAbility> initializedAbilities = new List<ICharacterAbility>();
+
+    // TODO: This action will return given type of ability. For example GetType<CharacterMovementAbility>() will return CharacterMovementAbility
+    public T GetAbility<T>() where T : ScriptableObject
+    {
+        foreach (var ability in abilities)
+        {
+            if (ability is T t)
+            {
+                return t;
+            }
+        }
+
+        return null;
+    }
 
     private void Awake()
     {
+        // Initialize all abilities
+        foreach (ScriptableObject ability in abilities)
+        {
+            if (ability is ICharacterAbility characterAbility)
+            {
+                characterAbility.Initialize(this.gameObject);
+                initializedAbilities.Add(characterAbility);
+            }
+        }
+
         // get a reference to our main camera
         if (_mainCamera == null) _mainCamera = Camera.main;
         _controller = GetComponent<CharacterController>();
     }
+
+    private void Update()
+    {
+        foreach (ICharacterAbility ability in initializedAbilities)
+        {
+            ability.UpdateAbility();
+        }
+    }
+
 
     public void ConsumeItem(InventoryItemDataSO item)
     {

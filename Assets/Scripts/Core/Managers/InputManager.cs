@@ -271,7 +271,7 @@ public class InputManager : Singleton<InputManager>
 
 	public void OnInteract(InputValue value)
 	{
-		CharacterInteraction.Instance.Interact();
+		Character.Instance.GetAbility<CharacterInteractionAbility>().Interact();
 	}
 
 	#endregion

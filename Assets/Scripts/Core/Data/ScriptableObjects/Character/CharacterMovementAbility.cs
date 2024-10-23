@@ -1,14 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Core;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Windows;
 
-public class CharacterMovement : Singleton<CharacterMovement>
+[CreateAssetMenu(fileName = "CharacterMovement", menuName = "Character Abilities/Movement")]
+public class CharacterMovementAbility : ScriptableObject, ICharacterAbility
 {
-    #region Public Variables
     [Header("Player")]
     [Tooltip("Move speed of the character in m/s")]
     public float MoveSpeed = 2.0f;
@@ -16,24 +12,18 @@ public class CharacterMovement : Singleton<CharacterMovement>
     public float SprintSpeed = 5.335f;
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
-    #endregion
 
-    #region Close Public Variables
-    #endregion
-
-    #region Private Variables
-    public float _inputMagnitude;
+    private float _inputMagnitude;
     private float _speed;
-    public float _animationBlend;
-    public float _maxAnimationBlend;
-	#endregion
+    private float _animationBlend;
+    private float _maxAnimationBlend;
 
-	private void Start()
+    public void Initialize(GameObject character)
     {
         _maxAnimationBlend = SprintSpeed;
-	}
+    }
 
-    void Update()
+    public void UpdateAbility()
     {
         Move();
     }
@@ -49,9 +39,9 @@ public class CharacterMovement : Singleton<CharacterMovement>
         // If there's no movement input, set the target speed to 0.
         if (InputManager.Instance.move == Vector2.zero) targetSpeed = 0.0f;
 
-		// Use input magnitude as a simple proxy for "current speed" for the purpose of lerping.
-		// This assumes a direct correlation between input magnitude and intended speed.
-		_inputMagnitude = InputManager.Instance.move.magnitude;
+        // Use input magnitude as a simple proxy for "current speed" for the purpose of lerping.
+        // This assumes a direct correlation between input magnitude and intended speed.
+        _inputMagnitude = InputManager.Instance.move.magnitude;
 
         // Simplify the speed calculation. Since Root Motion handles actual movement,
         // this speed value is used more as a state indicator for the animation blend.
@@ -63,7 +53,7 @@ public class CharacterMovement : Singleton<CharacterMovement>
 
         // Ensure the blend value doesn't drop below a minimal threshold.
         if (_animationBlend < 0.01f) _animationBlend = 0f;
-	}
+    }
 
     public float GetSpeed()
     {

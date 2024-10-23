@@ -1,8 +1,10 @@
-using System.Collections.Generic;
 using Scripts.Core;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterInteraction : Singleton<CharacterInteraction>
+[CreateAssetMenu(fileName = "CharacterInteraction", menuName = "Character Abilities/Interaction")]
+public class CharacterInteractionAbility : ScriptableObject, ICharacterAbility
 {
     public float interactionRadius = 3f;
 
@@ -10,15 +12,23 @@ public class CharacterInteraction : Singleton<CharacterInteraction>
     private List<IInteractable> nearbyInteractables = new List<IInteractable>();
     private IInteractable closestInteractable;
 
-    private void Start()
+    private Transform transform;
+
+    public void Initialize(GameObject character)
     {
         // Add a SphereCollider component to create the interaction radius
-        interactionCollider = gameObject.AddComponent<SphereCollider>();
+        interactionCollider = character.AddComponent<SphereCollider>();
         interactionCollider.isTrigger = true;
         interactionCollider.radius = interactionRadius;
+        transform = character.transform;
     }
 
-    void FixedUpdate()
+    public void UpdateAbility()
+    {
+        ScanInteraction();
+    }
+
+    void ScanInteraction()
     {
         // Check if the closest interactable is still in the nearby interactables list
         if (closestInteractable != null && !nearbyInteractables.Contains(closestInteractable))

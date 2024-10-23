@@ -1,41 +1,33 @@
-using System;
+using Scripts.Entities.Enum;
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Core;
-using Scripts.Entities.Class;
-using Scripts.Entities.Enum;
-using TMPro;
 using UnityEngine;
 
-public class CharacterOrientation : Singleton<CharacterOrientation>
+[CreateAssetMenu(fileName = "CharacterOrientation", menuName = "Character Abilities/Orientation")]
+public class CharacterOrientationAbility : ScriptableObject, ICharacterAbility
 {
-    #region Public Variables
     [Tooltip("Sprint speed of the character in m/s")]
     public float TurnSpeed = 15.2f;
-    #endregion
 
-    #region Close Public Variables
-    #endregion
 
-    #region Private Variables
     private float _rotationVelocity;
     private float _remappedMoveInputX;
     private float _remappedMoveInputY;
     private float _lastRotation;
     private Camera cam; // Reference to the main camera
-    #endregion
-
-    private void Awake()
+    private Transform transform; // Reference to the character's transform
+    public void Initialize(GameObject character)
     {
         cam = Camera.main; // Ensure we have a reference to the main camera
+        transform = character.transform; // Get the character's transform
     }
 
-    void Update()
+    public void UpdateAbility()
     {
         RemapInputValues();
         RotatePlayer();
     }
-    
+
     private void RotatePlayer()
     {
         if (CharacterAnimator.Instance.LocomotionMode == LocomotionModeType.Combat)

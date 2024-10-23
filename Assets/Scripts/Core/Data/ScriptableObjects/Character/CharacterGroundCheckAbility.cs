@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Core;
 using UnityEngine;
 
-public class CharacterGroundCheck : Singleton<CharacterGroundCheck>
+[CreateAssetMenu(fileName = "CharacterGroundCheck", menuName = "Character Abilities/GroundCheck")]
+public class CharacterGroundCheckAbility : ScriptableObject, ICharacterAbility
 {
-    #region Public Variables
     [Header("Player Grounded")]
     [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
     public bool Grounded = true;
@@ -16,16 +14,15 @@ public class CharacterGroundCheck : Singleton<CharacterGroundCheck>
     public float GroundedRadius = 0.28f;
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
-    #endregion
 
-    #region Close Public Variables
-    #endregion
+    private Transform transform;
 
-    #region Private Variables
-    #endregion
-    
-    
-    void Update()
+    public void Initialize(GameObject character)
+    {
+        this.transform = character.transform;
+    }
+
+    public void UpdateAbility()
     {
         GroundedCheck();
     }

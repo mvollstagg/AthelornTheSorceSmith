@@ -32,16 +32,16 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 	private void Update()
     {
         // Must be checked every frame 
-        animator.SetFloat(AnimatorParameters.SPEED, CharacterMovement.Instance.GetSpeed());
-        animator.SetFloat(AnimatorParameters.MOTION_SPEED, CharacterMovement.Instance.GetInputMagnitude());
-        animator.SetFloat(AnimatorParameters.ANIMATION_BLEND, CharacterMovement.Instance.GetAnimationBlendMagnitude());
+        animator.SetFloat(AnimatorParameters.SPEED, Character.Instance.GetAbility<CharacterMovementAbility>().GetSpeed());
+        animator.SetFloat(AnimatorParameters.MOTION_SPEED, Character.Instance.GetAbility<CharacterMovementAbility>().GetInputMagnitude());
+        animator.SetFloat(AnimatorParameters.ANIMATION_BLEND, Character.Instance.GetAbility<CharacterMovementAbility>().GetAnimationBlendMagnitude());
 
-        animator.SetFloat("RemappedMoveInputX", CharacterOrientation.Instance.GetInputDirection().x);
-        animator.SetFloat("RemappedMoveInputY", CharacterOrientation.Instance.GetInputDirection().y);
-        animator.SetBool("Moving", CharacterOrientation.Instance.GetInputDirection().x != 0f || CharacterOrientation.Instance.GetInputDirection().y != 0f);
+        animator.SetFloat("RemappedMoveInputX", Character.Instance.GetAbility<CharacterOrientationAbility>().GetInputDirection().x);
+        animator.SetFloat("RemappedMoveInputY", Character.Instance.GetAbility<CharacterOrientationAbility>().GetInputDirection().y);
+        animator.SetBool("Moving", Character.Instance.GetAbility<CharacterOrientationAbility>().GetInputDirection().x != 0f || Character.Instance.GetAbility<CharacterOrientationAbility>().GetInputDirection().y != 0f);
 
         // TODO: Convert to Events
-        animator.SetBool(AnimatorParameters.GROUNDED, CharacterGroundCheck.Instance.Grounded);
+        animator.SetBool(AnimatorParameters.GROUNDED, Character.Instance.GetAbility<CharacterGroundCheckAbility>().Grounded);
         animator.SetBool(AnimatorParameters.FREE_FALL, CharacterJump.Instance.FreeFall);
 
         // Equipped weapon 
@@ -59,7 +59,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
 	private void OnCharacterGrounded(object sender, EventArgs e)
 	{
-		if (CharacterGroundCheck.Instance.Grounded)
+		if (Character.Instance.GetAbility<CharacterGroundCheckAbility>().Grounded)
 		{
 			animator.SetTrigger("Grounded");
 		}
@@ -69,7 +69,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 	{
 		//animator.SetBool(AnimatorParameters.JUMP, InputManager.Instance.jump);
 
-        if (CharacterGroundCheck.Instance.Grounded)
+        if (Character.Instance.GetAbility<CharacterGroundCheckAbility>().Grounded)
         {
             animator.SetTrigger("Jumping");
         }
@@ -152,9 +152,7 @@ public class CharacterAnimator : Singleton<CharacterAnimator>
 
     private void OnLand(AnimationEvent animationEvent)
     {
-        Debug.Log("OnLand");
-        if (animationEvent.animatorClipInfo.weight > 0.5f)
-            AudioSource.PlayClipAtPoint(LandingAudioClip,
+        AudioSource.PlayClipAtPoint(LandingAudioClip,
                 transform.TransformPoint(Character.Instance.GetComponent<CharacterController>().center),
                 FootstepAudioVolume);
     }

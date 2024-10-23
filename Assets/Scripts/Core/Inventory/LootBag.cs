@@ -34,7 +34,7 @@ public class LootBag : MonoBehaviour, IInteractable
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
-            CharacterInteraction.Instance.RemoveInteractableFromNearbyList(this);
+            Character.Instance.GetAbility<CharacterInteractionAbility>().RemoveInteractableFromNearbyList(this);
             LootManager.Instance.ResetLootBag(this);
             Destroy(this.gameObject);
         }
